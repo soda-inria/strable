@@ -1,0 +1,27 @@
+
+# misc
+*.pyc
+.vscode/
+__cache__/
+__misc__/
+
+slurm/
+data/
+results/
+results_1/
+results_2/
+results_3/
+results_4/
+results_5/
+results_pics/
+pytabkit/
+script_preprocess_check/
+
+hf_token.txt
+dataset_summary.parquet
+dataset_summary_wide.parquet
+enriched_df.parquet
+
+script_evaluate_test.py
+temp.py
+script_preprocess_jun/
