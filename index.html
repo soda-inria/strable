@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <meta name="title" content="STRABLE: Benchmarking Tabular Machine Learning with Strings">
+  <meta name="description" content="A comprehensive benchmarking corpus of 108 tables with strings and numbers to study tabular learning architectures.">
+  <meta name="keywords" content="tabular machine learning, string encoding, benchmark, dataset, LLM">
+  <meta name="author" content="{Anonymous, under review for ICML 2026}">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Anonymous, under review for ICML 2026">
+  <meta property="og:title" content="STRABLE: Benchmarking Tabular Machine Learning with Strings">
+  <meta property="og:description" content="A comprehensive benchmarking corpus of 108 tables with strings and numbers to study tabular learning architectures.">
+  <meta property="og:url" content="https://gblayer.github.io/STRABLE/">
+  <meta property="og:image" content="https://gblayer.github.io/STRABLE/static/images/figure_4.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="STRABLE: Benchmarking Tabular Machine Learning with Strings - Research Preview">
+  <meta property="article:published_time" content="TBD">
+  <meta property="article:author" content="Anonymous, under review for ICML 2026">
+  <meta property="article:section" content="Research">
+  <meta property="article:tag" content="Tabular Machine Learning">
+  <meta property="article:tag" content="String Encoding">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- TODO: Replace with your lab/institution Twitter handle -->
+  <!-- <meta name="twitter:site" content="@YOUR_TWITTER_HANDLE"> -->
+  <!-- TODO: Replace with first author's Twitter handle -->
+  <!-- <meta name="twitter:creator" content="@AUTHOR_TWITTER_HANDLE"> -->
+  <!-- TODO: Same as paper title above -->
+  <meta name="twitter:title" content="STRABLE: Benchmarking Tabular Machine Learning with Strings">
+  <meta name="twitter:description" content="A comprehensive benchmarking corpus of 108 tables with strings and numbers to study tabular learning architectures.">
+  <meta name="twitter:image" content="https://gblayer.github.io/STRABLE/static/images/figure_4.png">
+  <meta name="twitter:image:alt" content="STRABLE: Benchmarking Tabular Machine Learning with Strings - Research Preview">
+
+  <!-- Academic/Research Specific -->
+  <meta name="citation_title" content="STRABLE: Benchmarking Tabular Machine Learning with Strings">
+  <meta name="citation_author" content="Anonymous Authors">
+  <meta name="citation_publication_date" content="2026">
+  <meta name="citation_conference_title" content="International Conference on Machine Learning (ICML) - Under Review">
+  <!-- <meta name="citation_pdf_url" content="https://YOUR_DOMAIN.com/static/pdfs/paper.pdf"> after acceptance, add link to PDF here -->
+  
+  <!-- Additional SEO -->
+  <meta name="theme-color" content="#2563eb">
+  <meta name="msapplication-TileColor" content="#2563eb">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://ajax.googleapis.com">
+  <link rel="preconnect" href="https://documentcloud.adobe.com">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+  <title>STRABLE Benchmark</title>
+  
+  <!-- Favicon and App Icons -->
+  <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
+  <link rel="apple-touch-icon" href="static/images/favicon.ico">
+  
+  <!-- Critical CSS - Load synchronously -->
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+  
+  <!-- Non-critical CSS - Load asynchronously -->
+  <link rel="preload" href="static/css/bulma-carousel.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="static/css/bulma-slider.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="static/css/fontawesome.all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  
+  <!-- Fallback for browsers that don't support preload -->
+  <noscript>
+    <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  </noscript>
+  
+  <!-- Fonts - Optimized loading -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Defer non-critical JavaScript -->
+  <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script defer src="static/js/bulma-carousel.min.js"></script>
+  <script defer src="static/js/bulma-slider.min.js"></script>
+  <script defer src="static/js/index.js"></script>
+  
+  <!-- Structured Data for Academic Papers -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "headline": "STRABLE: Benchmarking Tabular Machine Learning with Strings",
+    "description": "A comprehensive benchmarking corpus of 108 tables with strings and numbers to study tabular learning architectures.",
+    "author": [
+      {
+        "@type": "Person",
+        "name": "Anonymous Authors",
+        "affiliation": {
+          "@type": "Organization",
+          "name": "Under Review"
+        }
+      },
+      {
+        "@type": "Person",
+        "name": "Anonymous Authors",
+        "affiliation": {
+          "@type": "Organization",
+          "name": "Under Review"
+        }
+      }
+    ],
+    "datePublished": "2026-01-01",
+    "publisher": {
+      "@type": "Organization",
+      "name": "International Conference on Machine Learning (ICML) - Under Review"
+    },
+    "url": "https://gblayer.github.io/STRABLE/",
+    "image": "https://gblayer.github.io/STRABLE/static/images/figure_4.png",
+    "keywords": ["tabular machine learning", "string encoding", "benchmark", "dataset", "LLM"],
+    "abstract": "Benchmarking tabular data has revealed the benefit of dedicated architectures, pushing the state of the art. But real-world tables often contain string entries, beyond numbers. These settings have been understudied due to a lack of a solid benchmarking suite. They lead to new research questions: Are dedicated learners needed, with end-to-end modeling of strings and numbers? Or does it suffice to encode strings as numbers, as with a categorical encoding? And if so, do the resulting tables resemble numerical tabular data, calling for the same learners? To enable these studies, we contribute STRABLE, a comprehensive benchmarking corpus of 108 tables with strings and numbers, all carefully curated learning problems across diverse application fields. We run the first large-scale empirical study of tabular learning with strings. We study many pipelines: end-to-end or tabular learning with string encoding, spanning the complexity of methods, from categorical encoding to LLMs, from ridge to TabPFN. We find that, on typical tables, it works best to use sophisticated tabular learners with comparatively simpler string embedding methods. Finally, we show that STRABLE is a good set of tables to study “string tabular” learning as it leads to generalizable rankings of methods: it contains enough tables to approach expected ranks, and is stable across application fields. STRABLE provides a foundation for research on tabular learning with strings, an important yet understudied area.",
+    "citation": "@unpublished{strable2026, title={STRABLE: Benchmarking Tabular Machine Learning with Strings}, author={Anonymous Authors}, note={Under review at the International Conference on Machine Learning (ICML)}, year={2026}}",
+    "isAccessibleForFree": true,
+    "license": "https://creativecommons.org/licenses/by/4.0/",
+    "mainEntity": {
+      "@type": "WebPage",
+      "@id": "https://gblayer.github.io/STRABLE/"
+    },
+    "about": [
+      {
+        "@type": "Thing",
+        "name": "Tabular Machine Learning"
+      },
+      {
+        "@type": "Thing", 
+        "name": "String Encoding"
+      }
+    ]
+  }
+  </script>
+  
+  <!-- Website/Organization Structured Data -->
+  <!-- <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "INSTITUTION_OR_LAB_NAME",
+    "url": "https://YOUR_INSTITUTION_WEBSITE.com",
+    "logo": "https://YOUR_DOMAIN.com/static/images/favicon.ico",
+    "sameAs": [
+      "https://twitter.com/YOUR_TWITTER_HANDLE",
+      "https://github.com/YOUR_GITHUB_USERNAME"
+    ]
+  }
+  </script> -->
+</head>
+<body>
+
+
+  <!-- Scroll to Top Button -->
+  <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+  <!-- More Works Dropdown -->
+  <!-- <div class="more-works-container">
+    <button class="more-works-btn" onclick="toggleMoreWorks()" title="View More Works from Our Lab">
+      <i class="fas fa-flask"></i>
+      More Works
+      <i class="fas fa-chevron-down dropdown-arrow"></i>
+    </button>
+    <div class="more-works-dropdown" id="moreWorksDropdown">
+      <div class="dropdown-header">
+        <h4>More Works from Our Lab</h4>
+        <button class="close-btn" onclick="toggleMoreWorks()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="works-list"> -->
+        <!-- TODO: Replace with your lab's related works -->
+        <!-- <a href="https://arxiv.org/abs/PAPER_ID_1" class="work-item" target="_blank">
+          <div class="work-info"> -->
+            <!-- TODO: Replace with actual paper title -->
+            <!-- <h5>Paper Title 1</h5> -->
+            <!-- TODO: Replace with brief description -->
+            <!-- <p>Brief description of the work and its main contribution.</p> -->
+            <!-- TODO: Replace with venue and year -->
+            <!-- <span class="work-venue">Conference/Journal 2024</span>
+          </div>
+          <i class="fas fa-external-link-alt"></i>
+        </a> -->
+        <!-- TODO: Add more related works or remove extra items -->
+        <!-- <a href="https://arxiv.org/abs/PAPER_ID_2" class="work-item" target="_blank">
+          <div class="work-info">
+            <h5>Paper Title 2</h5>
+            <p>Brief description of the work and its main contribution.</p>
+            <span class="work-venue">Conference/Journal 2023</span>
+          </div>
+          <i class="fas fa-external-link-alt"></i>
+        </a>
+        <a href="https://arxiv.org/abs/PAPER_ID_3" class="work-item" target="_blank">
+          <div class="work-info">
+            <h5>Paper Title 3</h5>
+            <p>Brief description of the work and its main contribution.</p>
+            <span class="work-venue">Conference/Journal 2023</span>
+          </div>
+          <i class="fas fa-external-link-alt"></i>
+        </a>
+      </div>
+    </div>
+  </div> -->
+
+  <main id="main-content">
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">STRABLE: Benchmarking Tabular Machine Learning with Strings</h1>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                Anonymous Authors
+                <!-- <a href="FIRST AUTHOR PERSONAL LINK" target="_blank">First Author</a><sup>*</sup>,</span>
+                <span class="author-block">
+                  <a href="SECOND AUTHOR PERSONAL LINK" target="_blank">Second Author</a><sup>*</sup>,</span>
+                  <span class="author-block">
+                    <a href="THIRD AUTHOR PERSONAL LINK" target="_blank">Third Author</a> -->
+                  </span>
+                  </div>
+
+                  <div class="is-size-5 publication-authors">
+                    <span class="author-block">Under review at the International Conference on Machine Learning (ICML)</span>
+                    <!-- TODO: Remove this line if no equal contribution -->
+                    <!-- <span class="eql-cntrb"><small><br><sup>*</sup>Indicates Equal Contribution</small></span> -->
+                  </div>
+
+                  <div class="column has-text-centered">
+                    <div class="publication-links">
+                      <span class="link-block">
+                        <!-- <a href="https://arxiv.org/pdf/<ARXIV PAPER ID>.pdf" target="_blank" -->
+                        <a href="#" target="_blank"
+                        class="external-link button is-normal is-rounded is-dark">
+                        <span class="icon">
+                          <i class="fas fa-file-pdf"></i>
+                        </span>
+                        <!-- <span>Paper</span> -->
+                        <span>Paper (Coming Soon)</span>
+                      </a>
+                    </span>
+
+                    <!-- TODO: Add your supplementary material PDF or remove this section -->
+                    <!-- <span class="link-block">
+                      <a href="static/pdfs/supplementary_material.pdf" target="_blank"
+                      class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                        <i class="fas fa-file-pdf"></i>
+                      </span>
+                      <span>Supplementary</span>
+                    </a>
+                  </span> -->
+
+                  <!-- TODO: Replace with your GitHub repository URL -->
+                  <!-- <span class="link-block">
+                    <a href="https://github.com/gblayer/STRABLE" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                </span> -->
+
+                <!-- TODO: Update with your arXiv paper ID -->
+                <!-- <span class="link-block">
+                  <a href="https://arxiv.org/abs/<ARXIV PAPER ID>" target="_blank"
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Teaser video-->
+<!-- <section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <video poster="" id="tree" autoplay controls muted loop height="100%" preload="metadata">
+        <source src="static/videos/banner_video.mp4" type="video/mp4">
+      </video>
+      <h2 class="subtitle has-text-centered">
+        Aliquam vitae elit ullamcorper tellus egestas pellentesque. Ut lacus tellus, maximus vel lectus at, placerat pretium mi. Maecenas dignissim tincidunt vestibulum. Sed consequat hendrerit nisl ut maximus. 
+      </h2>
+    </div>
+  </div>
+</section> -->
+<!-- End teaser video -->
+
+<!-- Paper abstract -->
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Benchmarking tabular data has revealed the benefit of dedicated architectures, pushing the state of the art. But real-world tables often contain string entries, beyond numbers. These settings have been understudied due to a lack of a solid benchmarking suite. They lead to new research questions: Are dedicated learners needed, with end-to-end modeling of strings and numbers? Or does it suffice to encode strings as numbers, as with a categorical encoding? And if so, do the resulting tables resemble numerical tabular data, calling for the same learners?
+          </p>
+          <br>
+          <p>
+            To enable these studies, we contribute STRABLE, a comprehensive benchmarking corpus of 108 tables with strings and numbers, all carefully curated learning problems across diverse application fields. We run the first large-scale empirical study of tabular learning with strings. We study many pipelines: end-to-end or tabular learning with string encoding, spanning the complexity of methods, from categorical encoding to LLMs, from ridge to TabPFN.
+          </p>
+          <br>
+          <p>
+            We find that, on typical tables, it works best to use sophisticated tabular learners with comparatively simpler string embedding methods. Finally, we show that STRABLE is a good set of tables to study "string tabular" learning as it leads to generalizable rankings of methods: it contains enough tables to approach expected ranks, and is stable across application fields. STRABLE provides a foundation for research on tabular learning with strings, an important yet understudied area.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End paper abstract -->
+
+<section class="section">
+  <div class="container is-max-desktop">
+    
+    <div class="columns is-centered has-text-centered mb-6">
+      <div class="column is-full-width">
+        <h2 class="title is-3">1. Datasets' Metadata Distribution</h2>
+        <img src="static/images/figure_1.png" alt="STRABLE metadata distribution" style="max-width: 100%; border-radius: 8px; border: 1px solid #ddd;">
+        <div class="content has-text-justified mt-3">
+          <p>
+            <strong>Datasets’ metadata distribution.</strong> Cardinality and String length were extracted for string columns. Histograms and fitted lines refer to the STRABLE distribution, while dashed lines refer to the OpenML distribution.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered has-text-centered mb-6">
+      <div class="column is-full-width">
+        <h2 class="title is-3">2. Strings are Pivotal for Tabular Learning</h2>
+        <img src="static/images/figure_2.png" alt="Performance by learner averaged across all encoders" style="max-width: 100%; border-radius: 8px; border: 1px solid #ddd;">
+        <div class="content has-text-justified mt-3">
+          <p>
+            <strong>Performance by learner, averaged across all encoders.</strong> The introduction of string features bring marked improvements to numeric-only baseline. Note that E2E models present a wider 95% confidence interval, being based on the performance of their internal encoding solution.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered has-text-centered mb-6">
+      <div class="column is-full-width">
+        <h2 class="title is-3">3. The Performance vs. Compute Trade-off</h2>
+        <img src="static/images/figure_4.png" alt="Trade-off between prediction performance and run time" style="max-width: 100%; border-radius: 8px; border: 1px solid #ddd;">
+        <div class="content has-text-justified mt-3">
+          <p>
+            <strong>Trade-off between prediction performance and run time,</strong> colored by encoder on the left and by learner on the right. The dotted line gives the pareto-optimality frontier. Encoders explain much of the runtime: for a given encoder, prediction performance varies broadly depending on the learner while the runtime varies much less (aside from the choice of tuning or not). Simple and advanced learners benefit differently from varying encoders: for a simple learner such as ridge, more complex encoders improve prediction performance. But as the learners get more sophisticated, their prediction performance drops with the most complex encoders (as with TabPFN-2.5).
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered has-text-centered mb-6">
+      <div class="column is-full-width">
+        <h2 class="title is-3">4. Performance by Encoder and Learner</h2>
+        <img src="static/images/figure_5.png" alt="Performance by encoder and learner on all features" style="max-width: 100%; border-radius: 8px; border: 1px solid #ddd;">
+        <div class="content has-text-justified mt-3">
+          <p>
+            <strong>Performance by encoder and learner on all features (Num+Str),</strong> ordered by mean encoder performer across learners. Figure E.12 mirrors this figure, but clipping to 0 all negative R2 scores to mitigate the effect of very poor predictions in regression.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered has-text-centered mb-6">
+      <div class="column is-full-width">
+        <h2 class="title is-3">5. Benchmark Convergence to Oracle Rank</h2>
+        <img src="static/images/figure_9.png" alt="Expected Kendall-tau convergence" style="max-width: 100%; border-radius: 8px; border: 1px solid #ddd;">
+        <div class="content has-text-justified mt-3">
+          <p>
+            <strong>Expected Kendall-&tau; convergence</strong> of two benchmarks and single benchmark to the oracle rank. The green curve is fitted on the observed Kendall-&tau; correlations between two independent benchmarks (blue points). The purple curve is computed through the same optimized parameters of the green curve: a and b. The blue data points represent the empirical agreement between disjoint benchmarks of varying sizes, generated via a sub-sampling procedure detailed in the appendix (see Figure E.11). The saturation curve of the agreement is derived in Appendix A.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- Image carousel -->
+<!-- <section class="hero is-small">
+  <div class="hero-body">
+    <div class="container">
+      <div id="results-carousel" class="carousel results-carousel">
+       <div class="item">
+        <img src="static/images/carousel1.jpg" alt="First research result visualization" loading="lazy"/>
+        <h2 class="subtitle has-text-centered">
+          First image description.
+        </h2>
+      </div>
+      <div class="item">
+        <img src="static/images/carousel2.jpg" alt="Second research result visualization" loading="lazy"/>
+        <h2 class="subtitle has-text-centered">
+          Second image description.
+        </h2>
+      </div>
+      <div class="item">
+        <img src="static/images/carousel3.jpg" alt="Third research result visualization" loading="lazy"/>
+        <h2 class="subtitle has-text-centered">
+         Third image description.
+       </h2>
+     </div>
+     <div class="item">
+      <img src="static/images/carousel4.jpg" alt="Fourth research result visualization" loading="lazy"/>
+      <h2 class="subtitle has-text-centered">
+        Fourth image description.
+      </h2>
+    </div>
+  </div>
+</div>
+</div>
+</section> -->
+<!-- End image carousel -->
+
+
+
+
+<!-- Youtube video -->
+<!-- <section class="hero is-small is-light">
+  <div class="hero-body">
+    <div class="container">
+      <h2 class="title is-3">Video Presentation</h2>
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          
+          <div class="publication-video">
+            <iframe src="https://www.youtube.com/embed/JkaxUblCGz0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+<!-- End youtube video -->
+
+
+<!-- Video carousel -->
+<!-- <section class="hero is-small">
+  <div class="hero-body">
+    <div class="container">
+      <h2 class="title is-3">Another Carousel</h2>
+      <div id="results-carousel" class="carousel results-carousel">
+        <div class="item item-video1">
+          <video poster="" id="video1" controls muted loop height="100%" preload="metadata">
+            <source src="static/videos/carousel1.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-video2">
+          <video poster="" id="video2" controls muted loop height="100%" preload="metadata">
+            <source src="static/videos/carousel2.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-video3">
+          <video poster="" id="video3" controls muted loop height="100%" preload="metadata">
+            <source src="static/videos/carousel3.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+<!-- End video carousel -->
+
+
+
+
+
+
+<!-- Paper poster -->
+<!-- <section class="hero is-small is-light">
+  <div class="hero-body">
+    <div class="container">
+      <h2 class="title">Poster</h2>
+
+      
+      <iframe  src="static/pdfs/sample.pdf" width="100%" height="550">
+          </iframe>
+        
+      </div>
+    </div>
+  </section> -->
+<!--End paper poster -->
+
+
+
+<!--BibTex citation -->
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <div class="bibtex-header">
+        <h2 class="title">BibTeX</h2>
+        <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
+          <i class="fas fa-copy"></i>
+          <span class="copy-text">Copy</span>
+        </button>
+      </div>
+      <pre id="bibtex-code"><code>@unpublished{strable2026,
+  title={STRABLE: Benchmarking Tabular Machine Learning with Strings},
+  author={Anonymous Authors},
+  note={Under review at the International Conference on Machine Learning (ICML)},
+  year={2026}
+}</code></pre>
+    </div>
+</section>
+<!--End BibTex citation -->
+
+
+  <footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+
+          <p>
+            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+            You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Statcounter tracking code -->
+  
+<!-- You can add a tracker to track page visits by creating an account at statcounter.com -->
+
+    <!-- End of Statcounter Code -->
+
+  </body>
+  </html>
