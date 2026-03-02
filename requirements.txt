@@ -1,0 +1,14 @@
+huggingface_hub
+pandas
+numpy
+fastparquet
+skrub
+submitit
+scikit-learn
+tabpfn
+xgboost
+catboost
+fasttext
+scipy
+tabstar
+tarte-ai

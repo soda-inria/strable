@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "strable"
+version = "0.0.1"
+description = "STRABLE: scalable tabular benchmark built on SALTS"
+readme = { file = "README.md", content-type = "text/markdown" }
+requires-python = ">=3.10"
+keywords = ["strable", "tabular", "benchmark"]
+license = { text = "MIT license" }
+authors = [
+    { name = "Inria SODA" },
+]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+dependencies = [
+    "fastparquet",
+    "skrub",
+    "submitit",
+    "tabpfn",
+    "scikit-learn>=1.0",
+    "xgboost",
+    "catboost",
+    "carte-ai",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "coverage",
+]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["strable", "strable.*"]
+
