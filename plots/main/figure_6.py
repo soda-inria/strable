@@ -16,7 +16,7 @@ from sklearn.decomposition import PCA
 from sklearn.metrics.pairwise import cosine_similarity
 
 from strable.configs.path_configs import path_configs
-from strable.plots.plot_setup import TODAYS_FOLDER
+from strable.scripts.analysis_setup import TODAYS_FOLDER
 from strable.src.encoding import prepare_tabvec
 
 # --- 2. CONFIG & PATHS ---

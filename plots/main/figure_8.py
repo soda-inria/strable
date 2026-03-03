@@ -19,7 +19,7 @@ import seaborn as sns
 from joblib import Parallel, delayed
 
 from strable.configs.path_configs import path_configs
-from strable.plots.plot_setup import (
+from strable.scripts.analysis_setup import (
     TODAYS_FOLDER,
     dtype_map,
     encoder_map,

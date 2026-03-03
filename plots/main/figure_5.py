@@ -15,7 +15,7 @@ import pandas as pd
 import seaborn as sns
 
 from strable.configs.path_configs import path_configs
-from strable.plots.plot_setup import (
+from strable.scripts.analysis_setup import (
     TODAYS_FOLDER,
     Y_METRIC_LABELS,
     get_learner_color_simple,

@@ -14,7 +14,7 @@ import numpy as np
 import seaborn as sns
 
 from strable.configs.path_configs import path_configs
-from strable.plots.plot_setup import (
+from strable.scripts.analysis_setup import (
     TODAYS_FOLDER,
     dataset_summary_wide,
 )

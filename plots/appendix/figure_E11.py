@@ -10,7 +10,7 @@ import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 
 from strable.configs.path_configs import path_configs
-from strable.plots.plot_setup import TODAYS_FOLDER
+from strable.scripts.analysis_setup import TODAYS_FOLDER
 
 def draw_schema():
     # Increased height to fit the new step comfortably

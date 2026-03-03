@@ -8,7 +8,7 @@ import seaborn as sns
 import numpy as np
 import time
 from strable.configs.path_configs import path_configs
-from strable.plots.plot_setup import dataset_summary_wide
+from strable.scripts.analysis_setup import dataset_summary_wide
 
 # ---------------------------------------------------------
 # 1. LOAD OPENML DATA

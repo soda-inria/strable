@@ -9,8 +9,8 @@ import seaborn as sns
 import numpy as np
 import time
 from strable.configs.path_configs import path_configs
-from strable.plots.plot_setup import dataset_summary_wide, score_list, clean_method_name, get_learner_color_simple, get_encoder_color
-from strable.plots.plot_setup import critical_difference_diagram
+from strable.scripts.analysis_setup import dataset_summary_wide, score_list, clean_method_name, get_learner_color_simple, get_encoder_color
+from strable.scripts.analysis_setup import critical_difference_diagram
 import scikit_posthocs as sp
 
 dtype = 'num-str'

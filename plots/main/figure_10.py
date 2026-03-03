@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 from scipy.stats import kendalltau
 
-from strable.plots.plot_setup import TODAYS_FOLDER, results
+from strable.scripts.analysis_setup import TODAYS_FOLDER, results
 
 from strable.configs.path_configs import path_configs
 

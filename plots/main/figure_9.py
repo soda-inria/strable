@@ -15,7 +15,7 @@ from scipy.optimize import curve_fit, fsolve
 from scipy.stats import kendalltau
 
 from strable.configs.path_configs import path_configs
-from strable.plots.plot_setup import (
+from strable.scripts.analysis_setup import (
     TODAYS_FOLDER,
     calculate_rankings,
     model_ref_1,

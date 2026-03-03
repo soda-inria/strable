@@ -11,7 +11,7 @@ import seaborn as sns
 from scipy.stats import kendalltau
 
 from strable.configs.path_configs import path_configs
-from strable.plots.plot_setup import (
+from strable.scripts.analysis_setup import (
     TODAYS_FOLDER,
     Y_METRIC_LABELS,
     bin_feature_33_66,

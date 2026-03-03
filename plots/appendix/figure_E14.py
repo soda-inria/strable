@@ -20,7 +20,7 @@ import pandas as pd
 from scipy.linalg import svd
 
 from strable.configs.path_configs import path_configs
-from strable.plots.plot_setup import TODAYS_FOLDER, get_encoder_color
+from strable.scripts.analysis_setup import TODAYS_FOLDER, get_encoder_color
 
 
 # --- 1. DATASET LIST (wide datasets) ---
@@ -276,7 +276,7 @@ import pandas as pd
 from scipy.linalg import svd
 
 from strable.configs.path_configs import path_configs
-from strable.plots.plot_setup import TODAYS_FOLDER, get_encoder_color
+from strable.scripts.analysis_setup import TODAYS_FOLDER, get_encoder_color
 
 
 # --- 1. DATASET LIST (wide datasets) ---

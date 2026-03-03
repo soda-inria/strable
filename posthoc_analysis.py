@@ -8999,6 +8999,7 @@ with open(save_path, 'w') as f:
 # 3. TABLE 2: Aggregated features of tabular datasets across sources
 # ==========================================
 
+df_datasets = results.drop_duplicates(subset=['data_name']).copy()
 
 # Select features to analyze from your columns
 features_to_analyze = ['num_rows','num_columns', 'num_text_columns', 'avg_string_length_per_cell', 'avg_cardinality', 'avg_tfidf_cosine_similarity', 'prop_missing_text_cells', 'prop_unique_text_cells']
