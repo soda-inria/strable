@@ -1,5 +1,7 @@
 '''
 Critical Difference Diagram - selected LLMs, baselines and E2E models
+
+This code can create also figure_E9 and figure_E10 in the Appendix.
 '''
 
 import matplotlib.pyplot as plt

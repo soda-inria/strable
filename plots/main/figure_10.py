@@ -2,6 +2,18 @@
 LEAVE-ONE-CATEGORY-OUT
 '''
 
+import os
+import time
+
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+from scipy.stats import kendalltau
+
+from strable.plots.plot_setup import TODAYS_FOLDER, results
+
+from strable.configs.path_configs import path_configs
+
 # 1. Prepare the Pivot Table
 # Ensure we have one score per model per dataset
 
@@ -95,7 +107,13 @@ plt.legend(loc='lower right')
 
 # plt.tight_layout()
 today_date = time.strftime("%Y-%m-%d")
-format = 'pdf'
-PIC_NAME = f'leave_one_category_out_v4_check_transposed_{today_date}.{format}'
-plt.savefig('/data/parietal/store4/soda/gblayer/salts/results_pics/'+ f"{TODAYS_FOLDER}/" + PIC_NAME, bbox_inches='tight')
+fmt = 'pdf'
+PIC_NAME = f'leave_one_category_out_{today_date}.{fmt}'
+out_path = os.path.join(
+    path_configs["base_path"],
+    "results_pics",
+    TODAYS_FOLDER,
+    PIC_NAME,
+)
+plt.savefig(out_path, bbox_inches='tight')
 plt.show()

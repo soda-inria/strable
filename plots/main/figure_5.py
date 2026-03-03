@@ -1,6 +1,8 @@
 '''
 Average performance when using combined (Num+Str) features.
 Encoders, e2e models and selected LLMs
+
+This code can create also figure_E4, figure_E5, figure_E12 in the Appendix.
 '''
 
 import os
