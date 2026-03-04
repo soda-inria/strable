@@ -38,17 +38,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom STRABLE Header Background */
-.tabular-header {
-    background-color: #f8fafc; /* Very light cool blue/gray */
-    /* Creates a subtle table/grid pattern */
-    background-image: 
-        linear-gradient(#e2e8f0 1px, transparent 1px), 
-        linear-gradient(90deg, #e2e8f0 1px, transparent 1px);
-    background-size: 30px 30px;
-    border-bottom: 2px solid #cbd5e1;
-}
-
 /* Modern Button Styles */
 .button {
   border-radius: var(--border-radius) !important;
@@ -760,4 +749,8 @@ a:focus {
 }
 
 
-
+/* Custom STRABLE Header Background - Modern Gradient */
+.hero.main-header {
+    background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+    border-bottom: 1px solid #c2d3ec;
+}
