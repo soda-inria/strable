@@ -89,9 +89,9 @@ for metric in score_list:
         with open(save_path, 'w') as f:
             f.write(pareto_df.to_latex(index=False))
 
-        # =======================================================
-        # PRINT PARETO FRONTIER DETAILS
-        # =======================================================
+        # ======================================================================
+        # PRINT PARETO FRONTIER DETAILS: this produces Table E.1 in the Appendix
+        # ======================================================================
         print(f"\n" + "="*60)
         print(f"PARETO FRONTIER: {Y_METRIC} (Max) vs {x_metric} (Min)")
         print("="*60)
