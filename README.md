@@ -1,6 +1,6 @@
 # STRABLE
 
-**STRABLE** (**S**tring **T**able) is a comprehensive benchmarking corpus of 108 tables with strings and numbers.
+**STRABLE** (**Str**ing T**able**) is a comprehensive benchmarking corpus of 108 tables with strings and numbers.
 
 ## Repository layout
 
