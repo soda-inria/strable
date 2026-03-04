@@ -337,7 +337,7 @@
     <div class="columns is-centered has-text-centered mb-6">
       <div class="column is-full-width">
         <h2 class="title is-3">1. Datasets' Metadata Distribution</h2>
-        <img src="static/images/figure_1.png" alt="STRABLE metadata distribution" style="max-width: 100%; border-radius: 8px; border: 1px solid #ddd;">
+        <img src="static/images/figure_1.png" alt="STRABLE metadata distribution" style="max-width: 75%; border-radius: 8px; border: 1px solid #ddd;">
         <div class="content has-text-justified mt-3">
           <p>
             <strong>Datasets’ metadata distribution.</strong> Cardinality and String length were extracted for string columns. Histograms and fitted lines refer to the STRABLE distribution, while dashed lines refer to the OpenML distribution.
@@ -349,7 +349,7 @@
     <div class="columns is-centered has-text-centered mb-6">
       <div class="column is-full-width">
         <h2 class="title is-3">2. Strings are Pivotal for Tabular Learning</h2>
-        <img src="static/images/figure_2.png" alt="Performance by learner averaged across all encoders" style="max-width: 100%; border-radius: 8px; border: 1px solid #ddd;">
+        <img src="static/images/figure_2.png" alt="Performance by learner averaged across all encoders" style="max-width: 75%; border-radius: 8px; border: 1px solid #ddd;">
         <div class="content has-text-justified mt-3">
           <p>
             <strong>Performance by learner, averaged across all encoders.</strong> The introduction of string features bring marked improvements to numeric-only baseline. Note that E2E models present a wider 95% confidence interval, being based on the performance of their internal encoding solution.
@@ -361,7 +361,7 @@
     <div class="columns is-centered has-text-centered mb-6">
       <div class="column is-full-width">
         <h2 class="title is-3">3. The Performance vs. Compute Trade-off</h2>
-        <img src="static/images/figure_4.png" alt="Trade-off between prediction performance and run time" style="max-width: 100%; border-radius: 8px; border: 1px solid #ddd;">
+        <img src="static/images/figure_4.png" alt="Trade-off between prediction performance and run time" style="max-width: 75%; border-radius: 8px; border: 1px solid #ddd;">
         <div class="content has-text-justified mt-3">
           <p>
             <strong>Trade-off between prediction performance and run time,</strong> colored by encoder on the left and by learner on the right. The dotted line gives the pareto-optimality frontier. Encoders explain much of the runtime: for a given encoder, prediction performance varies broadly depending on the learner while the runtime varies much less (aside from the choice of tuning or not). Simple and advanced learners benefit differently from varying encoders: for a simple learner such as ridge, more complex encoders improve prediction performance. But as the learners get more sophisticated, their prediction performance drops with the most complex encoders (as with TabPFN-2.5).
@@ -373,7 +373,7 @@
     <div class="columns is-centered has-text-centered mb-6">
       <div class="column is-full-width">
         <h2 class="title is-3">4. Performance by Encoder and Learner</h2>
-        <img src="static/images/figure_5.png" alt="Performance by encoder and learner on all features" style="max-width: 100%; border-radius: 8px; border: 1px solid #ddd;">
+        <img src="static/images/figure_5.png" alt="Performance by encoder and learner on all features" style="max-width: 75%; border-radius: 8px; border: 1px solid #ddd;">
         <div class="content has-text-justified mt-3">
           <p>
             <strong>Performance by encoder and learner on all features (Num+Str),</strong> ordered by mean encoder performer across learners. Figure E.12 mirrors this figure, but clipping to 0 all negative R2 scores to mitigate the effect of very poor predictions in regression.
@@ -385,7 +385,7 @@
     <div class="columns is-centered has-text-centered mb-6">
       <div class="column is-full-width">
         <h2 class="title is-3">5. Benchmark Convergence to Oracle Rank</h2>
-        <img src="static/images/figure_9.png" alt="Expected Kendall-tau convergence" style="max-width: 100%; border-radius: 8px; border: 1px solid #ddd;">
+        <img src="static/images/figure_9.png" alt="Expected Kendall-tau convergence" style="max-width: 75%; border-radius: 8px; border: 1px solid #ddd;">
         <div class="content has-text-justified mt-3">
           <p>
             <strong>Expected Kendall-&tau; convergence</strong> of two benchmarks and single benchmark to the oracle rank. The green curve is fitted on the observed Kendall-&tau; correlations between two independent benchmarks (blue points). The purple curve is computed through the same optimized parameters of the green curve: a and b. The blue data points represent the empirical agreement between disjoint benchmarks of varying sizes, generated via a sub-sampling procedure detailed in the appendix (see Figure E.11). The saturation curve of the agreement is derived in Appendix A.
