@@ -23,6 +23,8 @@ strable/
 │   ├── compile_results.py   # Aggregate individual run scores into one CSV
 │   ├── datasets_representation.py  # Collect dataset metadata
 │   ├── download_fasttext.py # Download the fastText model
+│   ├── script_evaluate.py       # Main benchmark evaluation entry point
+│   ├── script_extract_llm_embeddings.py  # LLM embedding extraction
 │   └── data_preprocessing_scripts/  # Dataset-specific preprocessing
 ├── src/                     
 │   ├── encoding.py          # Table embedding / encoding strategies
@@ -37,8 +39,6 @@ strable/
 ├── tables/
 │   ├── main/                # Tables for the main paper
 │   └── appendix/            # Tables for the appendix
-├── script_evaluate.py       # Main benchmark evaluation entry point
-├── script_extract_llm_embeddings.py  # LLM embedding extraction
 ├── requirements.txt
 └── pyproject.toml
 ```
@@ -77,7 +77,7 @@ Downloads the English fastText model (`cc.en.300.bin`) to the path specified in 
 ## 🧠 Step 3 – Extract LLM embeddings
 
 ```bash
-python script_extract_llm_embeddings.py
+python scripts/script_extract_llm_embeddings.py
 ```
 
 Extracts embeddings of a Language Model for a given dataset. Results are saved under `data/llm_embeding/` and timing information under `data/llm_embed_time/`.
@@ -85,7 +85,7 @@ Extracts embeddings of a Language Model for a given dataset. Results are saved u
 ## 🚀 Step 4 – Run the benchmark
 
 ```bash
-python script_evaluate.py
+python scripts/script_evaluate.py
 ```
 
 This runs the full evaluation pipeline for all dataset (Num+Str, Str only, Num only) × encoder × learner combinations.
