@@ -1,0 +1,78 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "strable"
+version = "0.0.1"
+description = "STRABLE: Benchmarking Tabular Machine Learning with Strings"
+readme = { file = "README.md", content-type = "text/markdown" }
+requires-python = ">=3.10"
+keywords = ["strable", "tabular", "benchmark"]
+license = { text = "BSD-3-Clause" }
+authors = [
+    { name = "TBD" },
+]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "Topic :: Scientific/Engineering",
+    "Operating System :: OS Independent",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX",
+    "Operating System :: Microsoft :: Windows",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "numpy",
+    "pandas",
+    "pyarrow",
+    "scipy",
+    "joblib",
+    "scikit-learn>=1.0",
+    "skrub",
+    "matplotlib",
+    "seaborn",
+    "statsmodels",
+    "scikit-posthocs",
+    "xgboost",
+    "catboost",
+    "tabpfn",
+    "tabstar",
+    "tarte-ai",
+    "sap-rpt-1-oss @ git+https://github.com/SAP-samples/sap-rpt-1-oss.git",
+    "fasttext",
+    "huggingface_hub",
+    "fastparquet",
+    "submitit",
+    "torch",
+    "transformers",
+    "sentence-transformers",
+    "pytabkit",
+    "networkx"
+]
+
+[project.urls]
+Homepage = "https://github.com/soda-inria/strable"
+
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "coverage",
+]
+extra = [
+    "openml",
+    "xmltodict",
+]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["strable", "strable.*"]
