@@ -1,10 +1,15 @@
-# STRABLE
+![Python versions](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue)
+![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)
+[![Hugging Face Benchmark](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Benchmark-FFD21E.svg)](https://huggingface.co/datasets/inria-soda/STRABLE-benchmark)
 
-**STRABLE** (**Str**ing T**able**) is a comprehensive benchmarking corpus of 108 tables with strings and numbers.
+# STRABLE: Benchmarking Tabular Machine Learning with Strings
 
-## Repository layout
+![Pareto optimality of tabular learners and string encoders](plots/pareto_plot.png)
+*Trade-off between prediction performance and run time, colored by encoder on the left and by learner on the right.*
 
-```
+## 🗂️ Repository layout
+
+```text
 strable/
 ├── configs/                 
 │   ├── exp_configs.py
@@ -37,10 +42,9 @@ strable/
 ├── requirements.txt
 └── pyproject.toml
 ```
-
 ---
 
-## Step 1 – Install
+## 🛠️ Step 1 – Install
 
 Install all dependencies:
 
@@ -50,7 +54,7 @@ pip install -r requirements.txt
 
 > **Note:** To install ContextTab follow https://github.com/SAP-samples/sap-rpt-1-oss.
 
-## Step 2 – Prepare data and models
+## 💾 Step 2 – Prepare data and models
 
 All paths should be configures automatically through `configs/path_configs.py`.
 
@@ -70,7 +74,7 @@ python scripts/download_fasttext.py
 
 Downloads the English fastText model (`cc.en.300.bin`) to the path specified in `path_configs`.
 
-## Step 3 – Extract LLM embeddings
+## 🧠 Step 3 – Extract LLM embeddings
 
 ```bash
 python script_extract_llm_embeddings.py
@@ -78,7 +82,7 @@ python script_extract_llm_embeddings.py
 
 Extracts embeddings of a Language Model for a given dataset. Results are saved under `data/llm_embeding/` and timing information under `data/llm_embed_time/`.
 
-## Step 4 – Run the benchmark
+## 🚀 Step 4 – Run the benchmark
 
 ```bash
 python script_evaluate.py
@@ -87,7 +91,7 @@ python script_evaluate.py
 This runs the full evaluation pipeline for all dataset (Num+Str, Str only, Num only) × encoder × learner combinations.
 Individual scores are stored in `results/benchmark/`.
 
-## Step 5 – Compile results
+## 📊 Step 5 – Compile results
 
 ```bash
 python scripts/compile_results.py
@@ -95,7 +99,7 @@ python scripts/compile_results.py
 
 Aggregates every per-run CSV under `results/benchmark/` into a single results file used by all downstream analysis scripts.
 
-## Step 6 – Collect dataset metadata
+## 📋 Step 6 – Collect dataset metadata
 
 ```bash
 python scripts/datasets_representation.py
@@ -103,7 +107,7 @@ python scripts/datasets_representation.py
 
 Produces the dataset summary table consumed by the figures and tables.
 
-## Step 7 – Reproduce the figures
+## 📈 Step 7 – Reproduce the figures
 
 Each figure is a self-contained script.
 Running it generates a PDF in `results_pics/<today>/`.
@@ -125,7 +129,7 @@ python plots/appendix/figure_E1.py
 # … and so on for all appendix figures
 ```
 
-## Step 8 – Reproduce the tables
+## 📝 Step 8 – Reproduce the tables
 
 Each table is likewise a self-contained script.
 Running it generates a LaTeX file in `results_tables/<today>/`.
@@ -146,7 +150,7 @@ python tables/appendix/table_C1.py
 
 ---
 
-## Citation
+## 📑 Citation
 
 If you use STRABLE in your work, please cite:
 
@@ -158,6 +162,6 @@ If you use STRABLE in your work, please cite:
 }
 ```
 
-## License
+## ⚖️ License
 
 This project is released under the [BSD 3-Clause License](LICENSE).
