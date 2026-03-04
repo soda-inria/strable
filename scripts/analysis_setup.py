@@ -1,37 +1,12 @@
 """Shared setup, styling, and data loading for all plotting scripts."""
 
-
-import random
 import time
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 import seaborn as sns
-import matplotlib.lines as mlines
-import matplotlib.patches as mpatches
-import scikit_posthocs as sp
-from scipy.stats import friedmanchisquare
-from scipy.stats import wilcoxon
-from scipy import stats
-from scipy.stats import spearmanr, kendalltau
-from typing import Union, List, Dict, Set
-from pandas import DataFrame, Series
-from scipy.optimize import curve_fit
-from scipy.stats import rankdata
-from src.utils_visualization import critical_difference_diagram
-import matplotlib.ticker as ticker
-import math
-from scipy.optimize import fsolve
-from matplotlib.gridspec import GridSpec
-import statsmodels.api as sm
-import statsmodels.formula.api as smf
-import matplotlib.colors as mc
 import matplotlib.colors as mcolors
 import hashlib
 from matplotlib.font_manager import FontProperties
-from sklearn.linear_model import RANSACRegressor
-from matplotlib.patches import Patch
-from matplotlib.lines import Line2D
 from strable.configs.path_configs import path_configs
 import os
 pd.set_option('display.max_columns', None)

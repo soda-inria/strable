@@ -1,14 +1,47 @@
-huggingface_hub
-pandas
+# Core data stack
 numpy
-fastparquet
-skrub
-submitit
+pandas
+pyarrow
+scipy
+joblib
+networkx
+
+# Scikit-learn ecosystem
 scikit-learn
-tabpfn
+skrub
+
+# Visualization
+matplotlib
+seaborn
+
+# Statistical analysis
+statsmodels
+scikit-posthocs
+
+# Gradient-boosted trees
 xgboost
 catboost
-fasttext
-scipy
+
+# Tabular deep-learning models
+tabpfn
 tabstar
 tarte-ai
+pytabkit
+sap-rpt-1-oss @ git+https://github.com/SAP-samples/sap-rpt-1-oss.git
+
+# Text / language models
+torch
+transformers
+sentence-transformers
+fasttext
+
+# Data & model storage
+huggingface_hub
+fastparquet
+
+# Cluster job submission
+submitit
+
+# Only needed by specific scripts
+openml            
+xmltodict
