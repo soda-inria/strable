@@ -71,7 +71,8 @@ def embed_table(data_name, n_split, fold_index, embed_method, normalization, no_
                 X_test,
                 data_name,
                 encode_method,
-                normalization
+                normalization,
+                n_dimensions=30 # This is the number of components for the PCA.
             )
             duration_embed += duration_llm
         else:
@@ -172,17 +173,11 @@ def prepare_tarenc(X_train, X_test, y_train, task):
 
     return X_train, X_test
 
-def prepare_llm(X_train, X_test, data_name, llm_model_name, normalization):
+def prepare_llm(X_train, X_test, data_name, llm_model_name, normalization, n_dimensions=30):
     """Function to prepare with LLM embeddings."""
 
-    from sklearn.pipeline import Pipeline
-    from sklearn.preprocessing import FunctionTransformer, StandardScaler
-    from sklearn.utils.validation import check_is_fitted
-    from sklearn.exceptions import NotFittedError
-    from sklearn.decomposition import PCA
-    from skrub import TableVectorizer, SquashingScaler, DatetimeEncoder
-    import pandas as pd
-    import numpy as np
+    from skrub import TableVectorizer, SquashingScaler
+    from src.llm_encoder import LLM_Encoder
     from configs.path_configs import path_configs
 
     # First, set the dataframe in appropriate format
@@ -190,77 +185,21 @@ def prepare_llm(X_train, X_test, data_name, llm_model_name, normalization):
     X_train = cleaner.fit_transform(X_train)
     X_test = cleaner.transform(X_test)
 
-    # Load LLM embeddings
-    llm_embed_path = f"{path_configs['base_path']}/data/llm_embeding/{llm_model_name}/{llm_model_name}|{data_name}.parquet"
-    llm_embeddings = pd.read_parquet(llm_embed_path)
-
-    # Initialize stateful transformers
-    pca = PCA(n_components=30, random_state=1234)
-    scaler = StandardScaler()
-
-    def _replace_with_llm_embedding(column, normalization=normalization):
-        column_name = column.columns.tolist()[0]
-        null_mask = column[column_name].isnull().to_numpy()
-        df_col = pd.DataFrame(column)
-        df_col.columns = ["name"]
-        df_col = df_col.merge(how="left", right=llm_embeddings, on="name").drop(
-            columns="name"
-        )
-        df_col = np.array(df_col)
-
-        # ========================== ADD THIS BLOCK ==========================
-        # 1. Update null_mask: treat failed lookups (NaNs in embeddings) as nulls
-        # If the merge failed to find a key, the row will contain NaNs
-        embedding_nan_mask = np.isnan(df_col).any(axis=1)
-        null_mask = null_mask | embedding_nan_mask
-
-        # 2. Guard Clause: If there are 0 valid samples (e.g. all NaNs in test col), return early.
-        # This prevents the "Found array with 0 sample(s)" error in PCA.
-        if np.all(null_mask):
-            df_out = np.full((len(column), 30), np.nan)
-            return pd.DataFrame(df_out).add_prefix(f"{column_name}_")
-        # ====================================================================
-
-        # Check if we are in training or inference mode based on PCA state
-        # This ensures we fit Scaler/PCA on train and only transform on test
-        try:
-            check_is_fitted(pca)
-            is_fitted = True
-        except NotFittedError:
-            is_fitted = False
-
-        # Apply Normalization (StandardScaler)
-        if normalization:
-            if np.any(~null_mask):
-                if not is_fitted:
-                    # Fit and transform on training data
-                    df_col[~null_mask] = scaler.fit_transform(df_col[~null_mask])
-                else:
-                    # Only transform on test data (using stats from train)
-                    df_col[~null_mask] = scaler.transform(df_col[~null_mask])
-
-        # Apply PCA
-        if not is_fitted:
-            out_pca = pca.fit_transform(df_col[~null_mask])
-        else:
-            out_pca = pca.transform(df_col[~null_mask])
-
-        df_out = np.zeros(shape=(df_col.shape[0], 30))
-        df_out[~null_mask] = out_pca
-        df_out[null_mask] = np.nan
-        df_out = pd.DataFrame(df_out)
-        return df_out.add_prefix(f"{column_name}_")
-
-    # Set the pipeline for the categoricals
-    fn_transformer = FunctionTransformer(_replace_with_llm_embedding)
+    # Encode
+    cached_llm_embedding_path = f"{path_configs['base_path']}/data/llm_embeding/{llm_model_name}/{llm_model_name}|{data_name}.parquet"
+    text_encoder = LLM_Encoder(
+        cached_llm_embedding_path=cached_llm_embedding_path,
+        n_components=n_dimensions,
+        random_state=1234,
+        normalization=normalization
+    )
     num_transformer = SquashingScaler()
     encoder = TableVectorizer(
         cardinality_threshold=0,
-        high_cardinality=fn_transformer,
+        high_cardinality=text_encoder,
         numeric=num_transformer,
     )
 
-    # Encode
     X_train = encoder.fit_transform(X_train)
     X_test = encoder.transform(X_test)
 
@@ -268,20 +207,7 @@ def prepare_llm(X_train, X_test, data_name, llm_model_name, normalization):
     time_folder = f"{path_configs['base_path']}/data/llm_embed_time/{llm_model_name}"
     time_path = f"{time_folder}/{llm_model_name}|{data_name}.npy"
 
-    if os.path.exists(time_path):
-        time_data = np.load(time_path)
-    else:
-        # Ensure the directory exists first
-        os.makedirs(time_folder, exist_ok=True)
-        
-        # Create a dummy array (e.g., zeros). 
-        # Match the shape to your training/test set size as needed.
-        time_data = np.zeros(len(X_train) + len(X_test)) 
-        
-        # Save it so it exists for next time
-        np.save(time_path, time_data)
-
-    return X_train, X_test, time_data
+    return X_train, X_test, np.load(time_path)
 
 
 def prepare_llm_no_pca_mrl(X_train, X_test, data_name, llm_model_name, n_dimensions):
