@@ -39,6 +39,24 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | lot_number                | 'TBCV04007001T', 'COVID20200424', '...| —                             |
+## | manufacturer              | 'Top Biotech Sdn. Bhd.', 'Aurora Bi...| —                             |
+## | antibody_truth            | 'Negative', 'Negative', 'Negative'    | —                             |
+## | panel                     | 'Panel 3', 'Panel 1', 'Panel 3'       | —                             |
+## | date_performed            | '9/28/2020', '5/8/2020', '9/28/2020'  | —                             |
+## | evaluation_id             | 'maf3378-a001', 'maf3258-a001', 'ma...| —                             |
+## | sample_no                 | '20', '14', '31'                      | —                             |
+## | control                   | 'Pass', 'Pass', 'Pass'                | —                             |
+## | iga_result                | 'NA', 'NA', 'NA'                      | —                             |
+## | pan_result                | 'NA', 'NA', 'NA'                      | —                             |
+## | device                    | 'Top Rapid COVID-19 Rapid An...', '...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Set metadata
 target_name = 'antibody_truth'
 task = 'b-classification'

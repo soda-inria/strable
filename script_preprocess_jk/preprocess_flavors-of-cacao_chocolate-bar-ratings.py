@@ -46,6 +46,22 @@ data.groupby(['Company (Manufacturer)', 'Country of Bean Origin',
 data.groupby(['Company (Manufacturer)', 'Country of Bean Origin',
        'Specific Bean Origin or Bar Name', 'Cocoa Percent'])['Review Date'].nunique().drop_duplicates()
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Cocoa Percent             | '70%', '70%', '72%'                   | → parse_percentage            |
+## | Company (Manufacturer)    | 'Bahen & Co.', 'Bahen & Co.', 'Mast...| —                             |
+## | Company Location          | 'Australia', 'Australia', 'U.S.A.'    | —                             |
+## | Country of Bean Origin    | 'Blend', 'Brazil', 'Blend'            | —                             |
+## | Specific Bean Origin or Ba| 'Houseblend', 'Bahia', 'Madagascar'   | —                             |
+## | Ingredients               | '2- B,S', '2- B,S', '2- B,S'          | —                             |
+## | Most Memorable Characteris| 'chalky, fragrant, then off', 'chal...| —                             |
+## | Rating                    | 'Under 2.75', 'Under 2.75', 'Under ...| —                             |
+
+## Feature engineering
+# Cocoa Percent: e.g. '70%' → float
+data['Cocoa Percent'] = data['Cocoa Percent'].str.strip().str.rstrip('%').astype(float)
+
 ## Set metadata
 target_name = 'Rating'
 task = 'm-classification'

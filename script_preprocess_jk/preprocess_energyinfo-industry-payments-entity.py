@@ -37,6 +37,20 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | sourceID                  | '0039301d4dbf40fe03a54ef5b7d...', '...| —                             |
+## | reportingCompany          | 'Strategic Oil and Gas Limited', 'S...| —                             |
+## | entityCountry             | 'Canada', 'Canada', 'Canada'          | —                             |
+## | entityName                | 'Government of the Province ...', '...| —                             |
+## | paymentType               | 'Fees', 'Royalties', 'Taxes'          | —                             |
+## | nrgiNotes                 | ''Government of Alberta' cha...', '...| —                             |
+## | notes                     | 'Royalties include $3,840,00...', '...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

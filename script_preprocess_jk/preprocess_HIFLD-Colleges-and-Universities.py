@@ -40,6 +40,34 @@ data = data.replace(-999, np.nan)
 data['RATIO_ENROLL_EMP'] = data['TOT_ENROLL'] / data['TOT_EMP']
 data = data.drop(columns = ['TOT_ENROLL', 'TOT_EMP']).reset_index(drop=True)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | NAME                      | 'YESHIVA OF FAR ROCKAWAY DER...', '...| —                             |
+## | ADDRESS                   | '802 HICKSVILLE RD', '174 JEFFERSON...| —                             |
+## | CITY                      | 'FAR ROCKAWAY', 'PERTH AMBOY', 'SAN...| —                             |
+## | STATE                     | 'NY', 'NJ', 'PR'                      | —                             |
+## | ZIP4                      | '5219', '4106', '2602'                | —                             |
+## | TELEPHONE                 | '(718) 327-7600', '(732) 826-0155 E...| —                             |
+## | STATUS                    | 'A', 'A', 'A'                         | —                             |
+## | COUNTY                    | 'QUEENS', 'MIDDLESEX', 'SAN JUAN'     | —                             |
+## | COUNTYFIPS                | '36081', '34023', '72127'             | —                             |
+## | COUNTRY                   | 'USA', 'USA', 'PRI'                   | —                             |
+## | NAICS_DESC                | 'COLLEGES, UNIVERSITIES, AND...', '...| —                             |
+## | SOURCE                    | 'https://nces.ed.gov/college...', '...| —                             |
+## | SOURCEDATE                | '8/10/2015 12:00:00 AM', '8/10/2015...| —                             |
+## | VAL_METHOD                | 'IMAGERY', 'IMAGERY/OTHER', 'IMAGERY' | —                             |
+## | VAL_DATE                  | '10/14/2015 12:00:00 AM', '11/12/20...| —                             |
+## | WEBSITE                   | 'https://www.yofr.org/', 'www.unive...| —                             |
+## | STFIPS                    | '36', '34', '72'                      | —                             |
+## | COFIPS                    | '081', '023', '127'                   | —                             |
+## | CLOSE_DATE                | '-2', '-2', '-2'                      | —                             |
+## | ALIAS                     | 'NOT AVAILABLE', 'NOT AVAILABLE', '...| —                             |
+## | SHELTER_ID                | 'NOT AVAILABLE', 'NOT AVAILABLE', '...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

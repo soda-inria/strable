@@ -40,6 +40,18 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Name                      | 'Amber', 'Double Bag', 'Long Trail ...| —                             |
+## | Style                     | 'Altbier', 'Altbier', 'Altbier'       | —                             |
+## | Brewery                   | 'Alaskan Brewing Co.', 'Long Trail ...| —                             |
+## | Beer Name (Full)          | 'Alaskan Brewing Co. Alaskan...', '...| —                             |
+## | Description               | 'Notes:Richly malty and long...', '...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Set metadata
 target_name = 'review_overall'
 task = 'regression'

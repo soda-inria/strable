@@ -37,6 +37,21 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Drug Product              | 'DAYVIGO 5 MG TABLET', 'NEXLETOL 18...| —                             |
+## | Brief Indication/Descripti| 'INSOMNIA', 'HYPERCHOLESTEROLEMIA',...| —                             |
+## | Drug Class                | 'Legend', 'Legend', 'Legend'          | —                             |
+## | Package Size              | '30', '30', '1.6'                     | —                             |
+## | NCPDP Billing Unit Standar| 'EA', 'EA', 'ML'                      | —                             |
+## | Primary Reason Code       | 'New Drug/New Generic', 'New on COD...| —                             |
+## | As of Date                | '09/25/2020', '09/25/2020', '09/25/...| —                             |
+## | Classification for Rate Se| 'Brand', 'Brand', 'Brand'             | —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

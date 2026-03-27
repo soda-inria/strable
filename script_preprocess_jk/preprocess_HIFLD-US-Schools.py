@@ -49,6 +49,29 @@ data = data[data['Full Time Teachers']>0].reset_index(drop=True)
 data['Enrollment_FT_Teachers_Ratio'] = data['Enrollment'] / data['Full Time Teachers']
 data.drop(columns = ['Enrollment', 'Full Time Teachers'], inplace=True)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | NCES ID                   | '00347687', 'A0502687', '510084000344'| —                             |
+## | Name                      | 'ST CATHERINE OF SIENA ELEME...', '...| —                             |
+## | Address                   | '845 W MAIN ST', '12416 LANCASTER H...| —                             |
+## | City                      | 'WEST DUNDEE', 'PINEVILLE', 'NORTH ...| —                             |
+## | State                     | 'IL', 'NC', 'VA'                      | —                             |
+## | Zip4                      | '2050', '6379', '5354'                | —                             |
+## | Telephone                 | '(847) 426-4808', '(704) 544-7323',...| —                             |
+## | County                    | 'KANE', 'MECKLENBURG', 'CHESTERFIELD' | —                             |
+## | Source                    | 'https://nces.ed.gov/surveys...', '...| —                             |
+## | Validation Method         | 'IMAGERY/OTHER', 'IMAGERY', 'IMAGER...| —                             |
+## | Validation Date           | '12/30/2009 12:00:00 AM', '3/17/201...| —                             |
+## | Website                   | 'NOT AVAILABLE', 'NOT AVAILABLE', '...| —                             |
+## | Level                     | '1', '3', 'MIDDLE'                    | —                             |
+## | Start Grade               | '2', '2', '06'                        | —                             |
+## | End Grade                 | '13', '15', '08'                      | —                             |
+## | Shelter ID                | 'NOT AVAILABLE', 'NOT AVAILABLE', '...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

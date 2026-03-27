@@ -44,6 +44,22 @@ for col in debt_col:
     data[col] = data[col].astype(str).str.replace('*', '', regex=False)
     data[col] = data[col].astype('float32')
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Institution Name          | 'CENTRAL ALABAMA COMMUNITY C...', '...| —                             |
+## | City                      | 'ALEXANDER CITY', 'TANNER', 'GADSDEN' | —                             |
+## | State                     | 'AL', 'AL', 'AL'                      | —                             |
+## | Institution Type          | 'PUBLIC 2 TO 3 YEARS', 'PUBLIC 2 TO...| —                             |
+## | CIP Name                  | 'LICENSED PRACTICAL/VOCATION...', '...| —                             |
+## | Credential Level          | '01 - UNDERGRADUATE CERTIFICATE', '...| —                             |
+## | Debt-to-Earnings Discretio| 'PASS', 'PASS', 'PASS'                | —                             |
+## | Debt-to-Earnings Transitio| 'FAIL', 'FAIL', 'ZONE'                | —                             |
+## | Debt-to-Earnings Transitio| 'ZONE', 'FAIL', 'ZONE'                | —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

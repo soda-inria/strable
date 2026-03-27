@@ -40,6 +40,39 @@ data = clean_backslash_operations(data)
 ## Dataset-level specific cleaning
 data['compid'] = data['compid'].astype(str)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | unique_id                 | 'AGO2021001', 'AGO2021002', 'AGO202...| —                             |
+## | power_plant_name          | 'CACULO-CABACA', 'CHIUMBE-DALA', 'R...| —                             |
+## | country                   | 'Angola', 'Angola', 'Angola'          | —                             |
+## | country_iso3c             | 'AGO', 'AGO', 'AGO'                   | —                             |
+## | region                    | 'Africa', 'Africa', 'Africa'          | —                             |
+## | subregion                 | 'Sub-Saharan Africa', 'Sub-Saharan ...| —                             |
+## | province                  | 'Kwanza Norte', 'Lunda-Sul', 'Lunda...| —                             |
+## | city                      | 'Caculo-Cabaca', 'Dala', 'Dundo'      | —                             |
+## | primary_fuel              | 'hydro', 'hydro', 'hydro'             | —                             |
+## | investment_type           | 'Debt', 'Debt', 'Debt'                | —                             |
+## | investment_cofinanced_bu  | 'N', 'N', 'N'                         | —                             |
+## | debt_investment_averaged  | 'Y', 'N', 'N'                         | —                             |
+## | debt_investment_weighted  | 'N', 'N', 'N'                         | —                             |
+## | equity_investment_weighted| 'N', 'N', 'Y'                         | —                             |
+## | equity_investor_name_1    | 'Jinko Solar Co Ltd', 'Harbin Elect...| —                             |
+## | equity_investor_name_2    | 'Silk Road Fund', 'China-Africa Dev...| —                             |
+## | equity_investment_type    | 'Greenfield', 'Greenfield', 'Greenf...| —                             |
+## | parent_company_of_investor| 'JinkoSolar Holding Co Ltd', 'Harbi...| —                             |
+## | SOE_or_POE                | 'POE', 'SOE', 'SOE'                   | —                             |
+## | compid                    | '1007203', '1007203', '1007203'       | —                             |
+## | unit_id                   | '1258967;1269915;1269916;126...', '...| —                             |
+## | gppd_id                   | 'WRI1029236', 'CHL0001018', 'CHL000...| —                             |
+## | sais_id                   | 'AO.061', 'AO.009.71', 'AO.092'       | —                             |
+## | r_id                      | '154086896797', '154086983359;15408...| —                             |
+## | ij_id                     | '45525', '20604', '37536'             | —                             |
+## | cgp_id                    | 'AO.001.1; AO.001.2; AO.001....', '...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

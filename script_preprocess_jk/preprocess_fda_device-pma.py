@@ -49,6 +49,33 @@ for col in data.columns:
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | pma_number                | 'P910061', 'P010014', 'P070014'       | —                             |
+## | applicant                 | 'Bausch & Lomb', 'Biomet Manufactur...| —                             |
+## | street_1                  | '50 Technology Dr.', '56 E. Bell Dr...| —                             |
+## | street_2                  | '', '', ''                            | —                             |
+## | city                      | 'Irvine', 'Warsaw', 'Tempe'           | —                             |
+## | state                     | 'CA', 'IN', 'AZ'                      | —                             |
+## | zip                       | '92618', '46581', '85281'             | —                             |
+## | zip_ext                   | '', '0587', ''                        | —                             |
+## | generic_name              | 'intraocular lens', 'Prosthesis, kn...| —                             |
+## | trade_name                | 'SILICONE POSTERIOR CHAMBER ...', '...| —                             |
+## | product_code              | 'HQL', 'NRA', 'NIP'                   | —                             |
+## | advisory_committee        | 'OP', 'OR', 'CV'                      | —                             |
+## | advisory_committee_descrip| 'Ophthalmic', 'Orthopedic', 'Cardio...| —                             |
+## | expedited_review_flag     | 'N', 'N', 'N'                         | —                             |
+## | date_received             | '1998-10-29', '2007-02-27', '2010-0...| —                             |
+## | decision_date             | '1998-12-28', '2007-07-05', '2010-0...| —                             |
+## | docket_number             | '', '', ''                            | —                             |
+## | decision_code             | 'APPR', 'APPR', 'APPR'                | —                             |
+## | openfda                   | 'registration_number: , 3017...', '...| —                             |
+## | fed_reg_notice_date       | '2017-09-22', '2012-03-09', '2005-0...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Set metadata
 target_name = 'decision_code'
 task = 'b-classification'

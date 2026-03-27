@@ -38,6 +38,20 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Log Number                | 'RE-256655-OLS-24', 'IGSM-256224-OM...| —                             |
+## | Description               | 'The libraries at Virginia T...', '...| —                             |
+## | Institution               | 'Virginia Polytechnic Instit...', '...| —                             |
+## | Program                   | 'Laura Bush 21st Century Lib...', '...| —                             |
+## | Funding Office            | 'Office of Library Services', 'Offi...| —                             |
+## | City                      | 'Blacksburg', 'Albany', 'Aniak'       | —                             |
+## | State                     | 'VA', 'NY', 'AK'                      | —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

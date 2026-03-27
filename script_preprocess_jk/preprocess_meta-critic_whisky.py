@@ -36,6 +36,20 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Whisky                    | 'Macallan 10yo Full Proof 57...', '...| —                             |
+## | Cost                      | '$$$$$+', '$$$$$+', '$$$$$+'          | —                             |
+## | Class                     | 'SingleMalt-like', 'SingleMalt-like...| —                             |
+## | Super Cluster             | 'ABC', 'ABC', 'ABC'                   | —                             |
+## | Cluster                   | 'A', 'C', 'C'                         | —                             |
+## | Country                   | 'Scotland', 'Scotland', 'Scotland'    | —                             |
+## | Type                      | 'Malt', 'Malt', 'Malt'                | —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Set metadata
 target_name = 'Meta Critic'
 task = 'regression'

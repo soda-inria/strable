@@ -42,6 +42,29 @@ data = data.dropna(subset=[col1, col2], how='all').reset_index(drop=True)
 data.loc[data[col2].isnull(), col2] = data.loc[data[col2].isnull(), col1]
 data.drop(columns=col1, inplace=True)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | As of Date                | '07/12/2025', '07/12/2025', '07/12/...| —                             |
+## | Region                    | 'Western and Central Africa', 'Sout...| —                             |
+## | Borrower Country / Economy| 'Cote d'Ivoire', 'Afghanistan', 'Gh...| —                             |
+## | Project ID                | 'P167401', 'P125597', 'P164330'       | —                             |
+## | Project Name              | 'Abidjan Urban Mobility Project', '...| —                             |
+## | Project Global Practice   | 'Social Protection;Transport...', '...| —                             |
+## | Procurement Category      | 'Goods', 'Works', 'Goods'             | —                             |
+## | Procurement Method        | 'Request for Quotations', 'Request ...| —                             |
+## | Contract Description      | 'DOSSIER DE DEMANDE DE COTAT...', '...| —                             |
+## | Borrower Contract Referenc| 'CI-PACOGA-360854-GO-RFQ', 'KMDP/W-...| —                             |
+## | Contract Signing Date     | '11/09/2023', '05/01/2021', '02/12/...| —                             |
+## | Supplier                  | 'TECHNO SOLUCES', 'SAJAD PAIMAN CON...| —                             |
+## | Supplier Country / Economy| 'Cote d'Ivoire', 'Afghanistan', 'Gh...| —                             |
+## | Borrower Country / Economy| 'AF', 'GH', 'AM'                      | —                             |
+## | Supplier Country / Economy| 'CI', 'AF', 'GH'                      | —                             |
+## | Review type               | 'Post', 'Post', 'Post'                | —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

@@ -37,6 +37,22 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Fund Name                 | 'Global Environment Facility', 'Glo...| —                             |
+## | Donor Name                | 'Italy', 'Spain', 'Finland'           | —                             |
+## | Donor Country Code        | 'IT', 'ES', 'FI'                      | —                             |
+## | Receipt Type              | 'Note', 'Cash', 'Cash'                | —                             |
+## | Receipt Quarter           | 'JUL-SEP', 'OCT-DEC', 'OCT-DEC'       | —                             |
+## | Receipt Currency          | 'EUR', 'EUR', 'EUR'                   | —                             |
+## | Contribution Type         | 'Grant', 'Grant', 'Grant'             | —                             |
+## | Sub Account               | 'GF03', 'GF03', 'GF03'                | —                             |
+## | Sector/Theme              | 'Environment/Climate Change', 'Envi...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

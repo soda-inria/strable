@@ -36,6 +36,24 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Author                    | 'Carolyn Wells', 'Carolyn Wells', '...| —                             |
+## | Title                     | 'Patty's Suitors', 'Two Little Wome...| —                             |
+## | Anthology                 | 'The Heroes    or Greek Fair...', '...| —                             |
+## | URL                       | 'http://www.gutenberg.org/ca...', '...| —                             |
+## | Source                    | 'gutenberg', 'gutenberg', 'gutenberg' | —                             |
+## | Category                  | 'Lit', 'Lit', 'Lit'                   | —                             |
+## | Location                  | 'mid', 'mid', 'mid'                   | —                             |
+## | License                   | 'PD', 'PD', 'PD'                      | —                             |
+## | MPAA Max                  | 'G', 'PG', 'PG'                       | —                             |
+## | Excerpt                   | 'When the young people retur...', '...| —                             |
+## | British Words             | 'traveller', 'sceptre', 'grey'        | —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Set metadata
 target_name = 'BT Easiness'
 task = 'regression'

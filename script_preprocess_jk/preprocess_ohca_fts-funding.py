@@ -47,6 +47,39 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | date                      | '2025-06-20', '2025-06-20', '2025-0...| —                             |
+## | description               | 'Dec.2024 Pledging Conferenc...', '...| —                             |
+## | srcOrganization           | 'United Arab Emirates, Gover...', '...| —                             |
+## | srcOrganizationTypes      | 'Governments', 'Governments', 'Gove...| —                             |
+## | srcLocations              | 'ARE', 'ARE', 'ARE'                   | —                             |
+## | destPlan                  | 'Myanmar Original Humanitari...', '...| —                             |
+## | destPlanCode              | 'HMMR25b', 'FPSE25', 'HTCD25'         | —                             |
+## | destOrganization          | 'United Nations High Commiss...', '...| —                             |
+## | destOrganizationTypes     | 'Multilateral Organizations', 'Mult...| —                             |
+## | destGlobalClusters        | 'Health', 'Food Security', 'Multi-s...| —                             |
+## | destLocations             | 'MMR', 'PSE', 'TCD'                   | —                             |
+## | destProject               | 'Protection et Assistance po...', '...| —                             |
+## | destProjectCode           | 'HTCD25-MS-223242-1', 'HTCD25-MS-22...| —                             |
+## | destEmergency             | 'oPt Complex Emergency 2023-24', 'S...| —                             |
+## | contributionType          | 'in kind', 'financial', 'financial'   | —                             |
+## | method                    | 'Traditional aid', 'Traditional aid...| —                             |
+## | boundary                  | 'outgoing', 'outgoing', 'outgoing'    | —                             |
+## | status                    | 'paid', 'paid', 'paid'                | —                             |
+## | firstReportedDate         | '2025-05-29', '2025-05-23', '2025-0...| —                             |
+## | decisionDate              | '2025-05-09', '2025-02-26', '2025-0...| —                             |
+## | keywords                  | 'USA/BPRM', 'Multiyear', 'Multiyear'  | —                             |
+## | originalCurrency          | 'AED', 'AED', 'AED'                   | —                             |
+## | refCode                   | '25-GOV-AE-002-01', '78560 MBRGI oP...| —                             |
+## | createdAt                 | '2025-06-20', '2025-06-20', '2025-0...| —                             |
+## | updatedAt                 | '2025-06-20', '2025-06-20', '2025-0...| —                             |
+## | funding_type              | 'outgoing_funding', 'outgoing_fundi...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

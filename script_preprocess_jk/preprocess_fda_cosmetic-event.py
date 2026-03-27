@@ -50,6 +50,30 @@ for col in list_type_col:
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | age                       | '62', '74', '46'                      | → parse_float                 |
+## | latest_received_date      | '20210928', '20241210', '20241218'    | — (date YYYYMMDD)             |
+## | initial_received_date     | '20210826', '20241106', '20240913'    | — (date YYYYMMDD)             |
+## | report_version            | '2', '2', '2'                         | — (date YYYYMMDD)             |
+## | report_number             | '24469899', '24604034', '24584797'    | —                             |
+## | outcomes                  | 'Death', 'Death', 'Hospitalization'   | —                             |
+## | age_unit                  | 'Year(s)', 'Year(s)', 'Year(s)'       | —                             |
+## | gender                    | 'Female', 'Female', 'Female'          | —                             |
+## | event_date                | '15-Feb', '14-Nov-22', '14-Apr-16'    | —                             |
+## | reactions                 | 'Injury, Ovarian Cancer Stag...', '...| —                             |
+## | report_type               | 'Pre-MoCRA', 'Expedited (15-Day)', ...| —                             |
+## | products                  | 'role: Suspect, product_name...', '...| —                             |
+## | legacy_report_id          | '2021-CFS-011967', '2018-CFS-011972...| —                             |
+
+## Feature engineering
+# age: plain number string → float
+data['age'] = data['age'].str.replace(',', '', regex=False).astype(float)
+# latest_received_date: YYYYMMDD date stored as string - no transform
+# initial_received_date: YYYYMMDD date stored as string - no transform
+# report_version: YYYYMMDD date stored as string - no transform
+
 ## Set metadata
 target_name = 'outcomes'
 task = 'm-classification'

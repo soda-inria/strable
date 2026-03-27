@@ -37,6 +37,28 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | ProgramAbbr               | 'NCLRP', 'NHSC LRP', 'NHSC LRP'       | —                             |
+## | NHSCSiteType              | 'Community Outpatient Facility', 'O...| —                             |
+## | NCSiteType                | 'Community Mental Health Cen...', '...| —                             |
+## | SiteCity                  | 'Phoenix', 'Sheridan', 'MEMPHIS'      | —                             |
+## | SiteCounty                | 'Maricopa', 'Sheridan', 'Shelby'      | —                             |
+## | SiteState                 | 'Arizona', 'Wyoming', 'Tennessee'     | —                             |
+## | ClinicianDisciplineDesc   | 'NELRP/Legacy', 'Licensed Professio...| —                             |
+## | ClinicianSpecialtyDesc    | 'Family Practice', 'Family Practice...| —                             |
+## | FieldOfPractice           | 'NC', 'MH', 'PC'                      | —                             |
+## | CurrentCity               | 'San Francisco', 'Sheridan', 'Memphis'| —                             |
+## | CurrentState              | 'California', 'Wyoming', 'Tennessee'  | —                             |
+## | CurrentCountyName         | 'San Francisco', 'Sheridan', 'Shelby' | —                             |
+## | DisciplineType            | 'Mental Health', 'Mental Health', '...| —                             |
+## | SiteCongDistName          | 'Arizona District 07', 'Wyoming At ...| —                             |
+## | CurrentCongDistName       | 'California District 12', 'Wyoming ...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

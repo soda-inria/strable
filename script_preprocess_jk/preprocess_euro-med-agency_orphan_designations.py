@@ -37,6 +37,23 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Medicine name             | 'Ztalmy', 'Oczyesa', 'Ziihera'        | —                             |
+## | Related EMA product number| 'EMEA/H/C/005825', 'EMEA/H/C/006322...| —                             |
+## | Active substance          | 'defibrotide', 'defibrotide', 'Gana...| —                             |
+## | Date of designation / refu| '29/07/2004', '13/11/2013', '13/11/...| —                             |
+## | Intended use              | 'Prevention of hepatic veno-...', '...| —                             |
+## | EU designation number     | 'EU/3/04/211', 'EU/3/13/1201', 'EU/...| —                             |
+## | Status                    | 'Non-Positive', 'Non-Positive', 'Po...| —                             |
+## | First published date      | '12/12/2005', '02/12/2013', '13/02/...| —                             |
+## | Last updated date         | '05/06/2025', '05/06/2025', '05/06/...| —                             |
+## | Orphan designation URL    | 'https://www.ema.europa.eu/e...', '...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

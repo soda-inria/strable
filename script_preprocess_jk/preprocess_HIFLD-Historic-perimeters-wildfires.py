@@ -38,6 +38,31 @@ data = clean_backslash_operations(data)
 ## Dataset-level specific cleaning
 data = data.replace(-999, np.nan)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | agency                    | 'USFS', 'USFS', 'C&L'                 | —                             |
+## | comments                  | 'WFDSS', 'WFDSS', 'WFDSS'             | —                             |
+## | mapmethod                 | 'GPS-Walked/ Driven', 'GPS-Walked/ ...| —                             |
+## | datecurrent               | '2/14/2018 12:00:00 AM', '4/6/2018 ...| —                             |
+## | uniquefireidentifier      | '2018-AZCNF-000059', '2018-AROUF-00...| —                             |
+## | incidentname              | 'BOX', 'Zoe', 'Milemarker 24'         | —                             |
+## | pooownerunit              | 'AZCNF', 'AROUF', 'NCNCS'             | —                             |
+## | perimeterdatetime         | '2/12/2018 5:00:00 PM', '4/5/2018 1...| —                             |
+## | complexname               | 'Murphy Complex', 'Logging Unit Com...| —                             |
+## | firecode                  | 'LK58', 'LMT8', 'K20G'                | —                             |
+## | complexparentirwinid      | '{fd83eb84-b794-4623-b51e-29...', '...| —                             |
+## | pooresponsibleunit        | 'AZCNF', 'AROUF', 'CORBX'             | —                             |
+## | state                     | 'AZ', 'OK', 'CO'                      | —                             |
+## | inciwebid                 | '6048', '3228', '5149'                | —                             |
+## | localincidentidentifier   | '000059', '000688', '000061'          | —                             |
+## | irwinid                   | '9a5cfd7a-5c05-40e6-a617-088...', '...| —                             |
+## | incomplex                 | 'N', 'N', 'N'                         | —                             |
+## | complexfirecode           | 'F4EJ', 'H8MK', 'KWV3'                | —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

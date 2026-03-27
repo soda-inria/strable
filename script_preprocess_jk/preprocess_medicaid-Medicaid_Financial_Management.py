@@ -37,6 +37,17 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | State                     | 'Northern Mariana Islands', 'Washin...| —                             |
+## | Program                   | 'Medical Assistance Program', 'Admi...| —                             |
+## | Service Category          | 'C-Laboratory/Radiological S...', '...| —                             |
+## | Location                  | 'Northern Mariana Islands (1...', '...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

@@ -37,6 +37,25 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | age                       | '39.00', '50.00', '37.00'             | → parse_float                 |
+## | date_created              | '20080805', '20080502', '20090223'    | — (date YYYYMMDD)             |
+## | date_started              | '20080228', '20080410', '20080920'    | — (date YYYYMMDD)             |
+## | report_number             | '105245', '102989', '110469'          | —                             |
+## | outcomes                  | 'Hospitalization', 'Visited a Healt...| —                             |
+## | reactions                 | 'BLOOD PRESSURE INCREASED, C...', '...| —                             |
+## | age_unit                  | 'year(s)', 'year(s)', 'year(s)'       | —                             |
+## | gender                    | 'Female', 'Female', 'Male'            | —                             |
+## | products                  | '[role: SUSPECT, name_brand:...', '...| —                             |
+
+## Feature engineering
+# age: plain number string → float
+data['age'] = data['age'].str.replace(',', '', regex=False).astype(float)
+# date_created: YYYYMMDD date stored as string - no transform
+# date_started: YYYYMMDD date stored as string - no transform
+
 ## Clean for specific data formats (dict / list)
 # Clean for dict-type columns
 data = clean_dict_type_col(data, col='consumer', clean_type='unpack')

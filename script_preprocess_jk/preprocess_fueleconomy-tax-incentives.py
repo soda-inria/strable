@@ -67,6 +67,33 @@ data.taxcredittotal = data.taxcredittotal.astype(float)
 data['credit_amount'] = data[['fullcreditamount', 'creditamount', 'taxcredittotal']].sum(axis=1)
 data.drop(columns=['fullcreditamount', 'creditamount', 'taxcredittotal'], inplace=True)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | atvtype                   | 'EV', 'EV', 'EV'                      | —                             |
+## | basemodel                 | 'ZDX', 'ZDX', 'ZDX'                   | —                             |
+## | createdon                 | '2024-03-18T00:00:00-04:00', '2024-...| —                             |
+## | enddate                   | '2023-12-31T00:00:00-05:00', '2024-...| —                             |
+## | irsmake                   | 'Acura', 'Acura', 'Acura'             | —                             |
+## | irsmodel                  | 'ZDX', 'ZDX', 'ZDX'                   | —                             |
+## | meetsassemblyrule         | 'Y', 'Y', 'Y'                         | —                             |
+## | modifiedon                | '2024-03-18T00:00:00-04:00', '2024-...| —                             |
+## | msrplimit                 | '80000.0', '80000.0', '80000.0'       | —                             |
+## | startdate                 | '2023-04-18T00:00:00-04:00', '2024-...| —                             |
+## | taxcredit_cmbc_id         | '150', '151', '226'                   | —                             |
+## | year                      | '2024', '2024', '2024'                | —                             |
+## | manufacturer              | 'General Motors', 'General Motors',...| —                             |
+## | bcindvehdesc              | 'Check VIN with Dealer', 'Check VIN...| —                             |
+## | cmindvehdesc              | 'Check VIN with Dealer', 'Check VIN...| —                             |
+## | onwardtaxcreditid         | '1', '2', '3'                         | —                             |
+## | phaseout25amount          | '-1.0', '-1.0', '-1.0'                | —                             |
+## | phaseout50amount          | '-1.0', '-1.0', '-1.0'                | —                             |
+## | taxcreditid               | '1', '2', '3'                         | —                             |
+## | assemblycountry           | 'Mexico', 'Mexico', 'Germany and Me...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

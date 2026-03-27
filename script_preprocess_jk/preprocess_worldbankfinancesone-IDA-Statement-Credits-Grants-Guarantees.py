@@ -40,6 +40,30 @@ data = clean_backslash_operations(data)
 data = data.sort_values(by='End of Period').reset_index(drop=True)
 data = data.drop_duplicates(subset='Project ID', keep='last').reset_index(drop=True)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | End of Period             | '02/28/2014', '02/28/2019', '04/30/...| —                             |
+## | Credit Number             | 'IDA54040', 'IDAPFS', 'IDA59810'      | —                             |
+## | Region                    | 'EAST ASIA AND PACIFIC', 'OTHER', '...| —                             |
+## | Country / Economy Code    | 'PG', 'IFC', 'KE'                     | —                             |
+## | Country / Economy         | 'Papua New Guinea', 'International ...| —                             |
+## | Borrower                  | 'Ministry of Treasury and Fi...', '...| —                             |
+## | Credit Status             | 'Approved', 'Approved', 'Approved'    | —                             |
+## | Currency of Commitment    | 'XDR', 'USD', 'XDR'                   | —                             |
+## | Project ID                | 'P145120', 'P161179', '89100192'      | —                             |
+## | Project Name              | 'RMRP II Additional Financing', 'AF...| —                             |
+## | First Repayment Date      | '04/15/2019', '08/01/2023', '04/15/...| —                             |
+## | Last Repayment Date       | '10/15/2038', '02/01/2055', '10/15/...| —                             |
+## | Agreement Signing Date    | '06/23/2017', '04/02/2025', '04/21/...| —                             |
+## | Board Approval Date       | '02/19/2014', '04/26/2017', '05/11/...| —                             |
+## | Effective Date (Most Recen| '06/23/2017', '04/09/2025', '10/18/...| —                             |
+## | Closed Date (Most Recent) | '04/30/2021', '06/30/2020', '04/30/...| —                             |
+## | Last Disbursement Date    | '06/30/2017', '04/09/2025', '06/18/...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

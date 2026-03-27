@@ -48,6 +48,23 @@ for col in data.columns:
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | third_party_flag          | 'Y', 'Y', 'N'                         | —                             |
+## | life_sustain_support_flag | 'N', 'N', 'N'                         | —                             |
+## | gmp_exempt_flag           | 'N', 'N', 'N'                         | —                             |
+## | summary_malfunction_report| 'Eligible', 'Eligible', 'Eligible'    | —                             |
+## | product_code              | 'PHR', 'NRI', 'JSF'                   | —                             |
+## | review_panel              | 'DE', 'IM', 'MI'                      | —                             |
+## | device_name               | 'Diammine Silver Fluoride De...', '...| —                             |
+## | device_class              | '2', '2', '1'                         | —                             |
+## | definition                | 'Applied to tooth enamel to ...', '...| —                             |
+## | implant_flag              | 'N', 'N', 'N'                         | —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Set metadata
 target_name = 'device_class'
 task = 'm-classification'

@@ -38,6 +38,27 @@ data = clean_backslash_operations(data)
 ## Dataset-level specific cleaning
 data = data.replace(-999, np.nan)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Entity                    | 'UNIVERSITY OF MASSACHUSETTS...', '...| —                             |
+## | ContAdd                   | '285 OLDWESTPORT RD', '1333 S. Kirk...| —                             |
+## | ContPO                    | ' ', ' ', ' '                         | —                             |
+## | ContCity                  | 'NORTHDARTMOUTH', 'St. Louis', 'Boc...| —                             |
+## | ContState                 | 'MA', 'MO', 'FL'                      | —                             |
+## | ContName                  | 'GLORIA CLARK', 'Gary Duncan', 'Edw...| —                             |
+## | LatDir                    | 'N', 'N', 'N'                         | —                             |
+## | LonDir                    | 'W', 'W', 'W'                         | —                             |
+## | LocAdd                    | 'OLD WESTPORT RD', 'TWR 1 - 1400 DA...| —                             |
+## | LocCity                   | 'NORTHDARTMOUTH', 'SAINT CLAIR COUN...| —                             |
+## | LocState                  | 'MA', 'IL', 'CA'                      | —                             |
+## | FAAstudy                  | '2006-ANE-41-OE', '2023-AGL-15662-O...| —                             |
+## | FAAcirc                   | '70/7460-1K', ' ', ' '                | —                             |
+## | url                       | 'https://wireless2.fcc.gov/U...', '...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

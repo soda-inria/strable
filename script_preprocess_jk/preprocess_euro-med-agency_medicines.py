@@ -37,6 +37,39 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Category                  | 'Human', 'Human', 'Human'             | —                             |
+## | Name of medicine          | 'Tigecycline Accord', 'Efmody', 'Zt...| —                             |
+## | EMA product number        | 'EMEA/H/C/005114', 'EMEA/H/C/005105...| —                             |
+## | Medicine status           | 'Authorised', 'Authorised', 'Author...| —                             |
+## | Opinion status            | 'Negative', 'Positive', 'Negative'    | —                             |
+## | International non-propriet| 'tigecycline', 'hydrocortisone', 'g...| —                             |
+## | Active substance          | 'Tigecycline', 'hydrocortisone', 'G...| —                             |
+## | Therapeutic area (MeSH)   | 'Soft Tissue Infections;Intr...', '...| —                             |
+## | Species (veterinary)      | 'Chicken;Embryonated chicken...', '...| —                             |
+## | Patient safety            | 'No', 'No', 'No'                      | —                             |
+## | ATC code (human)          | 'J01AA12', 'H02AB09', 'N03AX'         | —                             |
+## | ATCvet code (veterinary)  | 'QI01AD', 'QP53BE02', 'QI01AA25'      | —                             |
+## | Pharmacotherapeutic group | 'Antibacterials for systemic...', '...| —                             |
+## | Pharmacotherapeutic group | 'Immunologicals for Bovidae;...', '...| —                             |
+## | Therapeutic indication    | 'Tygecycline Accord is indic...', '...| —                             |
+## | Accelerated assessment    | 'No', 'No', 'No'                      | —                             |
+## | Additional monitoring     | 'No', 'No', 'Yes'                     | —                             |
+## | Advanced therapy          | 'No', 'No', 'No'                      | —                             |
+## | Biosimilar                | 'No', 'No', 'No'                      | —                             |
+## | Conditional approval      | 'No', 'No', 'No'                      | —                             |
+## | Exceptional circumstances | 'No', 'No', 'No'                      | —                             |
+## | Generic or hybrid         | 'Yes', 'No', 'No'                     | —                             |
+## | Orphan medicine           | 'No', 'No', 'Yes'                     | —                             |
+## | PRIME: priority medicine  | 'No', 'No', 'No'                      | —                             |
+## | Marketing authorisation de| 'Accord Healthcare S.L.U.', 'Neuroc...| —                             |
+## | Medicine URL              | 'https://www.ema.europa.eu/e...', '...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 # Clean for list-type columns
 for col in data.columns:

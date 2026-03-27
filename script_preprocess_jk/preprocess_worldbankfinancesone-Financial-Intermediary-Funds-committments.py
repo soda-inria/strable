@@ -37,6 +37,18 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Fund Name                 | 'Consultative Group on Inter...', '...| —                             |
+## | Principal Recipient       | 'Internat'l Water Management...', '...| —                             |
+## | Approval Quarter          | 'APR-JUN', 'APR-JUN', 'APR-JUN'       | —                             |
+## | Financial Product         | 'Grant', 'Grant', 'Grant'             | —                             |
+## | Sector/Theme              | 'Agriculture and Food Security', 'A...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

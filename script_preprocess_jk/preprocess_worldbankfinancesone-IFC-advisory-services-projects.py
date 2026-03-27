@@ -37,6 +37,24 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Disclosure Date           | '04/16/2025', '10/05/2023', '07/14/...| —                             |
+## | Project Name              | 'Bolstering the Resilience o...', '...| —                             |
+## | Project URL               | 'https://disclosures.ifc.org...', '...| —                             |
+## | Country                   | 'Ukraine', 'Ukraine', 'Ukraine'       | —                             |
+## | IFC Country Code          | 'UKR', 'UKR', 'UKR'                   | —                             |
+## | IFC Region                | 'Europe', 'Europe', 'Europe'          | —                             |
+## | Business Line             | 'Manufacturing, Agribusiness...', '...| —                             |
+## | Status                    | 'Active', 'Hold', 'Completed'         | —                             |
+## | IFC Approval Date         | '07/02/2024', '06/20/2023', '06/02/...| —                             |
+## | Projected Start Date      | '05/20/2024', '06/01/2023', '06/01/...| —                             |
+## | WB Country Code           | 'UA', 'UA', 'UA'                      | —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

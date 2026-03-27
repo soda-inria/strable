@@ -37,6 +37,25 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | School Name               | 'Brown University', 'Massachusetts ...| —                             |
+## | State                     | 'RI', 'MA', 'CA'                      | —                             |
+## | Transaction Type          | 'Restricted Contract', 'Contract', ...| —                             |
+## | Foreign Government Source | 'Yes', 'No', 'No'                     | —                             |
+## | Attribution Country       | 'SAUDI ARABIA', 'GERMANY', 'JAPAN'    | —                             |
+## | Restricted Transaction For| 'Saudi Arabian Cultural Mission', '...| —                             |
+## | Restricted Transaction For| 'Saudi Arabia ', 'Saudi Arabia', 'E...| —                             |
+## | Restricted Transaction Des| 'Tuition and fee charges for...', '...| —                             |
+## | Institution Owned by Forei| 'No', 'No', 'No'                      | —                             |
+## | Foreign Source Owner Name | 'Reinga Investments, S.L.', 'Univer...| —                             |
+## | Changes Due to Foreign Sou| 'No', 'Change in ownership occurre....| —                             |
+## | Legacy                    | 'No', 'Yes', 'Yes'                    | —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

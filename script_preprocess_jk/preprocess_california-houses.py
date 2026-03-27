@@ -39,6 +39,34 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Address                   | '540 Pine Ln', '1727 W 67th St', '2...| —                             |
+## | Summary                   | '540 Pine Ln, Los Altos, CA ...', '...| —                             |
+## | Type                      | 'SingleFamily', 'SingleFamily', 'Si...| —                             |
+## | Heating                   | 'Heating - 2+ Zones, Central...', '...| —                             |
+## | Cooling                   | 'Multi-Zone, Central AC, Who...', '...| —                             |
+## | Parking                   | 'Garage, Garage - Attached, ...', '...| —                             |
+## | Bedrooms                  | 'Ground Floor Bedroom, Maste...', '...| —                             |
+## | Region                    | 'Los Altos', 'Los Angeles', 'Strawb...| —                             |
+## | Elementary School         | 'Santa Rita Elementary School', 'Ra...| —                             |
+## | Middle School             | 'John Muir Middle School', 'Culver ...| —                             |
+## | High School               | 'Los Altos High School', 'Augustus ...| —                             |
+## | Flooring                  | 'Tile, Hardwood, Carpet', 'Wood, Ti...| —                             |
+## | Heating features          | 'Forced air, Gas', 'Combination', '...| —                             |
+## | Cooling features          | 'Central', 'Wall/Window Unit(s), Ev...| —                             |
+## | Appliances included       | 'Dishwasher, Dryer, Garbage ...', '...| —                             |
+## | Laundry features          | 'Washer / Dryer, Inside, In ...', '...| —                             |
+## | Parking features          | 'Garage, Garage - Attached, ...', '...| —                             |
+## | Listed On                 | '2019-10-24', '2019-10-16', '2019-0...| —                             |
+## | Last Sold On              | '2019-08-30', '2016-08-30', '2017-1...| —                             |
+## | City                      | 'Los Altos', 'Los Angeles', 'Strawb...| —                             |
+## | State                     | 'CA', 'CA', 'CA'                      | —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Set metadata
 target_name = 'Total interior livable area'
 task = 'regression'

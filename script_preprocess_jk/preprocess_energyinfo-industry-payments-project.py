@@ -37,6 +37,20 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | sourceID                  | '0021adfc202f9c48e21fc3136d3...', '...| —                             |
+## | reportingCompany          | 'Acacia Mining Plc', 'Acacia Mining...| —                             |
+## | projectCountry            | 'Tanzania, United Republic of', 'Ta...| —                             |
+## | projectName               | 'North Mara', 'Bulyanhulu', 'North ...| —                             |
+## | paymentType               | 'Taxes', 'Royalties', 'Royalties'     | —                             |
+## | nrgiNotes                 | ''North Mara gold Mine' chan...', '...| —                             |
+## | notes                     | 'Royalties include $3,840,00...', '...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

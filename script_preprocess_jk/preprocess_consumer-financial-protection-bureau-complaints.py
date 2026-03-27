@@ -45,6 +45,28 @@ data = clean_backslash_operations(data)
 # data = data[data['Company response to consumer']!='In progress']
 # data.reset_index(drop=True, inplace=True)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Date received             | '2025-05-30', '2025-04-18', '2025-0...| —                             |
+## | Product                   | 'Credit reporting or other p...', '...| —                             |
+## | Sub-product               | 'Credit reporting', 'Credit reporti...| —                             |
+## | Issue                     | 'Incorrect information on yo...', '...| —                             |
+## | Sub-issue                 | 'Information belongs to some...', '...| —                             |
+## | Consumer complaint narrati| 'I recently found that there...', '...| —                             |
+## | Company public response   | 'Company has responded to th...', '...| —                             |
+## | Company                   | 'EQUIFAX, INC.', 'TRANSUNION INTERM...| —                             |
+## | State                     | 'NY', 'FL', 'TX'                      | —                             |
+## | ZIP code                  | '10455', '33172', '76119'             | —                             |
+## | Tags                      | 'Servicemember', 'Servicemember', '...| —                             |
+## | Consumer consent provided?| 'Consent not provided', 'Consent no...| —                             |
+## | Submitted via             | 'Web', 'Web', 'Web'                   | —                             |
+## | Date sent to company      | '2025-05-30', '2025-04-18', '2025-0...| —                             |
+## | Company response to consum| 'Closed with non-monetary re...', '...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

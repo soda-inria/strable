@@ -39,6 +39,19 @@ data = clean_backslash_operations(data)
 data = data.dropna(subset=['requirements', 'funding']).reset_index(drop=True)
 data = data[data.requirements !=0].reset_index(drop=True)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | countryCode               | 'AFG', 'AFG', 'AFG'                   | —                             |
+## | name                      | 'Afghanistan Humanitarian Ne...', '...| —                             |
+## | code                      | 'HAFG25', 'HAFG25', 'HAFG25'          | —                             |
+## | startDate                 | '2025-01-01', '2025-01-01', '2025-0...| —                             |
+## | endDate                   | '2025-12-31', '2025-12-31', '2025-1...| —                             |
+## | cluster                   | 'Coordination and support se...', '...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

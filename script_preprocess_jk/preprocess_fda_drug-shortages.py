@@ -37,6 +37,23 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | initial_posting_date      | '07/12/2022', '04/28/2023', '01/26/...| —                             |
+## | package_ndc               | '0703-4636-01', '60505-6282-7', '70...| —                             |
+## | generic_name              | 'Streptozocin Powder, For So...', '...| —                             |
+## | contact_info              | '800-545-8800', 'Apotex Inc.: 800-7...| —                             |
+## | openfda                   | 'application_number: ANDA077...', '...| —                             |
+## | therapeutic_category      | 'Oncology', 'Oncology', 'Neurology'   | —                             |
+## | dosage_form               | 'Powder, For Solution', 'Injection'...| —                             |
+## | presentation              | 'Zanosar, Powder, For Soluti...', '...| —                             |
+## | company_name              | 'Teva Pharmaceuticals USA, Inc.', '...| —                             |
+## | availability              | 'Unavailable', 'Limited Availabilit...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 # Clean for dict-type columns
 data = clean_dict_type_col(data, 'openfda', clean_type='to_string')

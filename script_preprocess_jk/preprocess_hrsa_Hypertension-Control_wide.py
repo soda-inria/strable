@@ -49,6 +49,42 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Grant Number              | 'H80CS00001', 'H80CS00002', 'H80CS0...| —                             |
+## | Health Center Name        | 'CITY OF SPRINGFIELD, MASSAC...', '...| —                             |
+## | NHCI Awardee              | 'Yes', 'No', 'Yes'                    | —                             |
+## | State                     | 'MA', 'NH', 'MA'                      | —                             |
+## | Grantee Address           | '311 State St', '1528 Elm St', '780...| —                             |
+## | Grantee City              | 'Springfield', 'Manchester', 'Boston' | —                             |
+## | Grantee County Description| 'County      ', 'County      ', 'Co...| —                             |
+## | Grantee County Name       | 'Hampden', 'Hillsborough', 'Suffolk'  | —                             |
+## | Grantee Name              | 'HEALTH & HUMAN SERVICES', 'CITY OF...| —                             |
+## | HRSA Region               | 'Region 1', 'Region 1', 'Region 1'    | —                             |
+## | Grantee State Abbreviation| 'MA', 'NH', 'MA'                      | —                             |
+## | State Name                | 'Massachusetts', 'New Hampshire', '...| —                             |
+## | Grantee ZIP Code          | '01105-1320', '03101-1356', '02118-...| —                             |
+## | Project Period Start Date | '2001/11/01', '2001/11/01', '2001/1...| —                             |
+## | Grant Project Period End D| '2026/01/31', '2026/02/28', '2025/1...| —                             |
+## | Complete County Name      | 'Hampden County', 'Hillsborough Cou...| —                             |
+## | Congressional District Nam| 'Massachusetts District 01', 'New H...| —                             |
+## | Congressional District Num| '01', '01', '07'                      | —                             |
+## | HHS Region Number         | '1', '1', '1'                         | —                             |
+## | U.S. Congressional Represe| 'Richard E. Neal', 'Chris Pappas', ...| —                             |
+## | State and County Federal I| '25013', '33011', '25025'             | —                             |
+## | State FIPS Code           | '25', '33', '25'                      | —                             |
+## | U.S. - Mexico Border 100 K| 'N', 'N', 'N'                         | —                             |
+## | U.S. - Mexico Border Count| 'N', 'N', 'N'                         | —                             |
+## | Name of U.S. Senator Numbe| 'Elizabeth Warren', 'Jeanne Shaheen...| —                             |
+## | Name of U.S. Senator Numbe| 'Edward J. Markey', 'Margaret Wood ...| —                             |
+## | Grantee Type Description  | 'U.S. Government Entity', 'U.S. Gov...| —                             |
+## | DUNS Number               | '198910523', '790913636', '786241695' | —                             |
+## | Unique Entity Identifier  | 'H6HGYVLKMAK6', 'WXMZXFFQG2C9', 'J9...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

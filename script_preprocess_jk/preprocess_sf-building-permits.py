@@ -43,6 +43,35 @@ issued_date = pd.to_datetime(data['Issued Date'], errors='coerce')
 data['time_to_approve'] = (issued_date - filed_date).dt.days
 data.drop(columns=['Filed Date', 'Issued Date'], inplace=True)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Permit Number             | '201412012739', '201504022691', '20...| —                             |
+## | Permit Type Definition    | 'otc alterations permit', 'addition...| —                             |
+## | Permit Creation Date      | '12/01/2014', '04/02/2015', '09/11/...| —                             |
+## | Block                     | '1410', '0805', '5865'                | —                             |
+## | Lot                       | '023', '034', '003'                   | —                             |
+## | Street Number Suffix      | 'A', 'B', 'V'                         | —                             |
+## | Street Name               | '24th', 'Ivy', 'Princeton'            | —                             |
+## | Street Suffix             | 'Av', 'St', 'St'                      | —                             |
+## | Unit Suffix               | 'C', 'B', 'LOWER'                     | —                             |
+## | Description               | 'install 19 each simonton wi...', '...| —                             |
+## | Current Status            | 'complete', 'complete', 'complete'    | —                             |
+## | Current Status Date       | '02/02/2015', '11/22/2017', '12/01/...| —                             |
+## | Completed Date            | '02/02/2015', '11/22/2017', '12/01/...| —                             |
+## | First Construction Documen| '12/01/2014', '06/10/2016', '09/11/...| —                             |
+## | Permit Expiration Date    | '11/26/2015', '06/05/2017', '09/05/...| —                             |
+## | Existing Use              | 'apartments', '2 family dwelling', ...| —                             |
+## | Proposed Use              | 'apartments', 'apartments', '1 fami...| —                             |
+## | TIDF Compliance           |                                       | —                             |
+## | Existing Construction Type| 'wood frame (5)', 'wood frame (5)',...| —                             |
+## | Proposed Construction Type| 'wood frame (5)', 'wood frame (5)',...| —                             |
+## | Neighborhoods - Analysis B| 'Outer Richmond', 'Hayes Valley', '...| —                             |
+## | Location                  | '(37.78250246341156, -122.48...', '...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Set metadata
 target_name = 'time_to_approve'
 task = 'regression'

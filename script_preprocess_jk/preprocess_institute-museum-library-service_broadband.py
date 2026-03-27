@@ -38,6 +38,18 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | GEO_ID                    | '0500000US01001', '0500000US01003',...| —                             |
+## | NAME                      | 'Autauga County, Alabama', 'Baldwin...| —                             |
+## | County                    | 'Autauga', 'Baldwin', 'Barbour'       | —                             |
+## | State                     | 'Alabama', 'Alabama', 'Alabama'       | —                             |
+## | Stabr                     | 'AL', 'AL', 'AL'                      | —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

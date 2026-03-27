@@ -80,6 +80,21 @@ for col in data.columns:
         if isinstance(data[~data[col].isnull()][col].iloc[0], list):
             data = clean_list_type_col(data, col)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | submissions               | 'submission_type: SUPPL, sub...', '...| —                             |
+## | application_number        | 'ANDA076178', 'NDA017378', 'ANDA076...| —                             |
+## | sponsor_name              | 'EPIC PHARMA LLC', 'BAXTER HLTHCARE...| —                             |
+## | reference_drug            | 'No', 'Yes', 'No'                     | —                             |
+## | strengths                 | '300MG, 150MG', '30MG/100ML, 30MG/1...| —                             |
+## | brand_name                | 'NIZATIDINE', 'PLASMA-LYTE A IN PLA...| —                             |
+## | dosage_form               | 'CAPSULE', 'INJECTABLE', 'TABLET'     | —                             |
+## | marketing_status          | 'Prescription', 'Prescription', 'Pr...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Set metadata
 target_name = 'marketing_status'
 task = 'b-classification'

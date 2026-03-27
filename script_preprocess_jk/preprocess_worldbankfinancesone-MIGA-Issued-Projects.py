@@ -37,6 +37,23 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Project Name              | 'Star Hydro Power Limited', 'Commer...| —                             |
+## | Host Country              | 'Pakistan', 'Tunisia', 'Panama'       | —                             |
+## | Host Country Code         | 'PK', 'TN', 'PA'                      | —                             |
+## | Host Region               | 'South Asia', 'Middle East and Nort...| —                             |
+## | Host Region Code          | 'SAR', 'MENA', 'LAC'                  | —                             |
+## | Business Sector           | 'Infrastructure', 'Manufacturing', ...| —                             |
+## | Product Line              | 'PRI', 'PRI', 'NH'                    | —                             |
+## | Project Start Date        | '06/29/2012', '12/07/2011', '06/29/...| —                             |
+## | Project Expiration Date   | '06/28/2032', '12/06/2016', '08/14/...| —                             |
+## | Project Links             | 'https://www.miga.org/node/2215', '...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

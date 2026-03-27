@@ -38,6 +38,45 @@ data = clean_backslash_operations(data)
 ## Dataset-level specific cleaning
 data = data.drop_duplicates(subset=['Grant Number', 'Financial Assistance']).reset_index(drop=True)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Grantee Address           | '32033 Beaver Run Dr', '2318 E Cent...| —                             |
+## | Grantee City              | 'Salisbury', 'Wichita', 'Sioux City'  | —                             |
+## | Grantee County Description| 'County      ', 'County      ', 'Co...| —                             |
+## | Grantee County Name       | 'Wicomico', 'Sedgwick', 'Woodbury'    | —                             |
+## | Grantee Name              | 'Three Lower Counties Commun...', '...| —                             |
+## | HRSA Region               | 'Region 3', 'Region 7', 'Region 7'    | —                             |
+## | Grantee State Abbreviation| 'MD', 'KS', 'IA'                      | —                             |
+## | State Name                | 'Maryland', 'Kansas', 'Iowa'          | —                             |
+## | Grantee ZIP Code          | '21804-1773', '67214-4436', '51105-...| —                             |
+## | Grant Activity Code       | 'H80', 'H8C', 'H8C'                   | —                             |
+## | Grant Number              | 'H80CS00774', 'H8CCS34768', 'H8CCS3...| —                             |
+## | Project Period Start Date | '2002/06/01', '2020/03/15', '2020/0...| —                             |
+## | Grant Project Period End D| '2023/05/31', '2021/03/14', '2021/0...| —                             |
+## | HRSA Program Area Code    | 'BPHC', 'BPHC', 'BPHC'                | —                             |
+## | HRSA Program Area Name    | 'Primary Health Care', 'Primary Hea...| —                             |
+## | Complete County Name      | 'Wicomico County', 'Sedgwick County...| —                             |
+## | Grant Program Name        | 'Health Center Program (H80)', 'FY ...| —                             |
+## | Congressional District Nam| 'Maryland District 01', 'Kansas Dis...| —                             |
+## | Congressional District Num| '01', '04', '04'                      | —                             |
+## | HHS Region Number         | '3', '7', '7'                         | —                             |
+## | U.S. Congressional Represe| 'Andy Harris', 'Ron Estes', 'Randy ...| —                             |
+## | State and County Federal I| '24045', '20173', '19193'             | —                             |
+## | State FIPS Code           | '24', '20', '19'                      | —                             |
+## | U.S. - Mexico Border 100 K| 'N', 'N', 'N'                         | —                             |
+## | U.S. - Mexico Border Count| 'N', 'N', 'N'                         | —                             |
+## | Name of U.S. Senator Numbe| 'Benjamin L. Cardin', 'Jerry Moran'...| —                             |
+## | Name of U.S. Senator Numbe| 'Chris Van Hollen', 'Roger Marshall...| —                             |
+## | Uniform Data System Grant | 'This notice announces the o...', '...| —                             |
+## | Grantee Type Description  | 'Corporate Entity, Federal T...', '...| —                             |
+## | DUNS Number               | '959475484', '181584889', '794550830' | —                             |
+## | Unique Entity Identifier  | 'EB81PX23H8F5', 'LP9KLMAQQNB7', 'S4...| —                             |
+## | Data Warehouse Record Crea| '2021/03/09', '2021/03/09', '2021/0...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

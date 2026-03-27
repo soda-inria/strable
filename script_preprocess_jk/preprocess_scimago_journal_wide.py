@@ -38,6 +38,27 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Coverage                  | '1950-2025', '1990-2024', '2000-2025' | → Coverage_start, Coverage_end, Coverage_span (drop original)|
+## | Title                     | 'Ca-A Cancer Journal for Cli...', '...| —                             |
+## | Type                      | 'journal', 'journal', 'journal'       | —                             |
+## | Issn                      | '15424863, 00079235', '10575987, 15...| —                             |
+## | Country                   | 'United States', 'United States', '...| —                             |
+## | Region                    | 'Northern America', 'Northern Ameri...| —                             |
+## | Publisher                 | 'John Wiley and Sons Inc', 'Centers...| —                             |
+## | Categories                | 'Hematology (Q1); Oncology (Q1)', '...| —                             |
+## | Areas                     | 'Medicine', 'Environmental Science;...| —                             |
+
+## Feature engineering
+# Coverage: e.g. '1950-2025' → Coverage_start, Coverage_end, Coverage_span
+_cov_split = data['Coverage'].str.split('-')
+data['Coverage_start'] = _cov_split.str[0].str.strip().astype(int, errors='ignore')
+data['Coverage_end'] = _cov_split.str[1].str.strip().astype(int, errors='ignore')
+data['Coverage_span'] = data['Coverage_end'] - data['Coverage_start']
+data.drop(columns=['Coverage'], inplace=True)
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

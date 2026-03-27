@@ -39,6 +39,25 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | name                      | 'whiddy', 'Still Laughing LIVE Come...| —                             |
+## | currency                  | 'USD', 'USD', 'USD'                   | —                             |
+## | main_category             | 'journalism', 'theater', 'music'      | —                             |
+## | sub_category              | 'Web', 'Theater', 'Rock'              | —                             |
+## | launched_at               | '2014-08-28 22:03:39', '2015-03-19 ...| —                             |
+## | deadline                  | '2014-09-27 22:03:39', '2015-04-18 ...| —                             |
+## | city                      | 'Las Vegas', 'Parsippany', 'Ruleville'| —                             |
+## | state                     | 'NV', 'NJ', 'MS'                      | —                             |
+## | country                   | 'US', 'US', 'US'                      | —                             |
+## | status                    | 'failed', 'successful', 'successful'  | —                             |
+## | start_Q                   | 'Q3', 'Q1', 'Q3'                      | —                             |
+## | end_Q                     | 'Q3', 'Q2', 'Q3'                      | —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Set metadata
 target_name = 'status'
 task = 'b-classification'

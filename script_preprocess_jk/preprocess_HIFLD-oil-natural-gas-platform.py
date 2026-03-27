@@ -39,6 +39,35 @@ data = clean_backslash_operations(data)
 data = data.replace(-999, np.nan)
 # data['ZIP'] = data['ZIP'].astype('string')
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | PLATFRMID                 | 'GOM00001', 'GOM00002', 'GOM00003'    | —                             |
+## | NAME                      | '1', 'C', '1'                         | —                             |
+## | STATUS                    | 'REMOVED', 'REMOVED', 'REMOVED'       | —                             |
+## | SOURCEDATE                | '5/3/2016 12:00:00 AM', '5/3/2016 1...| —                             |
+## | OWNER                     | 'NOT AVAILABLE', 'NOT AVAILABLE', '...| —                             |
+## | OPERNAME                  | 'MERIT ENERGY CO., LLC', 'APACHE CO...| —                             |
+## | COMMODITY                 | 'NONE', 'NONE', 'NONE'                | —                             |
+## | INSTALL                   | '1/5/1998 12:00:00 AM', '2/28/1997 ...| —                             |
+## | REMOVAL                   | '6/9/2010 12:00:00 AM', '8/8/2013 1...| —                             |
+## | MANNED24HR                | 'N', 'N', 'N'                         | —                             |
+## | PWRSOURCE                 | 'U', 'U', 'U'                         | —                             |
+## | PWRGENFLAG                | 'N', 'N', 'N'                         | —                             |
+## | OILPRDFLAG                | 'N', 'N', 'N'                         | —                             |
+## | GASMTRFLAG                | 'U', 'N', 'Y'                         | —                             |
+## | COMPREFLAG                | 'N', 'N', 'N'                         | —                             |
+## | COMPRDFLAG                | 'U', 'U', 'U'                         | —                             |
+## | HELPRTFLAG                | 'Y', 'Y', 'Y'                         | —                             |
+## | BLOCKNO                   | '38', '176', '263'                    | —                             |
+## | LEASENO                   | 'G14878', 'G06164', 'G15072'          | —                             |
+## | AREANUMBER                | 'HI', 'HI', 'WC'                      | —                             |
+## | REGION                    | 'GULF OF MEXICO', 'GULF OF MEXICO',...| —                             |
+## | GlobalID                  | '01c92d58-f3c0-407b-b9a4-d14...', '...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

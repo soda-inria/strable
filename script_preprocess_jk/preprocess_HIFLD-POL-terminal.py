@@ -39,6 +39,55 @@ data = clean_backslash_operations(data)
 data = data.replace(-999, np.nan)
 # data['ZIP'] = data['ZIP'].astype('string')
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | TERM_ID                   | 'ANLTK01001', 'ANLTK01002', 'ANLTK0...| —                             |
+## | NAME                      | 'MURPHY OIL USA, INCORPORATE...', '...| —                             |
+## | ADDRESS                   | '2625 HIGHWAY 78 EAST', '114 CHEVRO...| —                             |
+## | CITY                      | 'ANNISTON', 'ANNISTON', 'ATMORE'      | —                             |
+## | STATE                     | 'AL', 'AL', 'AL'                      | —                             |
+## | ZIP4                      | 'NOT AVAILABLE', 'NOT AVAILABLE', '...| —                             |
+## | TELEPHONE                 | '(256) 831-0201', '(256) 831-2621',...| —                             |
+## | TYPE                      | 'BULK TERMINAL', 'BREAKOUT TANKS - ...| —                             |
+## | STATUS                    | 'IN SERVICE', 'IN SERVICE', 'IN SER...| —                             |
+## | COUNTY                    | 'CALHOUN', 'CALHOUN', 'ESCAMBIA'      | —                             |
+## | NAICS_DESC                | 'PETROLEUM BULK STATIONS AND...', '...| —                             |
+## | SOURCE                    | 'EIA', 'EIA', 'EIA'                   | —                             |
+## | SOURCEDATE                | '7/27/2015 12:00:00 AM', '7/27/2015...| —                             |
+## | VAL_METHOD                | 'IMAGERY/OTHER', 'IMAGERY/OTHER', '...| —                             |
+## | VAL_DATE                  | '9/14/2018 12:00:00 AM', '2/28/2021...| —                             |
+## | WEBSITE                   | 'www.murphyoilcorp.com', 'NOT AVAIL...| —                             |
+## | EXSTARS_I                 | 'T-63-AL-2333', 'NONE', 'NONE'        | —                             |
+## | OWNER                     | 'NOT AVAILABLE', 'NOT AVAILABLE', '...| —                             |
+## | OPERATOR                  | 'NOT AVAILABLE', 'NOT AVAILABLE', '...| —                             |
+## | POSREL                    | 'WITHIN 40 FEET', 'WITHIN 40 FEET',...| —                             |
+## | COMMODITY                 | 'REFINED, CHEMICALS', 'NOT AVAILABL...| —                             |
+## | TRUCK_IN                  | 'YES', 'NO', 'NO'                     | —                             |
+## | TRUCK_OUT                 | 'YES', 'NO', 'NO'                     | —                             |
+## | PIPE_IN                   | 'YES', 'YES', 'YES'                   | —                             |
+## | PIPE_OUT                  | 'YES', 'YES', 'YES'                   | —                             |
+## | MARINE_IN                 | 'NO', 'NO', 'NO'                      | —                             |
+## | MARINE_OUT                | 'NO', 'NO', 'NO'                      | —                             |
+## | RAIL_IN                   | 'NO', 'NO', 'NO'                      | —                             |
+## | RAIL_OUT                  | 'NO', 'NO', 'NO'                      | —                             |
+## | ASPHALT                   | 'NO', 'NO', 'NO'                      | —                             |
+## | CHEMICALS                 | 'YES', 'NO', 'YES'                    | —                             |
+## | PROPANE                   | 'NO', 'NO', 'NO'                      | —                             |
+## | BUTANE                    | 'NO', 'NO', 'NO'                      | —                             |
+## | REFINED                   | 'YES', 'NO', 'YES'                    | —                             |
+## | ETHANOL                   | 'NOT AVAILABLE', 'NOT AVAILABLE', '...| —                             |
+## | BIODIESEL                 | 'NOT AVAILABLE', 'NOT AVAILABLE', '...| —                             |
+## | CRUDE_OIL                 | 'NO', 'NO', 'YES'                     | —                             |
+## | JETFUEL                   | 'NO', 'NO', 'YES'                     | —                             |
+## | GASOLINE                  | 'NO', 'NO', 'NO'                      | —                             |
+## | DISTILLATE                | 'YES', 'NO', 'YES'                    | —                             |
+## | AVGAS                     | 'NOT AVAILABLE', 'NOT AVAILABLE', 'NO'| —                             |
+## | GlobalID                  | '66954030-2cdd-42ec-8a62-556...', '...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

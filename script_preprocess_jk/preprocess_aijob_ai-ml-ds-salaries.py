@@ -50,6 +50,19 @@ data.groupby(['work_year', 'experience_level', 'employment_type', 'job_title', '
 data.groupby(['experience_level', 'employment_type', 'job_title', 'salary_currency',
         'employee_residence', 'remote_ratio', 'company_location', 'company_size'])['work_year'].nunique().value_counts()
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | experience_level          | 'EN', 'EN', 'EN'                      | —                             |
+## | employment_type           | 'CT', 'CT', 'FT'                      | —                             |
+## | job_title                 | 'Business Data Analyst', 'Staff Dat...| —                             |
+## | employee_residence        | 'US', 'CA', 'DK'                      | —                             |
+## | company_location          | 'US', 'CA', 'DK'                      | —                             |
+## | company_size              | 'L', 'L', 'S'                         | —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Set metadata
 target_name = 'salary_in_usd'
 task = 'regression'

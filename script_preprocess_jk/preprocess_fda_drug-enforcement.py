@@ -40,6 +40,55 @@ data = data.sort_values(by='report_date')
 data.drop_duplicates(subset=['event_id', 'classification'], keep='last', inplace=True)
 data.reset_index(drop=True, inplace=True)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | status                    | 'Terminated', 'Terminated', 'Termin...| —                             |
+## | city                      | 'Chadds Ford', 'Lake Forest', 'Bedf...| —                             |
+## | state                     | 'PA', 'IL', 'OH'                      | —                             |
+## | country                   | 'United States', 'United States', '...| —                             |
+## | classification            | 'Class III', 'Class II', 'Class II'   | —                             |
+## | application_number        | 'ANDA077908', 'NDA020124', 'NDA020309'| —                             |
+## | brand_name                | 'PROPOFOL', 'DIAZEPAM', 'MAGNESIUM ...| —                             |
+## | generic_name              | 'PROPOFOL', 'DIAZEPAM', 'MAGNESIUM ...| —                             |
+## | manufacturer_name         | 'Hospira, Inc.', 'Meridian Medical ...| —                             |
+## | product_ndc               | '0409-4699, 0409-6010', '11704-600'...| —                             |
+## | product_type              | 'HUMAN PRESCRIPTION DRUG', 'HUMAN P...| —                             |
+## | route                     | 'INTRAVENOUS', 'INTRAMUSCULAR', 'IN...| —                             |
+## | substance_name            | 'PROPOFOL', 'DIAZEPAM', 'MAGNESIUM ...| —                             |
+## | rxcui                     | '1808217, 1808222, 1808224', '18074...| —                             |
+## | spl_id                    | 'd55c0318-811d-4624-aa0c-456...', '...| —                             |
+## | spl_set_id                | '28d7ba00-f824-4e55-139a-03f...', '...| —                             |
+## | package_ndc               | '0409-4699-50, 0409-4699-30,...', '...| —                             |
+## | nui                       | 'N0000175975, N0000175681', 'N00001...| —                             |
+## | pharm_class_pe            | 'General Anesthesia PE', 'Central N...| —                             |
+## | pharm_class_epc           | 'General Anesthetic EPC', 'Benzodia...| —                             |
+## | unii                      | 'YI7VU623SF', 'Q3JTX2Q7TU', 'SK47B8...| —                             |
+## | upc                       | '0311704600015', '0305910369019, 03...| —                             |
+## | pharm_class_cs            | 'Benzodiazepines CS', 'Ergocalcifer...| —                             |
+## | pharm_class_moa           | 'Cyclooxygenase Inhibitors MoA', 'N...| —                             |
+## | original_packager_product_| '69315-904, 69315-905, 69315...', '...| —                             |
+## | event_id                  | '61791', '62009', '61802'             | —                             |
+## | recalling_firm            | 'Endo Pharmaceuticals, Inc.', 'Hosp...| —                             |
+## | address_1                 | '100 Endo Blvd', '600 N Field Dr Bl...| —                             |
+## | address_2                 | '', '', ''                            | —                             |
+## | postal_code               | '19317', '60045', '44146'             | —                             |
+## | voluntary_mandated        | 'Voluntary: Firm initiated', 'Volun...| —                             |
+## | initial_firm_notification | 'Letter', 'Letter', 'Letter'          | —                             |
+## | distribution_pattern      | 'Nationwide and Puerto Rico', 'Nati...| —                             |
+## | recall_number             | 'D-1381-2012', 'D-1382-2012', 'D-13...| —                             |
+## | product_description       | 'Endocet (oxycodone and acet...', '...| —                             |
+## | product_quantity          | '11,764 bottles', 'a) 36,125 vials;...| —                             |
+## | reason_for_recall         | 'Adulterated Presence of For...', '...| —                             |
+## | recall_initiation_date    | '20120507', '20120411', '20120501'    | —                             |
+## | center_classification_date| '20120614', '20120614', '20120614'    | —                             |
+## | report_date               | '20120620', '20120620', '20120620'    | —                             |
+## | code_info                 | 'Lot #: 402794NV, Exp 12/13', 'Lot ...| —                             |
+## | termination_date          | '20130621', '20130627', '20130821'    | —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 # Clean for dict-type columns
 data.drop(columns='product_type', inplace=True)

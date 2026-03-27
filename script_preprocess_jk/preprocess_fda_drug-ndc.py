@@ -40,6 +40,34 @@ data = data.sort_values(by='marketing_start_date')
 data.drop_duplicates(subset=['generic_name', 'dea_schedule'], keep='last', inplace=True)
 data.reset_index(drop=True, inplace=True)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | product_ndc               | '0792-0099', '0792-0415', '0121-1008' | —                             |
+## | generic_name              | 'Amobarbital Sodium', 'Phentermine ...| —                             |
+## | labeler_name              | 'Siegfried USA, LLC', 'Siegfried US...| —                             |
+## | brand_name                | 'Acetaminophen and Codeine P...', '...| —                             |
+## | active_ingredients        | 'name: AMOBARBITAL SODIUM, s...', '...| —                             |
+## | packaging                 | 'package_ndc: 0792-0099-00, ...', '...| —                             |
+## | listing_expiration_date   | '20261231', '20261231', '20261231'    | —                             |
+## | openfda                   | '', '', 'manufacturer_name: PAI Hol...| —                             |
+## | marketing_category        | 'BULK INGREDIENT', 'BULK INGREDIENT...| —                             |
+## | dosage_form               | 'POWDER', 'LIQUID', 'SOLUTION'        | —                             |
+## | spl_id                    | '5cedc2f3-18e6-ece6-e053-2a9...', '...| —                             |
+## | product_type              | 'BULK INGREDIENT', 'BULK INGREDIENT...| —                             |
+## | route                     | 'ORAL', 'ORAL', 'SUBLINGUAL'          | —                             |
+## | marketing_start_date      | '19670323', '19790109', '19810821'    | —                             |
+## | product_id                | '0792-0099_5cedc2f3-18e6-ece...', '...| —                             |
+## | application_number        | 'ANDA087508', 'ANDA086996', 'ANDA07...| —                             |
+## | brand_name_base           | 'Acetaminophen and Codeine P...', '...| —                             |
+## | marketing_end_date        | '20260930', '20270630', '20271116'    | —                             |
+## | pharm_class               | 'Full Opioid Agonists MoA, O...', '...| —                             |
+## | dea_schedule              | 'CII', 'CIV', 'CV'                    | —                             |
+## | brand_name_suffix         | 'KIDNEY', 'C', 'TEST-MET'             | —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 # Clean for dict-type columns
 data = clean_list_type_col(data, 'active_ingredients')

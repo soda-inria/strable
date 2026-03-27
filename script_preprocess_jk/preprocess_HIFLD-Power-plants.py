@@ -40,6 +40,30 @@ data = data.replace(-999, np.nan)
 data = data.replace(-999999, np.nan)
 data = data[data.STATUS == 'OP'].reset_index(drop=True)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | ID                        | '1-2', '1-3', '2-1'                   | —                             |
+## | NAME                      | '2', '3', '1'                         | —                             |
+## | CITY                      | 'SAND POINT', 'SAND POINT', 'NORTHP...| —                             |
+## | STATE                     | 'AK', 'AK', 'AL'                      | —                             |
+## | ZIP                       | '99661', '99661', '35476'             | —                             |
+## | TYPE                      | 'PETROLEUM LIQUIDS', 'PETROLEUM LIQ...| —                             |
+## | NAICS_CODE                | '221112', '221112', '221111'          | —                             |
+## | NAICS_DESC                | 'FOSSIL FUEL ELECTRIC POWER ...', '...| —                             |
+## | PLANT                     | 'SAND POINT', 'SAND POINT', 'BANKHE...| —                             |
+## | OPERATOR                  | 'TDX SAND POINT GENERATING, LLC', '...| —                             |
+## | PRIM_FUEL                 | 'DFO', 'DFO', 'WAT'                   | —                             |
+## | FUEL1_TRAN                | 'NOT AVAILABLE', 'NOT AVAILABLE', '...| —                             |
+## | SEC_FUEL                  | 'NOT AVAILABLE', 'NOT AVAILABLE', '...| —                             |
+## | FUEL2_TRAN                | 'NOT AVAILABLE', 'NOT AVAILABLE', '...| —                             |
+## | PRIM_MVR                  | 'IC', 'IC', 'HY'                      | —                             |
+## | RUN_DATE                  | '2000-12', '2010-12', '1963-7'        | —                             |
+## | RET_DATE                  | 'NOT AVAILABLE', 'NOT AVAILABLE', '...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

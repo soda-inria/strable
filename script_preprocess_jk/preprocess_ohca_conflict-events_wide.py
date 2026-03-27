@@ -54,6 +54,24 @@ data = data.groupby(groupby_col, as_index=False).agg({
 })
 data = data[data['events']>0].reset_index(drop=True)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | location_code             | 'AFG', 'AFG', 'CMR'                   | —                             |
+## | provider_admin1_name      | 'Ghazni', 'Ghazni', 'Adamaoua'        | —                             |
+## | provider_admin2_name      | 'Jaghuri', 'Jaghuri', 'Djerem'        | —                             |
+## | admin1_code               | 'AF11', 'AF11', 'CM001'               | —                             |
+## | admin1_name               | 'Ghazni', 'Ghazni', 'Adamaoua'        | —                             |
+## | admin2_code               | 'AF1106', 'AF1106', 'CM001001'        | —                             |
+## | admin2_name               | 'Jaghatu', 'Jaghatu', 'Djerem'        | —                             |
+## | event_type                | 'civilian_targeting', 'political_vi...| —                             |
+## | dataset_hdx_id            | '921fe117-7158-437b-943d-949...', '...| —                             |
+## | resource_hdx_id           | 'fb139931-641f-4428-be77-429...', '...| —                             |
+## | warning                   | 'PCode mismatch AF1106 != Ja...', '...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

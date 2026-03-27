@@ -37,6 +37,20 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Fund                      | 'MDTFNS', 'IFC', 'IFC'                | —                             |
+## | Trustee Fund Number       | 'TF054724', 'TF070846', 'TF050697'    | —                             |
+## | Trustee Fund Name         | 'National Multi Donor Trust ...', '...| —                             |
+## | Donor Code                | 'NO', 'NL', 'NL'                      | —                             |
+## | Donor Name                | 'Norway', 'Netherlands', 'Netherlands'| —                             |
+## | Donor Agency              | 'Norway - Ministry of Foreig...', '...| —                             |
+## | Status                    | 'ACTN', 'ACTN', 'ACTN'                | —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

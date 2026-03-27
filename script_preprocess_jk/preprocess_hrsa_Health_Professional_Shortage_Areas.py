@@ -63,6 +63,55 @@ data.reset_index(drop=True, inplace=True)
 # data['HPSA Status'].value_counts()
 # data.columns.tolist()
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | HPSA Name                 | 'Republic of the Marshall Is...', '...| —                             |
+## | HPSA ID                   | '6684864122', '6669996602', '666916...| —                             |
+## | Designation Type          | 'Geographic HPSA', 'Federally Quali...| —                             |
+## | HPSA Discipline Class     | 'Dental Health', 'Dental Health', '...| —                             |
+## | Primary State Abbreviation| 'MH', 'GU', 'GU'                      | —                             |
+## | HPSA Designation Date     | '2018-12-31', '2003-11-21', '2020-0...| —                             |
+## | HPSA Designation Last Upda| '2020-12-31', '2021-09-11', '2020-0...| —                             |
+## | Metropolitan Indicator    | 'Unknown', 'Non-Metropolitan', 'Unk...| —                             |
+## | HPSA Geography Identificat| '68090', 'POINT', 'POINT'             | —                             |
+## | HPSA Degree of Shortage   | 'Not applicable', '12', 'Not applic...| —                             |
+## | HPSA Formal Ratio         | '78255:1', '20173:1', '31188:1'       | —                             |
+## | HPSA Population Type      | 'Geographic Population', 'Low Incom...| —                             |
+## | Rural Status              | 'Rural', 'Rural', 'Rural'             | —                             |
+## | BHCMIS Organization Identi| '093530', '11E01249', '091920'        | —                             |
+## | Common County Name        | 'Enewetak, MH', 'Guam, GU', 'Guam, GU'| —                             |
+## | Common Region Name        | 'Region 9', 'Region 9', 'Region 9'    | —                             |
+## | Common State Abbreviation | 'MH', 'GU', 'GU'                      | —                             |
+## | Common State County FIPS C| '68090', '66010', '66010'             | —                             |
+## | Common State Name         | 'Marshall Islands', 'Guam', 'Guam'    | —                             |
+## | County Equivalent Name    | 'Enewetak', 'Guam', 'Guam'            | —                             |
+## | County or County Equivalen| '090', '010', '010'                   | —                             |
+## | HPSA Address              | 'MANUEL F.L. GUERRERO BUILDING', 'C...| —                             |
+## | HPSA City                 | 'Hagatna', 'Mangilao', 'Mangilao'     | —                             |
+## | HPSA Component Name       | 'Enewetak', 'GOVERNMENT OF GUAM- DE...| —                             |
+## | HPSA Component Source Iden| '6669996602', '6669164203', '666201...| —                             |
+## | HPSA Component State Abbre| 'MH', 'GU', 'FM'                      | —                             |
+## | HPSA Component Type Code  | 'SCTY', 'UNK', 'UNK'                  | —                             |
+## | HPSA Component Type Descri| 'Single County', 'Unknown', 'Unknown' | —                             |
+## | HPSA Designation Populatio| 'Geographic Population', 'Federally...| —                             |
+## | HPSA Metropolitan Indicato| '0', 'N', '0'                         | —                             |
+## | HPSA Population Type Code | 'TRC', 'LI', 'TRC'                    | —                             |
+## | HPSA Postal Code          | '96932', '96913', '96913'             | —                             |
+## | HPSA Provider Ratio Goal  | '5000:1', '1500:0', '4000:1'          | —                             |
+## | HPSA Type Code            | 'Hpsa Geo', 'FQHC', 'PRSN'            | —                             |
+## | Primary State Name        | 'Marshall Islands', 'Guam', 'Guam'    | —                             |
+## | Provider Type             | 'Not Applicable', 'Not Applicable',...| —                             |
+## | Rural Status Code         | 'R', 'R', 'R'                         | —                             |
+## | State Abbreviation        | 'MH', 'GU', 'GU'                      | —                             |
+## | State and County Federal I| '68090', '66010', '66010'             | —                             |
+## | State Name                | 'Marshall Islands', 'Guam', 'Guam'    | —                             |
+## | U.S. - Mexico Border 100 K| 'N', 'N', 'N'                         | —                             |
+## | U.S. - Mexico Border Count| 'N', 'N', 'N'                         | —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

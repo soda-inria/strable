@@ -46,6 +46,39 @@ data['num_countries_affected'] = data['Products were found and measures were tak
 data.drop(columns=['Products were found and measures were taken also in'], inplace=True)
 data.drop_duplicates(subset='Alert number', inplace=True)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Type of alert             | 'Serious risk', 'Serious risk', 'Se...| —                             |
+## | Type                      | 'Consumer', 'Consumer', 'Consumer'    | —                             |
+## | Alert number              | '0013/11', '0007/11', '1979/10'       | —                             |
+## | Alert submitted by        | 'Finland', 'Finland', 'Finland'       | —                             |
+## | Country of origin         | 'Israel', 'People's Republic of Chi...| —                             |
+## | Counterfeit               | 'No', 'No', 'No'                      | —                             |
+## | Risk type                 | 'Microbiological', 'Electric shock'...| —                             |
+## | Risk legal provision      | 'The product poses a risk of...', '...| —                             |
+## | Product                   | 'Eye Cream ', 'Travel adaptor “Trav...| —                             |
+## | Name                      | 'Nail polish.', 'Compressors for ho...| —                             |
+## | Description               | '35 ml eye cream in a glass ...', '...| —                             |
+## | Brand                     | 'Premier by Dead Sea Premier ', 'Te...| —                             |
+## | Category                  | 'Cosmetics', 'Electrical appliances...| —                             |
+## | Type / number of model    | 'Item no A12E in invoice ', 'Type: ...| —                             |
+## | OECD Portal category      | '75000000 - Household / Offi...', '...| —                             |
+## | Risk                      | 'The product poses a microbi...', '...| —                             |
+## | Compulsory measures       | 'Type of economic operator t...', '...| —                             |
+## | Voluntary measures        | 'Type of economic operator t...', '...| —                             |
+## | Company recall page       | 'https://lehti.karkkainen.co...', '...| —                             |
+## | URL of Case               | 'https://ec.europa.eu/safety...', '...| —                             |
+## | Barcode                   | '6 430028 826315 ', '6418349392771'...| —                             |
+## | Batch number              | '-', '-', '6 416485 215992 '          | —                             |
+## | Company recall code (**)  | '6939364203939.0', 'Serial No. L5AL...| —                             |
+## | Production dates (**)     | 'The vehicles affected were ...', '...| —                             |
+## | Packaging description     | 'The product is sold or deli...', '...| —                             |
+## | num_countries_affected    | 'More than one country', 'More than...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

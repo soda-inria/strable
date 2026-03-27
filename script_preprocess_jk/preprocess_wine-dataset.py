@@ -39,6 +39,30 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Capacity                  | '75CL', '75CL', '75CL'                | → extract_number → rename to Capacity_cl|
+## | Title                     | 'The Guv'nor, Spain', 'Bread & Butt...| —                             |
+## | Description               | 'We asked some of our most p...', '...| —                             |
+## | Grape                     | 'Tempranillo', 'Chardonnay', 'Sauvi...| —                             |
+## | Secondary Grape Varieties | 'Touriga Nacional, Tinta Roriz', 'P...| —                             |
+## | Closure                   | 'Natural Cork', 'Natural Cork', 'Sc...| —                             |
+## | Country                   | 'Spain', 'USA', 'New Zealand'         | —                             |
+## | Characteristics           | 'Vanilla, Blackberry, Blackc...', '...| —                             |
+## | Per bottle / case / each  | 'per bottle', 'per bottle', 'per bo...| —                             |
+## | Type                      | 'Red', 'White', 'White'               | —                             |
+## | ABV                       | 'ABV 14.00%', 'ABV 13.50%', 'ABV 13...| —                             |
+## | Region                    | 'California', 'Marlborough', 'Burgu...| —                             |
+## | Style                     | 'Rich & Juicy', 'Rich & Toasty', 'C...| —                             |
+## | Vintage                   | 'NV', '2021', '2022'                  | —                             |
+## | Appellation               | 'Napa Valley', 'Macon', 'Napa Valley' | —                             |
+
+## Feature engineering
+# Capacity: e.g. '75CL' → 75.0, rename to Capacity_cl
+data['Capacity_cl'] = data['Capacity'].str.extract(r'(-?[\d,\.]+)', expand=False).str.replace(',', '').astype(float)
+data.drop(columns=['Capacity'], inplace=True)
+
 ## Set metadata
 target_name = 'Price'
 task = 'regression'

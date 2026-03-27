@@ -43,6 +43,27 @@ data = clean_backslash_operations(data)
 # data = data[~data['Bus age'].isnull()].reset_index(drop=True)
 data = data[data['Bus age'] >= 0].reset_index(drop=True)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | State                     | 'Connecticut', 'Connecticut', 'Conn...| —                             |
+## | WRI Bus ID                | 'WRI_042402', 'WRI_042403', 'WRI_04...| —                             |
+## | LEAID                     | '900070', '900070', '900070'          | —                             |
+## | Name of school district or| 'Area Cooperative Educationa...', '...| —                             |
+## | Public school district (wi| 'Public school district', 'Public s...| —                             |
+## | Does the school district o| 'Yes', 'Yes', 'Yes'                   | —                             |
+## | Third party involved      | 'AA TRANSPORTATION CO INC', 'AA TRA...| —                             |
+## | Bus Type                  | 'D', 'D', 'A'                         | —                             |
+## | Fuel type                 | 'Gasoline', 'Diesel', 'Gasoline'      | —                             |
+## | VIN                       | '1GBHG31U641194703', '4DRBUAFP36B25...| —                             |
+## | Body manufacturer         | 'Chevrolet', 'Ic Corporation', 'Che...| —                             |
+## | Manufacturer (not otherwis| 'Thomas Built', 'Thomas Built', 'Th...| —                             |
+## | Model                     | 'Express Cutaway G3500', '3000', 'E...| —                             |
+## | Date updated or last inspe| '2022-05-09 12:33:00', '2021-05-11 ...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

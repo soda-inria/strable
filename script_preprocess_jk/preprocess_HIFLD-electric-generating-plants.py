@@ -40,6 +40,33 @@ data = data.replace(-999, np.nan)
 data = data.replace(-999999, np.nan)
 data = data[data.STATUS == 'OP'].reset_index(drop=True)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | PLANT_CODE                | '62158', '2', '3'                     | —                             |
+## | NAME                      | 'SACKET LAKE RD #1 COMMUNITY...', '...| —                             |
+## | ADDRESS                   | '585 S. MAPLEWOOD RD', '19001 LOCK ...| —                             |
+## | CITY                      | 'THOMPSON', 'NORTHPORT', 'BUCKS'      | —                             |
+## | STATE                     | 'NY', 'AL', 'AL'                      | —                             |
+## | ZIP                       | '12701', '35476', '36512'             | —                             |
+## | TELEPHONE                 | 'NOT AVAILABLE', '(205) 333-1230', ...| —                             |
+## | TYPE                      | 'SOLAR PHOTOVOLTAIC', 'CONVENTIONAL...| —                             |
+## | COUNTY                    | 'ORANGE', 'TUSCALOOSA', 'MOBILE'      | —                             |
+## | NAICS_CODE                | '221114', '221111', '221112'          | —                             |
+## | NAICS_DESC                | 'SOLAR ELECTRIC POWER GENERA...', '...| —                             |
+## | SOURCE                    | 'EIA 860, EIA 923', 'EIA 860, EIA 9...| —                             |
+## | VAL_METHOD                | 'UNVERIFIED', 'IMAGERY/OTHER', 'IMA...| —                             |
+## | WEBSITE                   | 'NOT AVAILABLE', 'http://www.alabam...| —                             |
+## | OPERATOR                  | 'GENERATE CAPITAL', 'ALABAMA POWER ...| —                             |
+## | OPERAT_ID                 | '61194', '195', '195'                 | —                             |
+## | PRIM_FUEL                 | 'SUN', 'WAT', 'NG'                    | —                             |
+## | SEC_FUEL                  | 'NOT AVAILABLE', 'NOT AVAILABLE', '...| —                             |
+## | SUB_1                     | 'NOT AVAILABLE', 'BANKHEAD DAM', 'B...| —                             |
+## | SUB_2                     | 'NOT AVAILABLE', 'NOT AVAILABLE', '...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

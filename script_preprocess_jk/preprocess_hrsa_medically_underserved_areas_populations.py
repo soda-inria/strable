@@ -38,6 +38,49 @@ data = clean_backslash_operations(data)
 ## Dataset-level specific cleaning
 data = data.drop_duplicates(subset='MUA/P Service Area Name').reset_index(drop=True)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | MUA/P Service Area Name   | 'Bexar-San Antonio West', 'Houston-...| —                             |
+## | Designation Type Code     | 'MUA', 'MUA', 'MUA'                   | —                             |
+## | Designation Type          | 'Medically Underserved Area', 'Medi...| —                             |
+## | MUA/P Status Code         | 'D', 'D', 'D'                         | —                             |
+## | MUA/P Status Description  | 'Designated', 'Designated', 'Design...| —                             |
+## | MUA/P Designation Date Str| '2025/06/18', '2019/10/02', '1978/1...| —                             |
+## | MUA/P Update Date String  | '2025/06/18', '2019/10/02', '2024/0...| —                             |
+## | Medically Underserved Area| '2019/06/25', '2024/11/04', '2020/0...| —                             |
+## | Break in Designation      | 'N', 'N', 'N'                         | —                             |
+## | MUA/P Population Type Code| 'TRC', 'TRC', 'TRC'                   | —                             |
+## | Population Type           | 'Medically Underserved Area', 'Medi...| —                             |
+## | Medically Underserved Area| 'Census Tract 1715.02; Bexar...', '...| —                             |
+## | Medically Underserved Area| 'CT', 'CT', 'SCTY'                    | —                             |
+## | Medically Underserved Area| 'Census Tract', 'Census Tract', 'Si...| —                             |
+## | HHS Region Name           | 'Region 6', 'Region 6', 'Region 6'    | —                             |
+## | State Name                | 'Texas', 'Texas', 'Texas'             | —                             |
+## | State Abbreviation        | 'TX', 'TX', 'TX'                      | —                             |
+## | State and County Federal I| '48029', '48201', '48407'             | —                             |
+## | County or County Equivalen| '029', '201', '407'                   | —                             |
+## | Complete County Name      | 'Bexar County', 'Harris County', 'S...| —                             |
+## | County Equivalent Name    | 'Bexar', 'Harris', 'San Jacinto'      | —                             |
+## | County Description        | 'County      ', 'County      ', 'Co...| —                             |
+## | County Subdivision Name   | 'Hill City', 'Brooklyn', 'Echo'       | —                             |
+## | Census Tract              | '1715.02', '3242.00', 'Not Applicable'| —                             |
+## | Rural Status Code         | 'N', 'N', 'R'                         | —                             |
+## | Rural Status Description  | 'Non-Rural', 'Non-Rural', 'Rural'     | —                             |
+## | U.S. - Mexico Border 100 K| 'N', 'N', 'N'                         | —                             |
+## | U.S. - Mexico Border Count| 'N', 'N', 'N'                         | —                             |
+## | Primary HHS Region Name   | 'Region 6', 'Region 6', 'Region 6'    | —                             |
+## | Primary State Abbreviation| 'TX', 'TX', 'TX'                      | —                             |
+## | Primary State Name        | 'Texas', 'Texas', 'Texas'             | —                             |
+## | Common Region Name        | 'Region 6', 'Region 6', 'Region 6'    | —                             |
+## | Common State Name         | 'Texas', 'Texas', 'Texas'             | —                             |
+## | Common State Abbreviation | 'TX', 'TX', 'TX'                      | —                             |
+## | Common State County FIPS C| '48029', '48201', '48407'             | —                             |
+## | Common County Name        | 'Bexar County, TX', 'Harris County,...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

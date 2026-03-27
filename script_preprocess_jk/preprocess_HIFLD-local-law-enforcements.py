@@ -40,6 +40,25 @@ data = data.replace(-999, np.nan)
 data['number_of_officers'] = data['FTSWORN'] + data['PTSWORN']
 data.drop(columns=['FTSWORN', 'PTSWORN'], inplace=True)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | NAME                      | 'HIRAM POLICE DEPARTMENT', 'GLENNVI...| —                             |
+## | ADDRESS                   | '217 MAIN STREET', '201 SOUTH CHURC...| —                             |
+## | CITY                      | 'HIRAM', 'GLENNVILLE', 'SIMMESPORT'   | —                             |
+## | STATE                     | 'GA', 'GA', 'LA'                      | —                             |
+## | ZIP4                      | '3249', '1509', '2000'                | —                             |
+## | TELEPHONE                 | '(770) 943-3726', '(912) 654-2103',...| —                             |
+## | TYPE                      | 'LOCAL POLICE DEPARTMENT', 'LOCAL P...| —                             |
+## | COUNTY                    | 'PAULDING', 'TATTNALL', 'AVOYELLES'   | —                             |
+## | SOURCE                    | 'UNITED STATES DEPARTMENT OF...', '...| —                             |
+## | VAL_METHOD                | 'IMAGERY/OTHER', 'IMAGERY/OTHER', '...| —                             |
+## | WEBSITE                   | 'NOT AVAILABLE', 'NOT AVAILABLE', '...| —                             |
+## | CI_ID                     | 'NOT AVAILABLE', 'NOT AVAILABLE', '...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

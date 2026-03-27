@@ -39,6 +39,27 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | country                   | 'AFG', 'AFG', 'AFG'                   | —                             |
+## | country_long              | 'Afghanistan', 'Afghanistan', 'Afgh...| —                             |
+## | name                      | 'Kajaki Hydroelectric Power ...', '...| —                             |
+## | gppd_idnr                 | 'GEODB0040538', 'WKS0070144', 'WKS0...| —                             |
+## | primary_fuel              | 'Hydro', 'Solar', 'Solar'             | —                             |
+## | other_fuel1               | 'Oil', 'Oil', 'Oil'                   | —                             |
+## | other_fuel2               | 'Other', 'Oil', 'Other'               | —                             |
+## | other_fuel3               | 'Other', 'Other', 'Gas'               | —                             |
+## | owner                     | 'SociÃ©te AlgÃ©rienne de Pro...', '...| —                             |
+## | source                    | 'GEODB', 'Wiki-Solar', 'Wiki-Solar'   | —                             |
+## | url                       | 'http://globalenergyobservat...', '...| —                             |
+## | geolocation_source        | 'GEODB', 'Wiki-Solar', 'Wiki-Solar'   | —                             |
+## | wepp_id                   | '1009793', '1009795', '1009797'       | —                             |
+## | generation_data_source    | 'Australia Clean Energy Regu...', '...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

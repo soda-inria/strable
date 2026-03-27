@@ -37,6 +37,24 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | issuer_name               | 'ABNB Federal Credit Union', 'ABNB ...| —                             |
+## | product_name              | 'CU Money VISA Everyday Spen...', '...| —                             |
+## | agreement_effective_date  | '2013-08-01', '2013-08-01', '2013-0...| —                             |
+## | created_date              | '2019-04-19 23:45:15', '2019-04-19 ...| —                             |
+## | current_status            | 'Active', 'Active', 'Active'          | —                             |
+## | prepaid_product_type      | 'GPR (General Purpose Reload...', '...| —                             |
+## | program_manager_exists    | 'Yes', 'Yes', 'Yes'                   | —                             |
+## | program_manager           | 'LSC Card Services', 'LSC Card Serv...| —                             |
+## | other_relevant_parties    | 'No information provided', 'No info...| —                             |
+## | path                      | 'ABNB Federal Credit Union/C...', '...| —                             |
+## | direct_download           | 'https://files.consumerfinan...', '...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

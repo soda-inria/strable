@@ -39,6 +39,19 @@ data = clean_backslash_operations(data)
 ## Dataset-level specific cleaning
 data['Media'] = data['Media'].astype(str)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Media                     | 'The New York Times', 'BBC', 'Forbes' | —                             |
+## | Domain                    | 'nytimes.com', 'bbc.com', 'forbes.com'| —                             |
+## | Country                   | 'United States', 'United Kingdom', ...| —                             |
+## | Region                    | 'Northern America', 'Western Europe...| —                             |
+## | Language                  | 'English/Chinese/Spanish', 'English...| —                             |
+## | Typology                  | 'General', 'General', 'Finance'       | —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

@@ -39,6 +39,25 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | School Code               | '001002', '001003', '001004'          | —                             |
+## | Name                      | 'Alabama Agricultural & Mech...', '...| —                             |
+## | Address                   | '4900 MERIDIAN STREET', '5345 ATLAN...| —                             |
+## | City                      | 'NORMAL', 'MONTGOMERY', 'MONTEVALLO'  | —                             |
+## | State                     | 'AL', 'AL', 'AL'                      | —                             |
+## | State Desc                | 'ALABAMA', 'ALABAMA', 'ALABAMA'       | —                             |
+## | Zip Code                  | '35762', '36109', '35115'             | —                             |
+## | Zip Ext                   | '1357', '3398', '6000'                | —                             |
+## | Prog Length               | '14', '08', '14'                      | —                             |
+## | Ethnic Code               | '2', '5', '5'                         | —                             |
+## | Cong Dis                  | '05', '02', '06'                      | —                             |
+## | Region                    | '04', '04', '04'                      | —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

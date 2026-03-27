@@ -36,6 +36,18 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Brand                     | 'Green & Sunny', 'Nissin', 'Maruchan' | —                             |
+## | Variety                   | 'Mee Krob Pad Thai', 'Sauce Yakisob...| —                             |
+## | Style                     | 'Pack', 'Tray', 'Pack'                | —                             |
+## | Country                   | 'Thailand', 'Japan', 'United States'  | —                             |
+## | Stars                     | '5', '5', '3'                         | —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Set metadata
 target_name = 'Stars'
 task = 'm-classification'

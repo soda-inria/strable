@@ -38,6 +38,31 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Loan Number               | 'IBRD98280', 'IBRD98430', 'IBRD98440' | —                             |
+## | Region                    | 'EAST ASIA AND PACIFIC', 'EAST ASIA...| —                             |
+## | Country / Economy Code    | 'CN', 'CN', 'CN'                      | —                             |
+## | Country / Economy         | 'China', 'China', 'China'             | —                             |
+## | Borrower                  | 'MINISTRY OF FINANCE', 'MINISTRY OF...| —                             |
+## | Guarantor Country / Econom| 'CN', 'CN', 'CN'                      | —                             |
+## | Guarantor                 | 'China', 'China', 'China'             | —                             |
+## | Loan Type                 | 'FSL', 'FSL', 'FSL'                   | —                             |
+## | Loan Status               | 'Approved', 'Approved', 'Approved'    | —                             |
+## | Project ID                | 'P506602', 'P177450', 'P506807'       | —                             |
+## | Project Name              | 'LCC', 'Ecosystem and Biodiversity ...| —                             |
+## | First Repayment Date      | '08/15/2030', '10/15/2032', '11/15/...| —                             |
+## | Last Repayment Date       | '02/15/2055', '04/15/2050', '05/15/...| —                             |
+## | Agreement Signing Date    | '05/29/1994', '05/29/1994', '03/28/...| —                             |
+## | Board Approval Date       | '06/06/2025', '06/24/2025', '06/27/...| —                             |
+## | Effective Date (Most Recen| '05/26/1994', '05/26/1994', '03/28/...| —                             |
+## | Closed Date (Most Recent) | '12/31/2030', '05/31/2031', '12/31/...| —                             |
+## | Last Disbursement Date    | '07/16/1987', '05/13/1988', '03/06/...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

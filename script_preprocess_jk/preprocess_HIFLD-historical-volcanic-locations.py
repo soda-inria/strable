@@ -38,6 +38,30 @@ data = clean_backslash_operations(data)
 ## Dataset-level specific cleaning
 data = data.replace(-999, np.nan)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | COMMENTS                  | '<p>Eruption is uncertain (R...', '...| —                             |
+## | DAMAGE_DESCRIPTION        | 'Severe (~>$5 to $24 million)', 'Se...| —                             |
+## | INJURIES_DESCRIPTION      | 'Few (~1 to 50 people)', 'Few (~1 t...| —                             |
+## | MISSING_DESCRIPTION       | 'Few (~1 to 50 people)', 'Some (~51...| —                             |
+## | HOUSES_DESCRIPTION        | 'Few (~1 to 50 houses)', 'Few (~1 t...| —                             |
+## | DAMAGE_TOTAL_DESCRIPTION  | 'Extreme (~$25 million or more)', '...| —                             |
+## | DEATHS_TOTAL_DESCRIPTION  | 'Very Many (~1001 or more pe...', '...| —                             |
+## | INJURIES_TOTAL_DESCRIPTION| 'Few (~1 to 50 people)', 'Few (~1 t...| —                             |
+## | MISSING_TOTAL_DESCRIPTION | 'Few (~1 to 50 people)', 'Some (~51...| —                             |
+## | HOUSES_TOTAL_DESCRIPTION  | 'Many (~101 to 1000 houses)', 'Few ...| —                             |
+## | NUM                       | '0101-06=', '0101-06=', '0303-01='    | —                             |
+## | NAME                      | 'Etna', 'Etna', 'Karthala'            | —                             |
+## | LOCATION                  | 'Italy', 'Italy', 'Indian O-W'        | —                             |
+## | MORPHOLOGY                | 'Stratovolcano', 'Stratovolcano', '...| —                             |
+## | STATUS                    | 'Historical', 'Historical', 'Histor...| —                             |
+## | TIME_ERUPT                | 'D1', 'D1', 'D1'                      | —                             |
+## | COUNTRY                   | 'Italy', 'Italy', 'Comoros'           | —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

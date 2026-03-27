@@ -77,6 +77,38 @@ for col in data.columns:
     data[col] = data[col].str.replace("[", "")
     data[col] = data[col].str.replace("]", "")
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | number_of_animals_affected| '1', '4', '1'                         | → parse_int                   |
+## | number_of_animals_treated | '1', '4', '1'                         | → parse_int                   |
+## | original_receive_date     | '20080430', '20090414', '20101221'    | — (date YYYYMMDD)             |
+## | onset_date                | '20080419', '20090414', '20101214'    | — (date YYYYMMDD)             |
+## | reaction                  | 'veddra_version: 11, veddra_...', '...| —                             |
+## | unique_aer_id_number      | 'USA-USFDACVM-2011-US-000218', 'USA...| —                             |
+## | primary_reporter          | 'Animal Owner', 'Veterinarian', 'Ot...| —                             |
+## | drug                      | 'first_exposure_date: 199804...', '...| —                             |
+## | condition                 | 'Unknown', 'Good', 'Unknown'          | —                             |
+## | species                   | 'Dog', 'Cattle', 'Horse'              | —                             |
+## | gender                    | 'Male', 'Male', 'Unknown'             | —                             |
+## | age                       | 'min: 10.00, unit: Year, qua...', '...| —                             |
+## | weight                    | 'min: 5.000, unit: Kilogram,...', '...| —                             |
+## | breed                     | 'is_crossbred: false, breed_...', '...| —                             |
+## | reproductive_status       | 'Unknown', 'Unknown', 'Intact'        | —                             |
+## | female_animal_physiologica| 'NOT APPLICABLE', 'NOT APPLICABLE',...| —                             |
+## | type_of_information       | 'Manufacturing/Product Defec...', '...| —                             |
+## | serious_ae                | 'true', 'false', 'true'               | —                             |
+## | time_between_exposure_and_| '<48 Hours', '<14 Days', '<1 Hour'    | —                             |
+## | secondary_reporter        | 'Animal Owner', 'Animal Owner', 'Ve...| —                             |
+
+## Feature engineering
+# number_of_animals_affected: plain number string → int
+data['number_of_animals_affected'] = pd.to_numeric(data['number_of_animals_affected'].str.replace(',', '', regex=False), errors='coerce')
+# number_of_animals_treated: plain number string → int
+data['number_of_animals_treated'] = pd.to_numeric(data['number_of_animals_treated'].str.replace(',', '', regex=False), errors='coerce')
+# original_receive_date: YYYYMMDD date stored as string - no transform
+# onset_date: YYYYMMDD date stored as string - no transform
+
 ## Set metadata
 target_name = 'serious_ae'
 task = 'b-classification'

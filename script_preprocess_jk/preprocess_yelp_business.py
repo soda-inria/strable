@@ -44,6 +44,22 @@ data = clean_dict_type_col(data, 'hours', 'to_string')
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | business_id               | 'O_0H42Bw8hBduWSADPG8ng', '-QNDs5_R...| —                             |
+## | name                      | 'Three Kings Public House', '3 Seas...| —                             |
+## | address                   | '6307 Delmar Blvd', '7813 Francine ...| —                             |
+## | city                      | 'Saint Louis', 'New Port Richey', '...| —                             |
+## | state                     | 'MO', 'FL', 'TN'                      | —                             |
+## | postal_code               | '63130', '34653', '37069'             | —                             |
+## | attributes                | 'HasTV: True, RestaurantsTak...', '...| —                             |
+## | categories                | 'Bars, Restaurants, Burgers,...', '...| —                             |
+## | hours                     | 'Monday: 11:0-21:0, Tuesday:...', '...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Set metadata
 target_name = 'stars'
 task = 'm-classification'

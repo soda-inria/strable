@@ -37,6 +37,19 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Occupation Code           | 'D3256', 'D3256', 'D3256'             | —                             |
+## | Occupation Name           | 'Advanced Practice Registere...', '...| —                             |
+## | Geography Abbreviation    | 'AL', 'AK', 'AZ'                      | —                             |
+## | Geography Name            | 'Alabama', 'Alaska', 'Arizona'        | —                             |
+## | Missing or Suppressed Race| 'Hispanic: Supressed; Asian ...', '...| —                             |
+## | Missing or Suppressed Age | 'Less than 30 Years Old: Sup...', '...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

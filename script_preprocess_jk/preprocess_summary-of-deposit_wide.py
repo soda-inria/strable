@@ -41,6 +41,48 @@ data = clean_backslash_operations(data)
 ## Dataset-level specific cleaning
 data = data[data.DEPSUM > 0].reset_index(drop=True)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | NAMEFULL                  | 'State Street Bank and Trust...', '...| —                             |
+## | ADDRESBR                  | 'One Congress Street, Suite 1', '10...| —                             |
+## | STALPBR                   | 'MA', 'AL', 'AL'                      | —                             |
+## | ADDRESS                   | 'One Congress Street, Suite 1', '10...| —                             |
+## | BKCLASS                   | 'SM', 'SM', 'NM'                      | —                             |
+## | CHARTER                   | 'STATE', 'STATE', 'STATE'             | —                             |
+## | CHRTAGNN                  | 'State Agency', 'State Agency', 'St...| —                             |
+## | CHRTAGNT                  | 'STATE', 'STATE', 'STATE'             | —                             |
+## | CITY                      | 'Boston', 'Auburn', 'Demopolis'       | —                             |
+## | CNTRYNA                   | 'United States', 'United States', '...| —                             |
+## | FDICNAME                  | 'New York', 'Atlanta', 'Atlanta'      | —                             |
+## | FEDNAME                   | 'Boston', 'Atlanta', 'Atlanta'        | —                             |
+## | INSURED                   | 'CB', 'CB', 'CB'                      | —                             |
+## | OCCNAME                   | 'Southern', 'Southern', 'Southern'    | —                             |
+## | REGAGNT                   | 'FED', 'FED', 'FDIC'                  | —                             |
+## | SPECDESC                  | 'INTERNATIONAL', 'COMMERCIAL LENDIN...| —                             |
+## | STALP                     | 'MA', 'AL', 'AL'                      | —                             |
+## | STNAME                    | 'Massachusetts', 'Alabama', 'Alabama' | —                             |
+## | BRCENM                    | 'M', 'M', 'M'                         | —                             |
+## | CBSA_DIV_NAMB             | 'Boston, MA', 'Atlanta-Sandy Spring...| —                             |
+## | CITY2BR                   | 'Boston', 'Auburn', 'Demopolis'       | —                             |
+## | CITYBR                    | 'Boston', 'Auburn', 'Demopolis'       | —                             |
+## | CNTRYNAB                  | 'United States', 'United States', '...| —                             |
+## | CNTYNAMB                  | 'Suffolk', 'Lee', 'Marengo'           | —                             |
+## | CSANAMBR                  | 'Boston-Worcester-Providence...', '...| —                             |
+## | MSANAMB                   | 'Boston-Cambridge-Newton, MA-NH', '...| —                             |
+## | NAMEBR                    | 'State Street Bank And Trust...', '...| —                             |
+## | SIMS_DESCRIPTION          | '100.0', '100.0', '100.0'             | —                             |
+## | SIMS_ESTABLISHED_DATE     | '01/01/1792', '01/03/1907', '01/01/...| —                             |
+## | SIMS_PROJECTION           | 'EXACT', 'EXACT', 'EXACT'             | —                             |
+## | STNAMEBR                  | 'Massachusetts', 'Alabama', 'Alabama' | —                             |
+## | CITYHCR                   | 'BOSTON', 'AUBURN', 'DEMOPOLIS'       | —                             |
+## | HCTMULT                   | 'MULT', 'ONE', 'ONE'                  | —                             |
+## | NAMEHCR                   | 'STATE STREET CORPORATION', 'AUBURN...| —                             |
+## | STALPHCR                  | 'MA', 'AL', 'AL'                      | —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

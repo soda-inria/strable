@@ -43,6 +43,36 @@ completion_date = pd.to_datetime(data['Completion Date'], errors='coerce')
 data['days_to_complete'] = (completion_date - start_date).dt.days
 data.drop(columns=['Start Date', 'Completion Date'], inplace=True)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | NCT Number                | 'NCT04785898', 'NCT04595136', 'NCT0...| —                             |
+## | Title                     | 'Diagnostic Performance of t...', '...| —                             |
+## | Acronym                   | 'COVID-IDNow', 'COVID-19', 'TAC-COV...| —                             |
+## | Status                    | 'Active, not recruiting', 'Not yet ...| —                             |
+## | Study Results             | 'No Results Available', 'No Results...| —                             |
+## | Conditions                | 'Covid19', 'SARS-CoV-2 Infection', ...| —                             |
+## | Interventions             | 'Diagnostic Test: ID Now™ CO...', '...| —                             |
+## | Outcome Measures          | 'Evaluate the diagnostic per...', '...| —                             |
+## | Sponsor/Collaborators     | 'Groupe Hospitalier Paris Sa...', '...| —                             |
+## | Gender                    | 'All', 'All', 'All'                   | —                             |
+## | Age                       | '18 Years and older   (Adult...', '...| —                             |
+## | Phases                    | 'Not Applicable', 'Phase 1|Phase 2'...| —                             |
+## | Funded Bys                | 'Other', 'Other', 'Other'             | —                             |
+## | Study Type                | 'Interventional', 'Interventional',...| —                             |
+## | Study Designs             | 'Allocation: N/A|Interventio...', '...| —                             |
+## | Other IDs                 | 'COVID-IDNow', 'COVID19-0001-USR', ...| —                             |
+## | Primary Completion Date   | 'December 22, 2020', 'December 15, ...| —                             |
+## | First Posted              | 'March 8, 2021', 'October 20, 2020'...| —                             |
+## | Results First Posted      | 'January 29, 2021', 'April 5, 2021'...| —                             |
+## | Last Update Posted        | 'March 8, 2021', 'October 20, 2020'...| —                             |
+## | Locations                 | 'Groupe Hospitalier Paris Sa...', '...| —                             |
+## | Study Documents           | '"Statistical Analysis Plan"...', '...| —                             |
+## | URL                       | 'https://ClinicalTrials.gov/...', '...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Set metadata
 target_name = 'days_to_complete'
 task = 'regression'

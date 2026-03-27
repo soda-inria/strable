@@ -38,6 +38,28 @@ data = clean_backslash_operations(data)
 ## Dataset-level specific cleaning
 data = data.replace(-999, np.nan)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | NAME                      | 'RAPIDES PARISH DETENTION CE...', '...| —                             |
+## | ADDRESS                   | '400 B JOHN ALLISON DR', '7400 ACAD...| —                             |
+## | CITY                      | 'ALEXANDRIA', 'ALEXANDRIA', 'LAPLACE' | —                             |
+## | STATE                     | 'LA', 'LA', 'LA'                      | —                             |
+## | TELEPHONE                 | '(318) 449-4360', '(318) 449-4385',...| —                             |
+## | TYPE                      | 'COUNTY', 'COUNTY', 'COUNTY'          | —                             |
+## | STATUS                    | 'OPEN', 'OPEN', 'OPEN'                | —                             |
+## | COUNTY                    | 'RAPIDES', 'RAPIDES', 'ST. JOHN THE...| —                             |
+## | COUNTRY                   | 'USA', 'USA', 'USA'                   | —                             |
+## | SOURCE                    | 'http://www.rpso.org/correct...', '...| —                             |
+## | SOURCEDATE                | '2017/09/29 00:00:00+00', '2017/09/...| —                             |
+## | VAL_METHOD                | 'IMAGERY/OTHER', 'IMAGERY/OTHER', '...| —                             |
+## | VAL_DATE                  | '2024/08/16 00:00:00+00', '2024/08/...| —                             |
+## | WEBSITE                   | 'http://www.rpso.org/correct...', '...| —                             |
+## | SECURELVL                 | 'NOT AVAILABLE', 'NOT AVAILABLE', '...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

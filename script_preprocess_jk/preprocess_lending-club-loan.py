@@ -39,6 +39,54 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | term                      | ' 36 months', ' 60 months', ' 36 mo...| → extract_number (unit)       |
+## | int_rate                  | '10.65%', '15.27%', '15.96%'          | → parse_percentage            |
+## | revol_util                | '83.70%', '9.40%', '98.50%'           | → parse_percentage            |
+## | emp_length                | '10+ years', '< 1 year', '10+ years'  | → custom emp_length parse     |
+## | earliest_cr_line          | 'Jan-85', 'Apr-99', 'Nov-01'          | → parse year → earliest_cr_line_year|
+## | last_pymnt_d              |                                       | → parse year → last_pymnt_d_year|
+## | grade                     | 'B', 'C', 'C'                         | —                             |
+## | sub_grade                 | 'B2', 'C4', 'C5'                      | —                             |
+## | emp_title                 | 'Ryder', 'AIR RESOURCES BOARD', 'Ve...| —                             |
+## | home_ownership            | 'RENT', 'RENT', 'RENT'                | —                             |
+## | verification_status       | 'Verified', 'Source Verified', 'Not...| —                             |
+## | issue_d                   | 'Dec-11', 'Dec-11', 'Dec-11'          | —                             |
+## | loan_status               | 'Fully Paid', 'Charged Off', 'Fully...| —                             |
+## | url                       | 'https://lendingclub.com/bro...', '...| —                             |
+## | desc                      | ' Borrower added on 12/22/11...', '...| —                             |
+## | purpose                   | 'credit_card', 'car', 'small_business'| —                             |
+## | title                     | 'Computer', 'bike', 'real estate bu...| —                             |
+## | zip_code                  | '860xx', '309xx', '606xx'             | —                             |
+## | addr_state                | 'AZ', 'GA', 'IL'                      | —                             |
+
+## Feature engineering
+# term: e.g. ' 36 months' → 36 (extract leading number)
+data['term'] = data['term'].str.extract(r'(-?[\d,\.]+)', expand=False).str.replace(',', '').astype(float)
+# int_rate: e.g. '70%' → float
+data['int_rate'] = data['int_rate'].str.strip().str.rstrip('%').astype(float)
+# revol_util: e.g. '70%' → float
+data['revol_util'] = data['revol_util'].str.strip().str.rstrip('%').astype(float)
+# emp_length: '10+ years' → 10, '< 1 year' → 0, 'n/a' → NaN
+def _parse_emp_length(v):
+    if pd.isna(v): return float('nan')
+    v = str(v).strip().lower()
+    if v in ('n/a', 'na', ''): return float('nan')
+    if '< 1' in v: return 0.0
+    v = v.replace('+', '')
+    m = re.search(r'(\d+)', v)
+    return float(m.group(1)) if m else float('nan')
+import re as _re
+data['emp_length'] = data['emp_length'].apply(_parse_emp_length)
+# earliest_cr_line: e.g. 'Jan-1985' → year int → earliest_cr_line_year
+data['earliest_cr_line_year'] = pd.to_datetime(data['earliest_cr_line'], format='%b-%Y', errors='coerce').dt.year
+data.drop(columns=['earliest_cr_line'], inplace=True)
+# last_pymnt_d: e.g. 'Jan-1985' → year int → last_pymnt_d_year
+data['last_pymnt_d_year'] = pd.to_datetime(data['last_pymnt_d'], format='%b-%Y', errors='coerce').dt.year
+data.drop(columns=['last_pymnt_d'], inplace=True)
+
 ## Set metadata
 target_name = 'loan_status'
 task = 'b-classification'

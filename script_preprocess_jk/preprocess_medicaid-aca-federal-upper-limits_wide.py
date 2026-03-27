@@ -40,6 +40,21 @@ data.sort_values(by='Year', inplace=True)
 data.reset_index(drop=True, inplace=True)
 data = data.drop_duplicates(subset=['Product Group'], keep='last')
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Ingredient                | 'PERINDOPRIL ERBUMINE', 'PERINDOPRI...| —                             |
+## | Strength                  | '8MG', '4MG', '100MG'                 | —                             |
+## | Dosage                    | 'TABLET', 'TABLET', 'TABLET'          | —                             |
+## | Route                     | 'ORAL', 'ORAL', 'ORAL'                | —                             |
+## | MDR Unit Type             | 'TAB', 'TAB', 'TAB'                   | —                             |
+## | NDC                       | '00054011225', '00527191901', '0011...| —                             |
+## | A-Rated                   | 'Yes', 'Yes', 'Yes'                   | —                             |
+## | Multiplier Greater Than 17| 'Y', 'Y', 'N'                         | —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

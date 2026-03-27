@@ -38,6 +38,23 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | INSTITUTION_OR_ORGANIZATIO| 'University of Wyoming Alumn...', '...| —                             |
+## | TYPE_OF _INSTITUTION_OR_OR| 'Alumni Association; University', '...| —                             |
+## | CITY                      | 'Laramie', 'Atlanta', 'Boulder'       | —                             |
+## | STATE                     | 'WY', 'GA', 'CO'                      | —                             |
+## | CREDIT_CARD_ISSUER        | 'First Interstate Bank', 'Atlanta P...| —                             |
+## | STATUS                    | 'Same', 'Same', 'Amended'             | —                             |
+## | IN_EFFECT_AS_OF_BEGINNING_| 'No', 'No', 'No'                      | —                             |
+## | NEW_ACCOUNTS_OPENED_IN_REP| '0', '1', '50'                        | —                             |
+## | OPEID                     | '.', '283700', '331600'               | —                             |
+## | UNIVERSITY_NAME           | '.', 'SUNY Buffalo', 'California Un...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

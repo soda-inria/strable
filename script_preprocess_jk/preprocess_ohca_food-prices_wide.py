@@ -51,6 +51,25 @@ groupby_col = [
 ]
 data = data.groupby(groupby_col, as_index=False)['usdprice'].mean()
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | countryiso3               | 'AFG', 'AFG', 'AFG'                   | —                             |
+## | admin1                    | 'Badakhshan', 'Badakhshan', 'Badakh...| —                             |
+## | admin2                    | 'Argo', 'Argo', 'Argo'                | —                             |
+## | market                    | 'Badakhshan', 'Badakhshan', 'Badakh...| —                             |
+## | market_id                 | '3690', '3690', '3690'                | —                             |
+## | category                  | 'cereals and tubers', 'cereals and ...| —                             |
+## | commodity                 | 'Bread', 'Rice (high quality)', 'Ri...| —                             |
+## | commodity_id              | '55', '247', '145'                    | —                             |
+## | unit                      | 'KG', 'KG', 'KG'                      | —                             |
+## | priceflag                 | 'aggregate', 'aggregate', 'aggregate' | —                             |
+## | pricetype                 | 'Retail', 'Retail', 'Retail'          | —                             |
+## | currency                  | 'AFN', 'AFN', 'AFN'                   | —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

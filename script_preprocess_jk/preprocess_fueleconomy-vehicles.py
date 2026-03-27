@@ -44,6 +44,30 @@ data = clean_backslash_operations(data)
 data = data[(data.year>2024)&(data.year<2026)]
 data.reset_index(drop=True, inplace=True)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | drive                     | 'Rear-Wheel Drive', 'Rear-Wheel Dri...| —                             |
+## | eng_dscr                  | 'SIDI', 'SIDI', 'SIDI'                | —                             |
+## | fuelType                  | 'Premium', 'Premium', 'Premium'       | —                             |
+## | fuelType1                 | 'Premium Gasoline', 'Premium Gasoli...| —                             |
+## | make                      | 'BMW', 'BMW', 'BMW'                   | —                             |
+## | model                     | 'Z4 sDrive30i', '840i Coupe', '840i...| —                             |
+## | mpgData                   | 'N', 'N', 'N'                         | —                             |
+## | trany                     | 'Automatic (S8)', 'Automatic (S8)',...| —                             |
+## | VClass                    | 'Two Seaters', 'Subcompact Cars', '...| —                             |
+## | baseModel                 | 'Z4', '8 Series', '8 Series'          | —                             |
+## | atvType                   | 'Hybrid', 'Hybrid', 'Hybrid'          | —                             |
+## | fuelType2                 | 'E85', 'E85', 'E85'                   | —                             |
+## | evMotor                   | '222V Li-Ion', '222V Li-Ion', '222V...| —                             |
+## | mfrCode                   | 'BMX', 'BMX', 'BMX'                   | —                             |
+## | createdOn                 | 'Tue Mar 19 00:00:00 EDT 2024', 'Tu...| —                             |
+## | modifiedOn                | 'Tue Jul 30 00:00:00 EDT 2024', 'Tu...| —                             |
+## | startStop                 | 'Y', 'Y', 'Y'                         | —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

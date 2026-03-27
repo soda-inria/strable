@@ -37,6 +37,24 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Award Date                | '12/24/2024', '12/24/2024', '12/23/...| —                             |
+## | Quarter and Fiscal Year   | 'Q2 - FY25', 'Q2 - FY25', 'Q2 - FY25' | —                             |
+## | Commodity Category        | 'CONSULTING', 'CONSULTING', 'CONTRA...| —                             |
+## | Contract Description      | 'Recommendation for Service ...', '...| —                             |
+## | WBG Organization          | 'IBRD', 'IBRD', 'IFC'                 | —                             |
+## | Selection Number          | '2009796', '2012029', '2003991'       | —                             |
+## | Supplier                  | 'CONSULTRANS, S.A.U.', 'World Food ...| —                             |
+## | Supplier Country / Economy| 'Spain', 'Italy', 'France'            | —                             |
+## | Supplier Country / Economy| 'ES', 'IT', 'FR'                      | —                             |
+## | Fund Source               | 'Trust Fund', 'Trust Fund', 'Trust ...| —                             |
+## | VPU description           | 'Office of the Regional Vice...', '...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

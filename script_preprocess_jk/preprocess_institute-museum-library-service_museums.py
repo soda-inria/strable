@@ -43,6 +43,67 @@ data = data.replace(' ', np.nan)
 mid_counts = data['MID'].value_counts()
 mids_multiple_entries = mid_counts[mid_counts > 1].index.tolist()
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | MID                       | '8400100026', '8400100029', '840010...| —                             |
+## | DISCIPLINE                | 'ART', 'ART', 'HST'                   | —                             |
+## | EIN                       | '631162561', '636049847', '631106693' | —                             |
+## | CO_LOC_RES                | 'ESTATE', 'SCHOOL', 'PLANETARIUM'     | —                             |
+## | NTEEC                     | 'A51', 'A51', 'A80'                   | —                             |
+## | DUNS                      | '121013382', '075471300', '140201547' | —                             |
+## | NAICS                     | '712110', '712110', '712110'          | —                             |
+## | COMMONNAME                | 'MOBILE MUSEUM OF ART', 'MONTGOMERY...| —                             |
+## | LEGALNAME                 | 'THE MOBILE MUSEUM OF ART INC', 'MO...| —                             |
+## | ALTNAME                   | 'BIRMINGHAM MUSEUM OF ART ME...', '...| —                             |
+## | AKADBA                    | 'THE MOBILE MUSEUM OF ART INC', 'HA...| —                             |
+## | ADSTREET                  | '4850 MUSEUM DR', 'ONE MUSEUM DRIVE...| —                             |
+## | ADCITY                    | 'MOBILE', 'MONTGOMERY', 'MOBILE'      | —                             |
+## | ADSTATE                   | 'AL', 'AL', 'AL'                      | —                             |
+## | ADZIP                     | '36689-0426', '36117', '36602-2315'   | —                             |
+## | ADZIP5                    | '36689', '36123', '36602'             | —                             |
+## | PHSTREET                  | '4850 MUSEUM DR', 'ONE MUSEUM DRIVE...| —                             |
+## | PHCITY                    | 'MOBILE', 'MONTGOMERY', 'GEORGIANA'   | —                             |
+## | PHSTATE                   | 'AL', 'AL', 'AL'                      | —                             |
+## | PHZIP                     | '36689-0426', '36117', '36033'        | —                             |
+## | PHZIP5                    | '36689', '36117', '36033'             | —                             |
+## | PHONE                     | '2512085200', '3342404333', '251208...| —                             |
+## | WEBURL                    | 'HTTP://WWW.MOBILEMUSEUMOFAR...', '...| —                             |
+## | IRS_NAME15                | 'THE MOBILE MUSEUM OF ART INC', 'MO...| —                             |
+## | TAXPER15                  | '201409', '201309', '201312'          | —                             |
+## | IRS_STREET15              | '4850 MUSEUM DR', '1 MUSEUM DR', '1...| —                             |
+## | IRS_CITY15                | 'MOBILE', 'MONTGOMERY', 'MOBILE'      | —                             |
+## | IRS_STATE15               | 'AL', 'AL', 'AL'                      | —                             |
+## | IRS_ZIP15                 | '36608-1917', '36117-4600', '36604-...| —                             |
+## | RULEDATE15                | '199602', '195109', '199404'          | —                             |
+## | IPEDS                     | '110662', '133881', '135726'          | —                             |
+## | INSTNAME                  | 'UNIVERSITY OF CALIFORNIA, L...', '...| —                             |
+## | INSTCITY                  | 'LOS ANGELES', 'MELBOURNE', 'CORAL ...| —                             |
+## | INSTST                    | 'CA', 'FL', 'FL'                      | —                             |
+## | LONGITUDE                 | '-88.15462', '-86.2087', '-88.07704'  | —                             |
+## | LATITUDE                  | '30.70401', '32.3526', '30.69234'     | —                             |
+## | AAMREG                    | '3', '3', '3'                         | —                             |
+## | BEAREG                    | '5', '5', '5'                         | —                             |
+## | LOCALE4                   | '1', '1', '1'                         | —                             |
+## | FIPSST                    | '01', '01', '01'                      | —                             |
+## | FIPSCO                    | '097', '101', '097'                   | —                             |
+## | GSTREET                   | '4850 MUSEUM DR', 'ONE MUSEUM DRIVE...| —                             |
+## | GCITY                     | 'MOBILE', 'MONTGOMERY', 'MOBILE'      | —                             |
+## | GSTATE                    | 'AL', 'AL', 'AL'                      | —                             |
+## | GZIP                      | '36689-0426', '36117', '36604-1405'   | —                             |
+## | GZIP5                     | '36689', '36117', '36604'             | —                             |
+## | BMF15_F                   | '1', '1', '1'                         | —                             |
+## | IMLSAD_F                  | '1', '1', '1'                         | —                             |
+## | PFND_F                    | '0', '0', '0'                         | —                             |
+## | FCT3P_F                   | '0', '0', '0'                         | —                             |
+## | USER_F                    | '0', '0', '0'                         | —                             |
+## | UNI_F                     | '0', '0', '0'                         | —                             |
+## | OTHER_F                   | '0', '0', '0'                         | —                             |
+## | SOURCE                    | 'ANCA', 'ANCA', 'ANCA'                | —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

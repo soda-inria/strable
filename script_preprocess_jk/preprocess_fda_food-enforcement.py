@@ -40,6 +40,35 @@ data.sort_values(by='report_date', inplace=True)
 data.drop_duplicates(subset=['event_id', 'classification'], inplace=True)
 data.reset_index(drop=True, inplace=True)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | status                    | 'Terminated', 'Terminated', 'Termin...| —                             |
+## | city                      | 'Beloit', 'Rowland Heights', 'Cambr...| —                             |
+## | state                     | 'WI', 'CA', 'MA'                      | —                             |
+## | country                   | 'United States', 'United States', '...| —                             |
+## | classification            | 'Class II', 'Class III', 'Class II'   | —                             |
+## | event_id                  | '61890', '62001', '61600'             | —                             |
+## | recalling_firm            | 'Kerry Ingredients & Flavour...', '...| —                             |
+## | address_1                 | '3400 Millington Rd', '18581 Railro...| —                             |
+## | address_2                 | '', '', ''                            | —                             |
+## | postal_code               | '53511', '91748-1316', '02141-1249'   | —                             |
+## | voluntary_mandated        | 'Voluntary: Firm initiated', 'Volun...| —                             |
+## | initial_firm_notification | 'Telephone', 'Two or more of the fo...| —                             |
+## | distribution_pattern      | 'AR, IL KS.', 'Distributed nationwi...| —                             |
+## | recall_number             | 'F-1416-2012', 'F-1425-2012', 'F-14...| —                             |
+## | product_description       | 'Beef Patty Seasoning, item ...', '...| —                             |
+## | product_quantity          | '51 bags (2550 pounds)', '177,371 t...| —                             |
+## | reason_for_recall         | 'Ingredients used to manufac...', '...| —                             |
+## | recall_initiation_date    | '20120517', '20120530', '20120406'    | —                             |
+## | center_classification_date| '20120613', '20120614', '20120612'    | —                             |
+## | report_date               | '20120620', '20120620', '20120620'    | —                             |
+## | code_info                 | 'Lot code 0501224305', 'UPC 0732300...| —                             |
+## | termination_date          | '20121115', '20140721', '20130703'    | —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 # Clean for dict-type columns
 data = clean_dict_type_col(data, 'openfda', clean_type='drop')

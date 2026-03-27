@@ -37,6 +37,41 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | AWARD_YEAR                | '2020-2021', '2020-2021', '2020-2021' | → AWARD_YEAR_start, AWARD_YEAR_end (drop original)|
+## | ANNUAL_MEAN_LINKED_ACCOUNT| '30.64', '28.12', '31.58'             | → parse_float                 |
+## | ANNUAL_MEDIAN_LINKED_ACCOU| '19.86', '23.92', '24.09'             | → parse_float                 |
+## | TOTAL_MONETARY_CONSIDERATI| '0.00', '0.00', '0.00'                | → parse_float                 |
+## | TOTAL_MONETARY_CONSIDERATI| '20562.50', '7030.00', '7035.51'      | → parse_float                 |
+## | INSTITUTION_NAME          | 'Academy of Art University', 'Adams...| —                             |
+## | REPORTING_AS              | '.', '.', '.'                         | —                             |
+## | SYSTEM_AFFILIATION        | '.', '.', '.'                         | —                             |
+## | ISSUER                    | 'BM Technologies Inc', 'BM Technolo...| —                             |
+## | SCHOOL_TYPE               | 'For-Profit', 'Public', 'Private No...| —                             |
+## | UNIQUE_ID_(OPEID)         | '753100', '134500', '266600'          | —                             |
+## | TOTAL_ENROLLMENT          | '6024', '1612', '5076'                | —                             |
+## | MSI_TYPE                  | '.', 'HSI', '.'                       | —                             |
+## | CASH_MANAGEMENT_DISCLOSURE| 'https://www.vibeaccount.com...', '...| —                             |
+## | ACCOUNT_TERM_DISCLOSURE_UR| 'https://www.vibeaccount.com...', '...| —                             |
+## | PARTNERSHIP_AGREEMENT_URL | 'https://www.vibeaccount.com...', '...| —                             |
+## | DATE_ACCESSED_BY_CFPB     | '5/4/2022', '5/4/2022', '5/4/2022'    | —                             |
+
+## Feature engineering
+# AWARD_YEAR: e.g. '2020-2021' → AWARD_YEAR_start, AWARD_YEAR_end
+data['AWARD_YEAR_start'] = data['AWARD_YEAR'].str.split('-').str[0].str.strip().astype(int, errors='ignore')
+data['AWARD_YEAR_end'] = data['AWARD_YEAR'].str.split('-').str[1].str.strip().astype(int, errors='ignore')
+data.drop(columns=['AWARD_YEAR'], inplace=True)
+# ANNUAL_MEAN_LINKED_ACCOUNT_COSTS_INCURRED: plain number string → float
+data['ANNUAL_MEAN_LINKED_ACCOUNT_COSTS_INCURRED'] = data['ANNUAL_MEAN_LINKED_ACCOUNT_COSTS_INCURRED'].str.replace(',', '', regex=False).astype(float)
+# ANNUAL_MEDIAN_LINKED_ACCOUNT_COSTS_INCURRED: plain number string → float
+data['ANNUAL_MEDIAN_LINKED_ACCOUNT_COSTS_INCURRED'] = data['ANNUAL_MEDIAN_LINKED_ACCOUNT_COSTS_INCURRED'].str.replace(',', '', regex=False).astype(float)
+# TOTAL_MONETARY_CONSIDERATION_FROM_ISSUER_TO_INSTITUTION: plain number string → float
+data['TOTAL_MONETARY_CONSIDERATION_FROM_ISSUER_TO_INSTITUTION'] = data['TOTAL_MONETARY_CONSIDERATION_FROM_ISSUER_TO_INSTITUTION'].str.replace(',', '', regex=False).astype(float)
+# TOTAL_MONETARY_CONSIDERATION_FROM_INSTITUTION_TO_ISSUER: plain number string → float
+data['TOTAL_MONETARY_CONSIDERATION_FROM_INSTITUTION_TO_ISSUER'] = data['TOTAL_MONETARY_CONSIDERATION_FROM_INSTITUTION_TO_ISSUER'].str.replace(',', '', regex=False).astype(float)
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

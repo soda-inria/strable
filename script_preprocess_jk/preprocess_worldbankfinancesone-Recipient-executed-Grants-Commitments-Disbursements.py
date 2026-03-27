@@ -37,6 +37,25 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Beneficiary Code          | 'AF', 'AF', 'AF'                      | —                             |
+## | Beneficiary Name          | 'Afghanistan', 'Afghanistan', 'Afgh...| —                             |
+## | Trustee Fund Number       | 'TF050576', 'TF050576', 'TF050576'    | —                             |
+## | Trustee Fund Name         | 'AFGHANISTAN RECONSTR', 'AFGHANISTA...| —                             |
+## | Grant Fund Number         | 'TF010024', 'TF010024', 'TF010024'    | —                             |
+## | Grant Fund Name           | 'Second Public Financial Man...', '...| —                             |
+## | Program Code              | 'ARTF', 'ARTF', 'ARTF'                | —                             |
+## | Program Name              | 'AFGHANISTAN RECONSTRUCTION ...', '...| —                             |
+## | Grant Agreement Date      | '08/09/2011', '08/09/2011', '08/09/...| —                             |
+## | Status                    | 'ACTN', 'ACTN', 'ACTN'                | —                             |
+## | Project ID                | 'P120427', 'P120427', 'P120427'       | —                             |
+## | Project Description       | 'AF: Public Financial Mgmt. ...', '...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

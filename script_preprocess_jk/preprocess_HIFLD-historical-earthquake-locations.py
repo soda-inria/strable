@@ -39,6 +39,31 @@ data = clean_backslash_operations(data)
 data = data.replace(-999, np.nan)
 data = data.replace(-999999, np.nan)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Date (YYYY/MM/DD)         | '-2000/??/??', '-0759/??/??', '-043...| —                             |
+## | Location Name             | 'TURKMENISTAN: W', 'ISRAEL: JERUSAL...| —                             |
+## | Area                      | 'PR', 'AR', 'MO'                      | —                             |
+## | Country                   | 'TURKMENISTAN', 'ISRAEL', 'GREECE'    | —                             |
+## | Region                    | 'Central Asia and Caucasus', 'Middl...| —                             |
+## | Deaths Description        | 'Few (~1 to 50 people)', 'Many (~10...| —                             |
+## | Injuries Description      | 'Very Many (~1001 or more pe...', '...| —                             |
+## | Missing Description       | 'Few (~1 to 50 people)', 'Few (~1 t...| —                             |
+## | Houses Destroyed Descripti| 'Few (~1 to 50 houses)', 'Few (~1 t...| —                             |
+## | Houses Damaged Description| 'Many (~101 to 1000 houses)', 'Many...| —                             |
+## | Damage Description (total)| 'Limited (<$1 million)', 'Severe (~...| —                             |
+## | Deaths Description (total)| 'Few (~1 to 50 people)', 'Many (~10...| —                             |
+## | Injuries Description (tota| 'Very Many (~1001 or more pe...', '...| —                             |
+## | Missing Description (total| 'Few (~1 to 50 people)', 'Many (~10...| —                             |
+## | Houses Destroyed Descripti| 'Few (~1 to 50 houses)', 'Few (~1 t...| —                             |
+## | Houses Damaged Description| 'Many (~101 to 1000 houses)', 'Very...| —                             |
+## | Comments                  | '2000 B.C. (38.0 N, 58.2 E )...', '...| —                             |
+## | URL                       | 'https://www.ngdc.noaa.gov/h...', '...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

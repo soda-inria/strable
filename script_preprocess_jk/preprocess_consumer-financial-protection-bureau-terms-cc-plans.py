@@ -37,6 +37,21 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Agreement Date            | '2022-07-31', '2022-07-31', '2022-0...| —                             |
+## | Institution Name          | 'Citibank, N.A.', 'Truliant Federal...| —                             |
+## | Plan Name                 | 'Citi Double Cash Card Agree...', '...| —                             |
+## | Availability of Credit Car| 'National', 'National', 'National'    | —                             |
+## | Location                  | 'National', 'National', 'National'    | —                             |
+## | Index                     | 'V', 'V', 'V'                         | —                             |
+## | Variable Rate Index       | 'Prime', 'Prime', 'Prime'             | —                             |
+## | Telephone Number for Consu| '(800) 842-6596', '(800) 822-0382',...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

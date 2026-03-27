@@ -37,6 +37,17 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Fund Name                 | 'The Global Fund to Fight AI...', '...| —                             |
+## | Principal Recipient       | 'Min. of Health - Guyana', 'Ministr...| —                             |
+## | Transfer Quarter          | 'APR-JUN', 'APR-JUN', 'APR-JUN'       | —                             |
+## | Sector/Theme              | 'Health', 'Health', 'Health'          | —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

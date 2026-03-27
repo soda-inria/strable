@@ -37,6 +37,26 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | category                  | 'other food product / mixed', 'prep...| —                             |
+## | type                      | 'food', 'food', 'food'                | —                             |
+## | subject                   | 'Possibile contaminazione da...', '...| —                             |
+## | date                      | '04-07-2025 17:03:10', '04-07-2025 ...| —                             |
+## | notifying_country         | 'Italy', 'Ireland', 'Latvia'          | —                             |
+## | classification            | 'alert notification', 'information ...| —                             |
+## | risk_decision             | 'serious', 'serious', 'serious'       | —                             |
+## | distribution              | 'Austria,Greece,Italy', 'Ireland,Un...| —                             |
+## | forAttention              | 'INFOSAN', 'INFOSAN', 'INFOSAN'       | —                             |
+## | forFollowUp               | 'Austria,Germany,Greece', 'Slovakia...| —                             |
+## | operator                  | 'Germany,Italy', 'Ireland,United Ki...| —                             |
+## | origin                    | 'Germany', 'Ireland', 'Uzbekistan'    | —                             |
+## | hazards                   | 'ochratoxin A ', 'oxamyl unauthoris...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

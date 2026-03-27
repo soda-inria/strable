@@ -37,6 +37,22 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Trust Fund                | 'TF015226', 'TF0A9580', 'TF016395'    | —                             |
+## | Trust Fund name           | 'Marshall Islands Telecommun...', '...| —                             |
+## | Trust Fund status         | 'LEGALLY CLOSED', 'LEGALLY CLOSED',...| —                             |
+## | Trustee                   | 'TF071309', 'TF072713', 'TF070734'    | —                             |
+## | Trustee Status            | 'LEGALLY CLOSED', 'ACTIVE BUT NOT D...| —                             |
+## | Trustee name              | 'Multi Donor Trust Fund for ...', '...| —                             |
+## | Fund Classification       | 'IBRD/IDA TFs', 'IBRD/IDA TFs', 'IB...| —                             |
+## | Program Group             | 'PACIFIC REGION INFRASTRUCTU...', '...| —                             |
+## | Execution Type            | 'Recipient Execution', 'Bank Execut...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

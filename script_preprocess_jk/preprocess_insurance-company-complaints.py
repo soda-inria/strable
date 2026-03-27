@@ -39,6 +39,23 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Company                   | 'Transamerica Life Insurance...', '...| —                             |
+## | Opened                    | '07/24/2018', '12/31/2015', '04/01/...| —                             |
+## | Closed                    | '08/06/2018', '01/25/2016', '08/12/...| —                             |
+## | Coverage                  | 'Credit A & H', 'Auto', 'Auto'        | —                             |
+## | SubCoverage               | 'No SubCov - AH', 'Whole Life', 'Un...| —                             |
+## | Reason                    | 'Unfair Claims Practice', 'Marketin...| —                             |
+## | SubReason                 | 'Claim Delays', 'Producer Handling'...| —                             |
+## | Disposition               | 'Company Position Upheld', 'Company...| —                             |
+## | Conclusion                | 'Unjustified', 'Unjustified', 'No A...| —                             |
+## | Status                    | 'Closed', 'Closed', 'Closed'          | —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Set metadata
 target_name = 'Recovery'
 task = 'regression'

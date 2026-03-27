@@ -43,6 +43,21 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | NDC Description           | 'LUBRICANT 0.6% EYE DROP', 'GLUCAGO...| —                             |
+## | Effective Date            | '05/17/2023', '04/19/2023', '01/18/...| —                             |
+## | Pricing Unit              | 'ML', 'EA', 'ML'                      | —                             |
+## | OTC                       | 'Y', 'N', 'Y'                         | —                             |
+## | Explanation Code          | '4, 5', '4, 5', '4, 5'                | —                             |
+## | Classification for Rate Se| 'G', 'B', 'G'                         | —                             |
+## | Corresponding Generic Drug| '12/20/2023', '12/20/2023', '12/20/...| —                             |
+## | As of Date                | '01/03/2024', '01/03/2024', '01/03/...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

@@ -37,6 +37,29 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Decision number           | 'P/0099/2024', 'P/0098/2024', 'P/00...| —                             |
+## | PIP number                | 'EMEA-002600-PIP01-19-M02', 'EMEA-0...| —                             |
+## | Active substance          | 'Pegcetacoplan', 'recombinant Influ...| —                             |
+## | Invented name             | 'Aspaveli', 'Supemtek Tetra (previo...| —                             |
+## | Therapeutic area          | 'Renal and urinary disorders', 'Inf...| —                             |
+## | Pharmaceutical forms      | 'Solution for infusion', 'Solution ...| —                             |
+## | Condition / indication    | 'Treatment of paroxysmal noc...', '...| —                             |
+## | Routes of administration  | 'Subcutaneous use', 'Intramuscular ...| —                             |
+## | Decision type             | 'PM: decision on the applica...', '...| —                             |
+## | Decision date             | '05/04/2024', '05/04/2024', '12/04/...| —                             |
+## | Compliance opinion date   | '20/09/2019', '20/01/2023', '20/01/...| —                             |
+## | Compliance procedure numbe| 'EMEA-C-000533-PIP01-08-M11', 'EMEA...| —                             |
+## | Contact for public enquiri| 'Swedish Orphan Biovitrum AB...', '...| —                             |
+## | First published date      | '03/08/2020', '24/06/2019', '02/10/...| —                             |
+## | Last updated date         | '05/06/2025', '05/06/2025', '05/06/...| —                             |
+## | PIP URL                   | 'https://www.ema.europa.eu/e...', '...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

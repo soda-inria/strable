@@ -37,6 +37,19 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | State                     | 'Texas', 'New Mexico', 'California'   | —                             |
+## | Notes                     | 'In Washington, Health Homes...', '...| —                             |
+## | Program Name              | 'STAR (Comprehensive MCO)', 'Centen...| —                             |
+## | Plan Name                 | 'Aetna', 'Molina Healthcare of New ...| —                             |
+## | Geographic Region         | 'Bexar SDA, Tarrant SDA', 'Statewid...| —                             |
+## | Parent Organization       | 'University of Utah Health P...', '...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

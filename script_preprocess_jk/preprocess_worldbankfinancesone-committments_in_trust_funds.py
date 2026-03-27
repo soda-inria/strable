@@ -39,6 +39,22 @@ data = clean_backslash_operations(data)
 data = data.sort_values(by='Fiscal year').reset_index(drop=True)
 data = data.drop_duplicates(subset='Trust Fund', keep='last').reset_index(drop=True)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Trust Fund                | 'TF092846', 'TF093229', 'TF092423'    | —                             |
+## | Trust Fund name           | 'TECHNICAL ASSISTANCE FOR PR...', '...| —                             |
+## | Trust Fund status         | 'LEGALLY CLOSED', 'LEGALLY CLOSED',...| —                             |
+## | Execution Type            | 'Bank Execution', 'Bank Execution',...| —                             |
+## | Trustee                   | 'TF070892', 'TF070634', 'TF070746'    | —                             |
+## | Trustee Status            | 'LEGALLY CLOSED', 'LEGALLY CLOSED',...| —                             |
+## | Trustee Name              | 'AustraliaSouth Asia Region ...', '...| —                             |
+## | Fund Classification       | 'IBRD/IDA TFs', 'IBRD/IDA TFs', 'IF...| —                             |
+## | Program group             | 'INFRASTRUCTURE FOR GROWTH', 'GLOBA...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

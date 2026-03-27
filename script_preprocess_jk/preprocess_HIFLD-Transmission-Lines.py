@@ -40,6 +40,21 @@ data = clean_backslash_operations(data)
 data = data.replace(-999, np.nan)
 data = data.replace(-999999, np.nan)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | TYPE                      | 'AC; OVERHEAD', 'AC; OVERHEAD', 'AC...| —                             |
+## | STATUS                    | 'IN SERVICE', 'NOT AVAILABLE', 'IN ...| —                             |
+## | SOURCEDATE                | '2015/05/26 00:00:00+00', '2015/04/...| —                             |
+## | VAL_METHOD                | 'IMAGERY', 'IMAGERY', 'IMAGERY'       | —                             |
+## | VAL_DATE                  | '2017/10/25 00:00:00+00', '2019/03/...| —                             |
+## | OWNER                     | 'EAST KENTUCKY POWER COOP, INC', 'B...| —                             |
+## | VOLT_CLASS                | '100-161', '100-161', 'UNDER 100'     | —                             |
+## | INFERRED                  | 'Y', 'N', 'Y'                         | —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

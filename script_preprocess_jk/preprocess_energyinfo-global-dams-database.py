@@ -37,6 +37,55 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Country                   | 'Burkina Faso', 'Nigeria', 'Nigeria'  | —                             |
+## | ISO                       | 'BFA', 'NGA', 'NGA'                   | —                             |
+## | Sec_cntry                 | 'Rwanda', 'Tanzania', 'Congo'         | —                             |
+## | Name                      | 'Manessa', 'Ouree', 'Tenti'           | —                             |
+## | AltDamName                | 'Kouilwoko / Namessa', 'Dalan', 'Ar...| —                             |
+## | Purpose                   | 'Irrigation', 'Hydropower', 'Hydrop...| —                             |
+## | Admin_unit                | 'Oubritenga', 'Plateau', 'Plateau'    | —                             |
+## | Near_city                 | 'Daplgo', 'Tenti', 'Soaw'             | —                             |
+## | River                     | 'Nakanbe', 'Ouree', 'Mouhoun'         | —                             |
+## | Main_basin                | 'West Coast', 'West Coast', 'West C...| —                             |
+## | Sub_basin                 | 'Nakanbe', 'Mouhoun', 'Comoe'         | —                             |
+## | Status                    | 'Unknown', 'Unknown', 'Unknown'       | —                             |
+## | Transm_exist              | '0', '0', '0'                         | —                             |
+## | Proj_type                 | 'Hydropower', 'Hydropower', 'Hydrop...| —                             |
+## | Lifecycle                 | 'Green fields', 'Green fields', 'Gr...| —                             |
+## | Storage_ty                | 'Run-of-river', 'Storage', 'Run-of-...| —                             |
+## | Linked_prj                | 'Hydropower', 'Hydropower', 'Hydrop...| —                             |
+## | Proj_statu                | 'Funding approved or under c...', '...| —                             |
+## | Study_stat                | 'Concept design', 'Concept design',...| —                             |
+## | Ann_firm_g                | '0', '0', '0'                         | —                             |
+## | Prox_irrig                | '50-200', '< 50', '< 50'              | —                             |
+## | Size_irrig                | '> 5', '> 5', '> 5'                   | —                             |
+## | Owner                     | 'Electricit?? de Guin??e', 'Etat de...| —                             |
+## | Autom_EMS_                | 'No', 'No', 'No'                      | —                             |
+## | PrivateOwn                | 'Yes', 'Yes', 'Yes'                   | —                             |
+## | Feed_in_ta                | 'Yes', 'Yes', 'Yes'                   | —                             |
+## | Feed_in__1                | 'No', 'No', 'No'                      | —                             |
+## | Guaranteed                | 'No', 'No', 'No'                      | —                             |
+## | Competitiv                | 'No', 'No', 'No'                      | —                             |
+## | Winning_bi                | 'No', 'No', 'No'                      | —                             |
+## | OtherFisca                | 'Yes', 'Yes', 'Yes'                   | —                             |
+## | Prioritize                | 'No', 'No', 'No'                      | —                             |
+## | Priority_d                | 'No', 'No', 'No'                      | —                             |
+## | Compensati                | 'No', 'No', 'No'                      | —                             |
+## | Compensa_1                | 'No', 'No', 'No'                      | —                             |
+## | Gov_guaran                | 'No', 'No', 'No'                      | —                             |
+## | Regulatory                | 'RISE Information (https://r...', '...| —                             |
+## | Download                  | 'Full Database https://energ...', '...| —                             |
+## | Long__res_                | '0', '0', '0'                         | —                             |
+## | Lat__res_                 | '0', '0', '0'                         | —                             |
+## | Database                  | 'FAO', 'FAO', 'FAO'                   | —                             |
+## | Notes                     | 'Under rehabilitation', 'Under reha...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

@@ -38,6 +38,38 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | LogNumber                 | 'IA-00-00-0001-00', 'IA-00-00-0002-...| —                             |
+## | Institution               | 'Museum of the Aleutians', 'Depot M...| —                             |
+## | Program                   | 'Conservation Assessment Prog.', 'C...| —                             |
+## | ProgramType               | 'IA', 'IA', 'IA'                      | —                             |
+## | ProjectTitle              | 'n', 'Management of the Conservat.....| —                             |
+## | ProjectType               | 'Survey of collections', 'Treatment...| —                             |
+## | AwardDate                 | '3/30/2000', '3/30/2000', '3/30/2000' | —                             |
+## | InstAddr1                 | 'P.O. Box 648', 'P.O. Box 681420', ...| —                             |
+## | InstAddr2                 | 'Foot of 6th Street', 'Keuterville ...| —                             |
+## | InstAddr3                 | '3300 Ponsett Highway', '211 Laffer...| —                             |
+## | InstCity                  | 'Unalaska', 'Fort Payne', 'Selma'     | —                             |
+## | InstState                 | 'AK', 'AL', 'AL'                      | —                             |
+## | InstZip                   | '99685-0648', '35967', '36701-7307'   | —                             |
+## | Prefix                    | 'Dr.', 'Ms.', 'Miss'                  | —                             |
+## | FirstName                 | 'Richard', 'Emma', 'Joanne'           | —                             |
+## | LastName                  | 'Knecht', 'Jordan', 'Bland'           | —                             |
+## | OrgType                   | 'General museum', 'Museum', 'Histor...| —                             |
+## | OrgUnit                   | 'UC Davis Arboretum', 'Old Governor...| —                             |
+## | OUAddr1                   | 'One Shields Avenue', '120 South Cl...| —                             |
+## | OUAddr2                   | 'CBX 092', 'Suite 5.202', 'Eccles B...| —                             |
+## | OUAddr3                   | 'W', 'MSC312', '801 S. Wright St.'    | —                             |
+## | OUCity                    | 'Davis', 'Milledgeville', 'Philadel...| —                             |
+## | OUState                   | 'CA', 'GA', 'PA'                      | —                             |
+## | OUZip                     | '95616-8526', '31061', '19104-2875'   | —                             |
+## | Description               | 'Looking Back, Looking Aroun...', '...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

@@ -39,6 +39,26 @@ data = clean_backslash_operations(data)
 data = data.replace(-999, np.nan)
 data = data.replace(-999999, np.nan)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Licensee                  | 'ROBERTSON COUNTY EMERGENCY ...', '...| —                             |
+## | Callsign                  | 'WQJD362', 'WPFE754', 'WPGU887'       | —                             |
+## | LatDir                    | 'N', 'N', 'N'                         | —                             |
+## | LonDir                    | 'W', 'W', 'W'                         | —                             |
+## | LocAdd                    | 'Approx 2.9 miles NNE of Fra...', '...| —                             |
+## | LocCity                   | 'FRANKLIN', 'DUPONT', 'MARION'        | —                             |
+## | LocCounty                 | 'ROBERTSON', 'LUZERNE', 'FRANKLIN'    | —                             |
+## | LocState                  | 'TX', 'PA', 'PA'                      | —                             |
+## | Nepa                      | 'N', 'N', 'N'                         | —                             |
+## | QZone                     | '01/16/2024', '01/08/2013', '02/24/...| —                             |
+## | StrucType                 | 'GTOWER', 'B', 'TOWER'                | —                             |
+## | RSC                       | 'CD', 'CD', 'CD'                      | —                             |
+## | url                       | 'http://wireless2.fcc.gov/Ul...', '...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

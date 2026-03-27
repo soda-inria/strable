@@ -42,6 +42,28 @@ data.sort_values(by='CALLYM', ascending=True, inplace=True)
 data.drop_duplicates(subset='Id', keep='last', inplace=True)
 data.reset_index(drop=True, inplace=True)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | FORASSET                  | '0.32%', '0.00%', '0.00%'             | → parse_percentage            |
+## | CORERATIO                 | '65.38%', '80.57%', '89.10%'          | → parse_percentage            |
+## | MAX_DEPOSITS              | '105,364', '62,870', '59,374'         | → parse_float                 |
+## | NAMEHCR                   | 'DBT FINANCIAL CORP', 'MARKESAN BAN...| —                             |
+## | NAMEFULL                  | 'FARMERS AND MERCHANTS SAVIN...', '...| —                             |
+## | ADDRESS                   | '201 W. MAIN ST.', 'SECOND &JEFFERS...| —                             |
+## | CITY                      | 'WAUKON', 'DE WITT', 'MARKESAN'       | —                             |
+## | STALP                     | 'IA', 'AR', 'WI'                      | —                             |
+## | OFFICE_COUNT              | '2', '2', '4'                         | —                             |
+## | BUSINESS_LINE             | 'AG LENDING SPECIALIZATION', 'NO LE...| —                             |
+
+## Feature engineering
+# FORASSET: e.g. '70%' → float
+data['FORASSET'] = data['FORASSET'].str.strip().str.rstrip('%').astype(float)
+# CORERATIO: e.g. '70%' → float
+data['CORERATIO'] = data['CORERATIO'].str.strip().str.rstrip('%').astype(float)
+# MAX_DEPOSITS: plain number string → float
+data['MAX_DEPOSITS'] = data['MAX_DEPOSITS'].str.replace(',', '', regex=False).astype(float)
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

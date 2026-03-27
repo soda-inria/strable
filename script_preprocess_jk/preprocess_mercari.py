@@ -39,6 +39,17 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | name                      | 'F/ship 4 Totoro Washi + 1 pen', 'U...| —                             |
+## | category_name             | 'Handmade/Paper Goods/Statio...', '...| —                             |
+## | brand_name                | 'Adidas', 'Chanel', 'Nike'            | —                             |
+## | item_description          | 'This listing is for all 4 T...', '...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Set metadata
 target_name = 'price'
 task = 'regression'

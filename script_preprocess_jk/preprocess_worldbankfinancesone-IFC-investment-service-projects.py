@@ -37,6 +37,30 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Date Disclosed            | '03/30/2023', '12/04/2014', '04/30/...| —                             |
+## | Project Name              | 'BOP EU Tchad', 'Millicom Tchad SA'...| —                             |
+## | Document Type             | 'Summary of Investment Infor...', '...| —                             |
+## | Project Url               | 'https://disclosures.ifc.org...', '...| —                             |
+## | Product Line              | 'Loan', 'Loan', 'Loan'                | —                             |
+## | Company Name              | 'EXPRESS UNION TCHAD', 'MOOV AFRICA...| —                             |
+## | Country                   | 'Chad', 'Chad', 'Chad'                | —                             |
+## | IFC Country Code          | 'CHD', 'CHD', 'CHD'                   | —                             |
+## | Industry                  | 'Financial Institutions', 'Telecomm...| —                             |
+## | Environmental Category    | 'FI-3', 'B', 'B'                      | —                             |
+## | Department                | 'Regional Industry - FIG Africa', '...| —                             |
+## | Status                    | 'Active', 'Completed', 'Active'       | —                             |
+## | Projected Board Date      | '05/01/2023', '05/27/2014', '05/30/...| —                             |
+## | IFC Approval Date         | '06/12/2023', '05/30/2014', '05/06/...| —                             |
+## | IFC Signed Date           | '06/26/2023', '06/06/2014', '05/27/...| —                             |
+## | IFC Invested Date         | '07/17/2024', '08/22/2014', '12/30/...| —                             |
+## | WB Country Code           | 'TD', 'TD', 'TD'                      | —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

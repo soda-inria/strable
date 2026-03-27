@@ -55,6 +55,29 @@ drop_col = [col for col in data if '@' in col]
 drop_col.append('author')
 data.drop(columns=drop_col, inplace=True)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | streetAddress             | '19 Fore Street', 'Ananti at Gangna...| —                             |
+## | addressLocality           | 'Fowey', 'Seoul', 'Hasselt'           | —                             |
+## | postalCode                | 'PL23 1AH', '3500', '8660'            | —                             |
+## | addressCountry            | 'GBR', 'KOR', 'BEL'                   | —                             |
+## | addressRegion             | 'Cornwall', 'Seoul Capital Area', '...| —                             |
+## | name                      | 'Narla', 'Collage', 'La Fontanella'   | —                             |
+## | datePublished             | '2025-12-17T08:32', '2025-12-17T07:...| —                             |
+## | description               | 'The picturesque harbour tow...', '...| —                             |
+## | telephone                 | '+44 1726 473257', '+82 2-2190-4112...| —                             |
+## | knowsLanguage             | 'en-GB', 'en-KR', 'en-BE'             | —                             |
+## | acceptsReservations       | 'No', 'No', 'No'                      | —                             |
+## | servesCuisine             | 'Modern British', 'French Contempor...| —                             |
+## | currenciesAccepted        | 'GBP', 'KRW', 'EUR'                   | —                             |
+## | paymentAccepted           | 'Credit card / Debit card ac...', '...| —                             |
+## | priceRange                | 'Special occasion', 'Special occasi...| —                             |
+## | awardFor                  | 'No Ratings', 'No Ratings', 'No Rat...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 # Clean for dict-type columns
 data = clean_dict_type_col(data, col='awardedBy', clean_type='to_string')

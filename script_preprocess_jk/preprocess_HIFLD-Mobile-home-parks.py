@@ -39,6 +39,30 @@ data = clean_backslash_operations(data)
 data = data.replace(-999, np.nan)
 # data['ZIP'] = data['ZIP'].astype('string')
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | NAME                      | 'THE GROVES RV RETREAT', 'CYPRESS P...| —                             |
+## | ADDRESS                   | '3900 NEW JERUSALEM ROAD', '1150 CY...| —                             |
+## | CITY                      | 'VERNON', 'ST AUGUSTINE', 'ST AUGUS...| —                             |
+## | STATE                     | 'FL', 'FL', 'FL'                      | —                             |
+## | ZIP                       | '32462', '32086', '32086'             | —                             |
+## | TELEPHONE                 | '(850) 773-3992', '(904) 797-6996',...| —                             |
+## | TYPE                      | 'RECREATIONAL VEHICLE PARK', 'MOBIL...| —                             |
+## | STATUS                    | 'OPEN', 'OPEN', 'OPEN'                | —                             |
+## | COUNTY                    | 'WASHINGTON', 'ST JOHNS', 'ST JOHNS'  | —                             |
+## | NAICS_DESC                | 'RECREATIONAL VEHICLE PARKS', 'MOBI...| —                             |
+## | SOURCE                    | 'http://www.doh.state.fl.us/...', '...| —                             |
+## | SOURCEDATE                | '1/14/2013 12:00:00 AM', '5/21/2018...| —                             |
+## | VAL_METHOD                | 'IMAGERY/OTHER', 'IMAGERY ONLY', 'I...| —                             |
+## | VAL_DATE                  | '6/8/2018 12:00:00 AM', '5/2/2019 1...| —                             |
+## | WEBSITE                   | 'HTTP://WWW.THEGROVESRVRETRE...', '...| —                             |
+## | SIZE                      | 'SMALL (<50)', 'MEDIUM (51-100)', '...| —                             |
+## | REVGEOFLAG                | 'NO', 'NO', 'NO'                      | —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

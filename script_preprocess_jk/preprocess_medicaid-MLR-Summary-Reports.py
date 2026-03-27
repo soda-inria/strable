@@ -37,6 +37,30 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## |  MLR Numerator            | '$9,573,553', '$61,979,421', '$63,9...| → parse_currency              |
+## |  MLR Denominator          | '$12,154,677', '$68,465,048', '$66,...| → parse_currency              |
+## |  Remittance Dollar Amount | '$10,904,426', '$9,475,948', '$7,01...| → parse_currency              |
+## | State                     | 'AL', 'AR', 'AR'                      | —                             |
+## | Program Name              | 'Maternity Care Program', 'ARDMC', ...| —                             |
+## | Program Type              | 'Other PIHP', 'Dental only', 'Denta...| —                             |
+## | Eligibility Group         | 'All populations', 'All populations...| —                             |
+## | If Other, Describe Eligibi| 'HIV/AIDS', 'HIV/AIDS', 'HIV/AIDS'    | —                             |
+## | MCO, PIHP, or PAHP Name   | 'District 5', 'Delta Dental Plan of...| —                             |
+## | MLR Reporting Period Start| '1/1/2018', '1/1/2018', '1/1/2018'    | —                             |
+## | MLR Reporting Period End D| '12/31/2018', '12/31/2018', '12/31/...| —                             |
+## | State-Reported Member Mont| '6,379', '3,332,402', '3,391,934'     | —                             |
+
+## Feature engineering
+#  MLR Numerator : e.g. '$9,573,553' → float
+data[' MLR Numerator '] = data[' MLR Numerator '].str.strip().str.replace(r'[$£€,]', '', regex=True).astype(float)
+#  MLR Denominator : e.g. '$9,573,553' → float
+data[' MLR Denominator '] = data[' MLR Denominator '].str.strip().str.replace(r'[$£€,]', '', regex=True).astype(float)
+#  Remittance Dollar Amount for MLR Reporting Period : e.g. '$9,573,553' → float
+data[' Remittance Dollar Amount for MLR Reporting Period '] = data[' Remittance Dollar Amount for MLR Reporting Period '].str.strip().str.replace(r'[$£€,]', '', regex=True).astype(float)
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

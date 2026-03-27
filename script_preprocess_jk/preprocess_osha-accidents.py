@@ -38,6 +38,32 @@ data = clean_backslash_operations(data)
 
 ## Dataset-level specific cleaning
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Event Date                | '8/10/2017', '7/17/2017', '6/30/2017' | —                             |
+## | Abstract Text             | 'At 9:00 a.m. on August 10, ...', '...| —                             |
+## | Event Description         | 'EMPLOYEE'S FINGERS AMPUTATE...', '...| —                             |
+## | Event Keywords            | 'FINGER,MECHANICAL POWER PRE...', '...| —                             |
+## | con_end                   | '0', 'H', '0'                         | —                             |
+## | Construction End Use      | ' ', 'Other building', ' '            | —                             |
+## | Building Stories          | ' ', '1', ' '                         | —                             |
+## | proj_cost                 | '0', '0', '0'                         | —                             |
+## | Project Cost              | ' ', ' ', ' '                         | —                             |
+## | proj_type                 | '0', 'B', '0'                         | —                             |
+## | Project Type              | ' ', 'Alteration or rehabilitation'...| —                             |
+## | Degree of Injury          | 'Nonfatal', 'Nonfatal', 'Nonfatal'    | —                             |
+## | Nature of Injury          | 'Amputation, Crushing', 'Dislocatio...| —                             |
+## | Part of Body              | 'Fingers', 'Fingers', 'Hand'          | —                             |
+## | Event type                | 'Caught in or between', 'Caught in ...| —                             |
+## | Environmental Factor      | 'Catch Point/Puncture Action', 'Oth...| —                             |
+## | Human Factor              | 'Other', 'Position Inappropriate Fo...| —                             |
+## | Task Assigned             | 'Regularly Assigned', 'Regularly As...| —                             |
+## | hazsub                    | '0', '0', '0'                         | —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Set metadata
 target_name = 'Task Assigned'
 task = 'b-classification'

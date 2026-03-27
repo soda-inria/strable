@@ -46,6 +46,36 @@ data['Contract Length (Year)'] = data['Contract Length (Year)'].astype(str)
 data['Project Name'] = data['Project Name'].astype(str)
 data['Operation Start Year'] = data['Operation Start Year'].astype(str)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | Buyer Name                | 'Alabama Municipal Electric ...', '...| —                             |
+## | State                     | 'Alabama', 'Alabama', 'Alabama'       | —                             |
+## | ISO or FERC Region        | 'Southeast', 'Southeast', 'Southeast' | —                             |
+## | Announcement Year (or Oper| '2022', '2016', '2019'                | —                             |
+## | Announcement Date         | 'nan', 'nan', 'nan'                   | —                             |
+## | Technology                | 'Solar', 'Solar', 'Solar'             | —                             |
+## | Transaction Type          | 'Off-site Physical PPA', 'On-site',...| —                             |
+## | DC/AC                     | 'DC', 'AC', 'AC'                      | —                             |
+## | Contract Length (Year)    | 'nan', 'nan', 'nan'                   | —                             |
+## | Utility Name              | 'Alabama Municipal Electric ...', '...| —                             |
+## | Utility Type              | 'Joint Action Agency', 'Joint Actio...| —                             |
+## | Developer Name            | 'Inman Solar, Inc. ', 'Lightsource ...| —                             |
+## | Project Name              | 'AMEA Fairhope Solar Researc...', '...| —                             |
+## | Project Location          | 'Fairhope', 'Montgomery County', 'A...| —                             |
+## | Project State             | 'Alabama', 'Alabama', 'Alabama'       | —                             |
+## | Operation Start Year      | '2022', '2016', '2019'                | —                             |
+## | Estimated Annual Generatio| 'nan', 'nan', '73.728'                | —                             |
+## | Source 1                  | 'https://www.amea.com/power/...', '...| —                             |
+## | Source 2                  | 'https://www.fairhopeal.gov/...', '...| —                             |
+## | Source 3                  | 'https://www.sunnyportal.com...', '...| —                             |
+## | Source 4                  | 'https://www.amea.com/wp-con...', '...| —                             |
+## | Source 5                  | 'https://www.pressargus.com/...', '...| —                             |
+## | Notes                     | 'Joint purchase agreement co...', '...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

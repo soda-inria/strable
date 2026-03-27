@@ -38,6 +38,28 @@ data = clean_backslash_operations(data)
 ## Dataset-level specific cleaning
 data = data.replace(-999999, np.nan)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | ID                        | '1000', '10000', '10005'              | —                             |
+## | NAME                      | 'CITY OF AUGUSTA - (AR)', 'EVERGY M...| —                             |
+## | ADDRESS                   | 'NOT AVAILABLE', '1200 MAIN STREET'...| —                             |
+## | CITY                      | 'NOT AVAILABLE', 'KANSAS CITY', 'TO...| —                             |
+## | STATE                     | 'AR', 'MO', 'KS'                      | —                             |
+## | ZIP                       | 'NOT AVAILABLE', '64105', '66612'     | —                             |
+## | TELEPHONE                 | 'NOT AVAILABLE', 'NOT AVAILABLE', '...| —                             |
+## | TYPE                      | 'NOT AVAILABLE', 'INVESTOR OWNED', ...| —                             |
+## | SOURCE                    | 'EIA 861, U.S. Census - Places', 'h...| —                             |
+## | VAL_DATE                  | '2018/10/12 00:00:00+00', '2021/04/...| —                             |
+## | WEBSITE                   | 'NOT AVAILABLE', 'https://www.everg...| —                             |
+## | REGULATED                 | 'NOT AVAILABLE', 'NOT AVAILABLE', '...| —                             |
+## | CNTRL_AREA                | 'MISO', 'SWPP', 'SWPP'                | —                             |
+## | PLAN_AREA                 | 'NOT AVAILABLE', 'NOT AVAILABLE', '...| —                             |
+## | HOLDING_CO                | 'CITY OF AUGUSTA - (AR)', 'KANSAS C...| —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata

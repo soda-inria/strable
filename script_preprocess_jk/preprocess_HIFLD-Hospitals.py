@@ -38,6 +38,35 @@ data = clean_backslash_operations(data)
 ## Dataset-level specific cleaning
 data = data.replace(-999, np.nan)
 
+## String column overview
+## | Column                    | Sample values                          | Transformation                 |
+## |---------------------------|----------------------------------------|--------------------------------|
+## | NAME                      | 'ANDALUSIA HEALTH', 'ATHENS LIMESTO...| —                             |
+## | ADDRESS                   | '849 SOUTH THREE NOTCH STREE...', '...| —                             |
+## | CITY                      | 'ANDALUSIA', 'ATHENS', 'ATMORE'       | —                             |
+## | STATE                     | 'AL', 'AL', 'AL'                      | —                             |
+## | ZIP4                      | 'NOT AVAILABLE', 'NOT AVAILABLE', '...| —                             |
+## | TELEPHONE                 | '(334) 222-8466', '(256) 262-6468',...| —                             |
+## | TYPE                      | 'GENERAL ACUTE CARE', 'GENERAL ACUT...| —                             |
+## | STATUS                    | 'OPEN', 'OPEN', 'OPEN'                | —                             |
+## | COUNTY                    | 'COVINGTON', 'LIMESTONE', 'ESCAMBIA'  | —                             |
+## | COUNTRY                   | 'USA', 'USA', 'USA'                   | —                             |
+## | NAICS_DESC                | 'GENERAL MEDICAL AND SURGICA...', '...| —                             |
+## | SOURCE                    | 'https://dph1.adph.state.al....', '...| —                             |
+## | SOURCEDATE                | '4/11/2024 12:00:00 AM', '4/11/2024...| —                             |
+## | VAL_METHOD                | 'IMAGERY/OTHER', 'IMAGERY/OTHER', '...| —                             |
+## | VAL_DATE                  | '2/10/2014 12:00:00 AM', '10/2/2013...| —                             |
+## | WEBSITE                   | 'http://www.andalusiaregiona...', '...| —                             |
+## | STATE_ID                  | 'H2001', 'H4201', 'H2704'             | —                             |
+## | ALT_NAME                  | 'NOT AVAILABLE', 'NOT AVAILABLE', '...| —                             |
+## | ST_FIPS                   | '01', '01', '01'                      | —                             |
+## | OWNER                     | 'PROPRIETARY', 'PROPRIETARY', 'NON-...| —                             |
+## | TRAUMA                    | 'LEVEL III', 'LEVEL III', 'LEVEL III' | —                             |
+## | HELIPAD                   | 'Y', 'N', 'Y'                         | —                             |
+
+## Feature engineering
+# No actionable transformations for this dataset.
+
 ## Clean for specific data formats (dict / list)
 
 ## Set metadata
