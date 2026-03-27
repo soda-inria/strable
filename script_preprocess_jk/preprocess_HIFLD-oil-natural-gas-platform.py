@@ -49,16 +49,16 @@ data = data.replace(-999, np.nan)
 ## | OWNER                     | 'NOT AVAILABLE', 'NOT AVAILABLE', '...| —                             |
 ## | OPERNAME                  | 'MERIT ENERGY CO., LLC', 'APACHE CO...| —                             |
 ## | COMMODITY                 | 'NONE', 'NONE', 'NONE'                | —                             |
-## | INSTALL                   | '1/5/1998 12:00:00 AM', '2/28/1997 ...| —                             |
-## | REMOVAL                   | '6/9/2010 12:00:00 AM', '8/8/2013 1...| —                             |
-## | MANNED24HR                | 'N', 'N', 'N'                         | —                             |
+## | INSTALL                   | '1/5/1998 12:00:00 AM', '2/28/1997 ...| → install_year int            |
+## | REMOVAL                   | '6/9/2010 12:00:00 AM', '8/8/2013 1...| → removal_year int            |
+## | MANNED24HR                | 'N', 'N', 'N'                         | → binary 1/0 (U→NaN)          |
 ## | PWRSOURCE                 | 'U', 'U', 'U'                         | —                             |
-## | PWRGENFLAG                | 'N', 'N', 'N'                         | —                             |
-## | OILPRDFLAG                | 'N', 'N', 'N'                         | —                             |
-## | GASMTRFLAG                | 'U', 'N', 'Y'                         | —                             |
-## | COMPREFLAG                | 'N', 'N', 'N'                         | —                             |
-## | COMPRDFLAG                | 'U', 'U', 'U'                         | —                             |
-## | HELPRTFLAG                | 'Y', 'Y', 'Y'                         | —                             |
+## | PWRGENFLAG                | 'N', 'N', 'N'                         | → binary 1/0 (U→NaN)          |
+## | OILPRDFLAG                | 'N', 'N', 'N'                         | → binary 1/0 (U→NaN)          |
+## | GASMTRFLAG                | 'U', 'N', 'Y'                         | → binary 1/0 (U→NaN)          |
+## | COMPREFLAG                | 'N', 'N', 'N'                         | → binary 1/0 (U→NaN)          |
+## | COMPRDFLAG                | 'U', 'U', 'U'                         | → binary 1/0 (U→NaN)          |
+## | HELPRTFLAG                | 'Y', 'Y', 'Y'                         | → binary 1/0 (U→NaN)          |
 ## | BLOCKNO                   | '38', '176', '263'                    | —                             |
 ## | LEASENO                   | 'G14878', 'G06164', 'G15072'          | —                             |
 ## | AREANUMBER                | 'HI', 'HI', 'WC'                      | —                             |
@@ -66,7 +66,16 @@ data = data.replace(-999, np.nan)
 ## | GlobalID                  | '01c92d58-f3c0-407b-b9a4-d14...', '...| —                             |
 
 ## Feature engineering
-# No actionable transformations for this dataset.
+# Y/N/U flag columns → binary 1/0 (U=unknown → NaN)
+_yn_flag_cols = ['MANNED24HR', 'PWRGENFLAG', 'OILPRDFLAG', 'GASMTRFLAG',
+                 'COMPREFLAG', 'COMPRDFLAG', 'HELPRTFLAG']
+for _col in _yn_flag_cols:
+    if _col in data.columns:
+        data[f'{_col}_bin'] = data[_col].str.strip().str.upper().map({'Y': 1, 'N': 0})
+
+# INSTALL / REMOVAL: extract year
+data['install_year'] = pd.to_datetime(data['INSTALL'], errors='coerce').dt.year
+data['removal_year'] = pd.to_datetime(data['REMOVAL'], errors='coerce').dt.year
 
 ## Clean for specific data formats (dict / list)
 

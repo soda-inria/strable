@@ -56,8 +56,8 @@ data.drop(columns=['Start Date', 'Completion Date'], inplace=True)
 ## | Outcome Measures          | 'Evaluate the diagnostic per...', '...| —                             |
 ## | Sponsor/Collaborators     | 'Groupe Hospitalier Paris Sa...', '...| —                             |
 ## | Gender                    | 'All', 'All', 'All'                   | —                             |
-## | Age                       | '18 Years and older   (Adult...', '...| —                             |
-## | Phases                    | 'Not Applicable', 'Phase 1|Phase 2'...| —                             |
+## | Age                       | '18 Years and older', '18-75 Years'   | → min_age int                 |
+## | Phases                    | 'Not Applicable', 'Phase 1|Phase 2'   | → max phase int (0=N/A)       |
 ## | Funded Bys                | 'Other', 'Other', 'Other'             | —                             |
 ## | Study Type                | 'Interventional', 'Interventional',...| —                             |
 ## | Study Designs             | 'Allocation: N/A|Interventio...', '...| —                             |
@@ -71,7 +71,22 @@ data.drop(columns=['Start Date', 'Completion Date'], inplace=True)
 ## | URL                       | 'https://ClinicalTrials.gov/...', '...| —                             |
 
 ## Feature engineering
-# No actionable transformations for this dataset.
+# Age: extract minimum age from strings like '18 Years and older', '18 Years to 75 Years', 'Child (birth-17)'
+import re as _re
+def _parse_min_age(s):
+    if pd.isna(s):
+        return np.nan
+    m = _re.search(r'(\d+)\s*(?:Year|Month|Week|Day)', str(s), _re.IGNORECASE)
+    return int(m.group(1)) if m else np.nan
+data['min_age'] = data['Age'].apply(_parse_min_age)
+
+# Phases: 'Phase 1|Phase 2' → max phase number; 'Not Applicable'/'N/A' → 0
+def _parse_max_phase(s):
+    if pd.isna(s):
+        return np.nan
+    nums = _re.findall(r'Phase\s*(\d+)', str(s), _re.IGNORECASE)
+    return max(int(n) for n in nums) if nums else 0
+data['max_phase'] = data['Phases'].apply(_parse_max_phase)
 
 ## Set metadata
 target_name = 'days_to_complete'

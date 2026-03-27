@@ -71,17 +71,17 @@ data.reset_index(drop=True, inplace=True)
 ## | Designation Type          | 'Geographic HPSA', 'Federally Quali...| —                             |
 ## | HPSA Discipline Class     | 'Dental Health', 'Dental Health', '...| —                             |
 ## | Primary State Abbreviation| 'MH', 'GU', 'GU'                      | —                             |
-## | HPSA Designation Date     | '2018-12-31', '2003-11-21', '2020-0...| —                             |
+## | HPSA Designation Date     | '2018-12-31', '2003-11-21', '2020-0...| → designation_year int        |
 ## | HPSA Designation Last Upda| '2020-12-31', '2021-09-11', '2020-0...| —                             |
 ## | Metropolitan Indicator    | 'Unknown', 'Non-Metropolitan', 'Unk...| —                             |
 ## | HPSA Geography Identificat| '68090', 'POINT', 'POINT'             | —                             |
-## | HPSA Degree of Shortage   | 'Not applicable', '12', 'Not applic...| —                             |
-## | HPSA Formal Ratio         | '78255:1', '20173:1', '31188:1'       | —                             |
+## | HPSA Degree of Shortage   | 'Not applicable', '12', 'Not applic...| → shortage_degree float (NaN if N/A)|
+## | HPSA Formal Ratio         | '78255:1', '20173:1', '31188:1'       | → formal_ratio_num int (numerator)|
 ## | HPSA Population Type      | 'Geographic Population', 'Low Incom...| —                             |
-## | Rural Status              | 'Rural', 'Rural', 'Rural'             | —                             |
+## | Rural Status              | 'Rural', 'Rural', 'Rural'             | → rural_bin 1/0               |
 ## | BHCMIS Organization Identi| '093530', '11E01249', '091920'        | —                             |
 ## | Common County Name        | 'Enewetak, MH', 'Guam, GU', 'Guam, GU'| —                             |
-## | Common Region Name        | 'Region 9', 'Region 9', 'Region 9'    | —                             |
+## | Common Region Name        | 'Region 9', 'Region 9', 'Region 9'    | → region_num int              |
 ## | Common State Abbreviation | 'MH', 'GU', 'GU'                      | —                             |
 ## | Common State County FIPS C| '68090', '66010', '66010'             | —                             |
 ## | Common State Name         | 'Marshall Islands', 'Guam', 'Guam'    | —                             |
@@ -110,7 +110,33 @@ data.reset_index(drop=True, inplace=True)
 ## | U.S. - Mexico Border Count| 'N', 'N', 'N'                         | —                             |
 
 ## Feature engineering
-# No actionable transformations for this dataset.
+# HPSA Designation Date: extract year
+data['designation_year'] = pd.to_datetime(
+    data['HPSA Designation Date'], errors='coerce'
+).dt.year
+
+# HPSA Degree of Shortage: '12', 'Not applicable' → float (NaN for non-numeric)
+data['shortage_degree'] = pd.to_numeric(
+    data['HPSA Degree of Shortage'], errors='coerce'
+)
+
+# HPSA Formal Ratio: '78255:1' → extract numerator integer
+data['formal_ratio_num'] = (
+    data['HPSA Formal Ratio']
+    .str.extract(r'^(\d+):', expand=False)
+    .astype(float)
+)
+
+# Common Region Name: 'Region 9' → 9 (extract region number)
+import re as _re
+data['region_num'] = (
+    data['Common Region Name']
+    .str.extract(r'Region\s*(\d+)', expand=False)
+    .astype(float)
+)
+
+# Rural Status: 'Rural'→1, others→0
+data['rural_bin'] = (data['Rural Status'].str.strip().str.lower() == 'rural').astype(int)
 
 ## Clean for specific data formats (dict / list)
 

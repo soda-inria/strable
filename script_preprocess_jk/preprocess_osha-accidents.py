@@ -41,7 +41,7 @@ data = clean_backslash_operations(data)
 ## String column overview
 ## | Column                    | Sample values                          | Transformation                 |
 ## |---------------------------|----------------------------------------|--------------------------------|
-## | Event Date                | '8/10/2017', '7/17/2017', '6/30/2017' | —                             |
+## | Event Date                | '8/10/2017', '7/17/2017', '6/30/2017' | → event_year, event_month int |
 ## | Abstract Text             | 'At 9:00 a.m. on August 10, ...', '...| —                             |
 ## | Event Description         | 'EMPLOYEE'S FINGERS AMPUTATE...', '...| —                             |
 ## | Event Keywords            | 'FINGER,MECHANICAL POWER PRE...', '...| —                             |
@@ -52,7 +52,7 @@ data = clean_backslash_operations(data)
 ## | Project Cost              | ' ', ' ', ' '                         | —                             |
 ## | proj_type                 | '0', 'B', '0'                         | —                             |
 ## | Project Type              | ' ', 'Alteration or rehabilitation'...| —                             |
-## | Degree of Injury          | 'Nonfatal', 'Nonfatal', 'Nonfatal'    | —                             |
+## | Degree of Injury          | 'Nonfatal', 'Fatal'                   | → fatal_bin 1/0               |
 ## | Nature of Injury          | 'Amputation, Crushing', 'Dislocatio...| —                             |
 ## | Part of Body              | 'Fingers', 'Fingers', 'Hand'          | —                             |
 ## | Event type                | 'Caught in or between', 'Caught in ...| —                             |
@@ -62,7 +62,13 @@ data = clean_backslash_operations(data)
 ## | hazsub                    | '0', '0', '0'                         | —                             |
 
 ## Feature engineering
-# No actionable transformations for this dataset.
+# Event Date: extract year and month
+_event_dt = pd.to_datetime(data['Event Date'], errors='coerce')
+data['event_year'] = _event_dt.dt.year
+data['event_month'] = _event_dt.dt.month
+
+# Degree of Injury: 'Fatal'→1, else 0
+data['fatal_bin'] = (data['Degree of Injury'].str.strip().str.lower() == 'fatal').astype(int)
 
 ## Set metadata
 target_name = 'Task Assigned'

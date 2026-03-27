@@ -53,7 +53,7 @@ data.reset_index(drop=True, inplace=True)
 ## | fuelType1                 | 'Premium Gasoline', 'Premium Gasoli...| —                             |
 ## | make                      | 'BMW', 'BMW', 'BMW'                   | —                             |
 ## | model                     | 'Z4 sDrive30i', '840i Coupe', '840i...| —                             |
-## | mpgData                   | 'N', 'N', 'N'                         | —                             |
+## | mpgData                   | 'N', 'Y', 'N'                         | → binary 1/0                  |
 ## | trany                     | 'Automatic (S8)', 'Automatic (S8)',...| —                             |
 ## | VClass                    | 'Two Seaters', 'Subcompact Cars', '...| —                             |
 ## | baseModel                 | 'Z4', '8 Series', '8 Series'          | —                             |
@@ -63,10 +63,21 @@ data.reset_index(drop=True, inplace=True)
 ## | mfrCode                   | 'BMX', 'BMX', 'BMX'                   | —                             |
 ## | createdOn                 | 'Tue Mar 19 00:00:00 EDT 2024', 'Tu...| —                             |
 ## | modifiedOn                | 'Tue Jul 30 00:00:00 EDT 2024', 'Tu...| —                             |
-## | startStop                 | 'Y', 'Y', 'Y'                         | —                             |
+## | startStop                 | 'Y', 'Y', 'Y'                         | → binary 1/0                  |
 
 ## Feature engineering
-# No actionable transformations for this dataset.
+# mpgData: 'Y'/'N' → 1/0
+data['mpg_data_bin'] = data['mpgData'].str.strip().str.upper().map({'Y': 1, 'N': 0})
+
+# startStop: 'Y'/'N' → 1/0
+data['start_stop_bin'] = data['startStop'].str.strip().str.upper().map({'Y': 1, 'N': 0})
+
+# evMotor: '222V Li-Ion', '150V NiMH' → extract voltage (leading integer before 'V')
+data['ev_motor_volts'] = (
+    data['evMotor']
+    .str.extract(r'^(\d+)\s*V', expand=False)
+    .astype(float)
+)
 
 ## Clean for specific data formats (dict / list)
 

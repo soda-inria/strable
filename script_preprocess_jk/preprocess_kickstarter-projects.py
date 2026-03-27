@@ -52,11 +52,19 @@ data = clean_backslash_operations(data)
 ## | state                     | 'NV', 'NJ', 'MS'                      | —                             |
 ## | country                   | 'US', 'US', 'US'                      | —                             |
 ## | status                    | 'failed', 'successful', 'successful'  | —                             |
-## | start_Q                   | 'Q3', 'Q1', 'Q3'                      | —                             |
-## | end_Q                     | 'Q3', 'Q2', 'Q3'                      | —                             |
+## | start_Q                   | 'Q3', 'Q1', 'Q3'                      | → start_quarter_num int       |
+## | end_Q                     | 'Q3', 'Q2', 'Q3'                      | → end_quarter_num int         |
 
 ## Feature engineering
-# No actionable transformations for this dataset.
+# start_Q / end_Q: 'Q3' → 3 (quarter number)
+data['start_quarter_num'] = data['start_Q'].str.extract(r'Q(\d+)', expand=False).astype(float)
+data['end_quarter_num'] = data['end_Q'].str.extract(r'Q(\d+)', expand=False).astype(float)
+
+# launched_at / deadline: extract year and month
+data['launched_year'] = pd.to_datetime(data['launched_at'], errors='coerce').dt.year
+data['launched_month'] = pd.to_datetime(data['launched_at'], errors='coerce').dt.month
+data['deadline_year'] = pd.to_datetime(data['deadline'], errors='coerce').dt.year
+data['deadline_month'] = pd.to_datetime(data['deadline'], errors='coerce').dt.month
 
 ## Set metadata
 target_name = 'status'

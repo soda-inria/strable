@@ -47,27 +47,45 @@ data.reset_index(drop=True, inplace=True)
 ## | city                      | 'Beloit', 'Rowland Heights', 'Cambr...| —                             |
 ## | state                     | 'WI', 'CA', 'MA'                      | —                             |
 ## | country                   | 'United States', 'United States', '...| —                             |
-## | classification            | 'Class II', 'Class III', 'Class II'   | —                             |
+## | classification            | 'Class II', 'Class III', 'Class II'   | → class_num int 1/2/3         |
 ## | event_id                  | '61890', '62001', '61600'             | —                             |
 ## | recalling_firm            | 'Kerry Ingredients & Flavour...', '...| —                             |
 ## | address_1                 | '3400 Millington Rd', '18581 Railro...| —                             |
 ## | address_2                 | '', '', ''                            | —                             |
 ## | postal_code               | '53511', '91748-1316', '02141-1249'   | —                             |
-## | voluntary_mandated        | 'Voluntary: Firm initiated', 'Volun...| —                             |
+## | voluntary_mandated        | 'Voluntary: Firm initiated', 'Volun...| → voluntary_bin 1/0           |
 ## | initial_firm_notification | 'Telephone', 'Two or more of the fo...| —                             |
 ## | distribution_pattern      | 'AR, IL KS.', 'Distributed nationwi...| —                             |
 ## | recall_number             | 'F-1416-2012', 'F-1425-2012', 'F-14...| —                             |
 ## | product_description       | 'Beef Patty Seasoning, item ...', '...| —                             |
 ## | product_quantity          | '51 bags (2550 pounds)', '177,371 t...| —                             |
 ## | reason_for_recall         | 'Ingredients used to manufac...', '...| —                             |
-## | recall_initiation_date    | '20120517', '20120530', '20120406'    | —                             |
-## | center_classification_date| '20120613', '20120614', '20120612'    | —                             |
+## | recall_initiation_date    | '20120517', '20120530', '20120406'    | → recall_year int             |
+## | center_classification_date| '20120613', '20120614', '20120612'    | → classification_year int     |
 ## | report_date               | '20120620', '20120620', '20120620'    | —                             |
 ## | code_info                 | 'Lot code 0501224305', 'UPC 0732300...| —                             |
 ## | termination_date          | '20121115', '20140721', '20130703'    | —                             |
 
 ## Feature engineering
-# No actionable transformations for this dataset.
+# classification: 'Class I'→1, 'Class II'→2, 'Class III'→3
+import re as _re
+data['classification_num'] = (
+    data['classification']
+    .str.upper()
+    .str.extract(r'CLASS\s+([IVX]+)', expand=False)
+    .map({'I': 1, 'II': 2, 'III': 3})
+)
+
+# recall_initiation_date / center_classification_date: YYYYMMDD → year
+data['recall_initiation_year'] = pd.to_datetime(
+    data['recall_initiation_date'], format='%Y%m%d', errors='coerce'
+).dt.year
+data['center_classification_year'] = pd.to_datetime(
+    data['center_classification_date'], format='%Y%m%d', errors='coerce'
+).dt.year
+
+# voluntary_mandated: starts with 'Voluntary' → 1, else 0
+data['voluntary_bin'] = data['voluntary_mandated'].str.strip().str.lower().str.startswith('voluntary').astype(int)
 
 ## Clean for specific data formats (dict / list)
 # Clean for dict-type columns

@@ -47,12 +47,13 @@ data = clean_backslash_operations(data)
 ## | Category                  | 'Lit', 'Lit', 'Lit'                   | —                             |
 ## | Location                  | 'mid', 'mid', 'mid'                   | —                             |
 ## | License                   | 'PD', 'PD', 'PD'                      | —                             |
-## | MPAA Max                  | 'G', 'PG', 'PG'                       | —                             |
+## | MPAA Max                  | 'G', 'PG', 'PG-13', 'R'              | → mpaa_ord 1/2/3/4            |
 ## | Excerpt                   | 'When the young people retur...', '...| —                             |
 ## | British Words             | 'traveller', 'sceptre', 'grey'        | —                             |
 
 ## Feature engineering
-# No actionable transformations for this dataset.
+# MPAA Max: G=1, PG=2, PG-13=3, R=4 (ordinal content rating)
+data['mpaa_ord'] = data['MPAA Max'].str.strip().map({'G': 1, 'PG': 2, 'PG-13': 3, 'R': 4})
 
 ## Set metadata
 target_name = 'BT Easiness'

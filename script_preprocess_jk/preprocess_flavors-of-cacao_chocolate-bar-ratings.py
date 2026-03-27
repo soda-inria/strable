@@ -54,13 +54,20 @@ data.groupby(['Company (Manufacturer)', 'Country of Bean Origin',
 ## | Company Location          | 'Australia', 'Australia', 'U.S.A.'    | —                             |
 ## | Country of Bean Origin    | 'Blend', 'Brazil', 'Blend'            | —                             |
 ## | Specific Bean Origin or Ba| 'Houseblend', 'Bahia', 'Madagascar'   | —                             |
-## | Ingredients               | '2- B,S', '2- B,S', '2- B,S'          | —                             |
+## | Ingredients               | '2- B,S', '3- B,S,C', '4- B,S,C,L'   | → ingredient_count int        |
 ## | Most Memorable Characteris| 'chalky, fragrant, then off', 'chal...| —                             |
 ## | Rating                    | 'Under 2.75', 'Under 2.75', 'Under ...| —                             |
 
 ## Feature engineering
 # Cocoa Percent: e.g. '70%' → float
 data['Cocoa Percent'] = data['Cocoa Percent'].str.strip().str.rstrip('%').astype(float)
+
+# Ingredients: '2- B,S' → extract ingredient count (integer before '-')
+data['ingredient_count'] = (
+    data['Ingredients']
+    .str.extract(r'^(\d+)\s*-', expand=False)
+    .astype(float)
+)
 
 ## Set metadata
 target_name = 'Rating'

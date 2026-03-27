@@ -42,15 +42,15 @@ data = data.replace(-999, np.nan)
 ## | Column                    | Sample values                          | Transformation                 |
 ## |---------------------------|----------------------------------------|--------------------------------|
 ## | COMMENTS                  | '<p>Eruption is uncertain (R...', '...| —                             |
-## | DAMAGE_DESCRIPTION        | 'Severe (~>$5 to $24 million)', 'Se...| —                             |
-## | INJURIES_DESCRIPTION      | 'Few (~1 to 50 people)', 'Few (~1 t...| —                             |
-## | MISSING_DESCRIPTION       | 'Few (~1 to 50 people)', 'Some (~51...| —                             |
-## | HOUSES_DESCRIPTION        | 'Few (~1 to 50 houses)', 'Few (~1 t...| —                             |
-## | DAMAGE_TOTAL_DESCRIPTION  | 'Extreme (~$25 million or more)', '...| —                             |
-## | DEATHS_TOTAL_DESCRIPTION  | 'Very Many (~1001 or more pe...', '...| —                             |
-## | INJURIES_TOTAL_DESCRIPTION| 'Few (~1 to 50 people)', 'Few (~1 t...| —                             |
-## | MISSING_TOTAL_DESCRIPTION | 'Few (~1 to 50 people)', 'Some (~51...| —                             |
-## | HOUSES_TOTAL_DESCRIPTION  | 'Many (~101 to 1000 houses)', 'Few ...| —                             |
+## | DAMAGE_DESCRIPTION        | 'Severe (~>$5 to $24 million)', ...    | → lower bound int             |
+## | INJURIES_DESCRIPTION      | 'Few (~1 to 50 people)', ...           | → lower bound int             |
+## | MISSING_DESCRIPTION       | 'Few (~1 to 50 people)', 'Some'...    | → lower bound int             |
+## | HOUSES_DESCRIPTION        | 'Few (~1 to 50 houses)', ...           | → lower bound int             |
+## | DAMAGE_TOTAL_DESCRIPTION  | 'Extreme (~$25 million or more)', ... | → lower bound int             |
+## | DEATHS_TOTAL_DESCRIPTION  | 'Very Many (~1001 or more pe...', ... | — (target)                    |
+## | INJURIES_TOTAL_DESCRIPTION| 'Few (~1 to 50 people)', ...           | → lower bound int             |
+## | MISSING_TOTAL_DESCRIPTION | 'Few (~1 to 50 people)', 'Some', ...  | → lower bound int             |
+## | HOUSES_TOTAL_DESCRIPTION  | 'Many (~101 to 1000 houses)', ...      | → lower bound int             |
 ## | NUM                       | '0101-06=', '0101-06=', '0303-01='    | —                             |
 ## | NAME                      | 'Etna', 'Etna', 'Karthala'            | —                             |
 ## | LOCATION                  | 'Italy', 'Italy', 'Indian O-W'        | —                             |
@@ -60,7 +60,33 @@ data = data.replace(-999, np.nan)
 ## | COUNTRY                   | 'Italy', 'Italy', 'Comoros'           | —                             |
 
 ## Feature engineering
-# No actionable transformations for this dataset.
+# Casualty/damage description columns: parse lower bound from 'Few (~1 to 50)', 'Some (~51)',
+# 'Many (~101 to 1000)', 'Very Many (~1001 or more)'. Damage uses dollar amounts: Limited=0, Moderate=1M,
+# Severe=5M, Extreme=25M as lower-bound proxies.
+_desc_lower_people = {'Few': 1, 'Some': 51, 'Many': 101, 'Very Many': 1001}
+_desc_lower_damage = {'Limited': 0, 'Moderate': 1_000_000, 'Severe': 5_000_000, 'Extreme': 25_000_000}
+
+def _parse_desc_lower(s, mapping):
+    if pd.isna(s):
+        return np.nan
+    for key, val in mapping.items():
+        if str(s).strip().startswith(key):
+            return val
+    return np.nan
+
+_people_cols = [
+    'INJURIES_DESCRIPTION', 'MISSING_DESCRIPTION',
+    'INJURIES_TOTAL_DESCRIPTION', 'MISSING_TOTAL_DESCRIPTION',
+]
+_house_cols = ['HOUSES_DESCRIPTION', 'HOUSES_TOTAL_DESCRIPTION']
+_damage_cols = ['DAMAGE_DESCRIPTION', 'DAMAGE_TOTAL_DESCRIPTION']
+
+for _col in _people_cols + _house_cols:
+    if _col in data.columns:
+        data[f'{_col}_lower'] = data[_col].apply(lambda s: _parse_desc_lower(s, _desc_lower_people))
+for _col in _damage_cols:
+    if _col in data.columns:
+        data[f'{_col}_lower'] = data[_col].apply(lambda s: _parse_desc_lower(s, _desc_lower_damage))
 
 ## Clean for specific data formats (dict / list)
 

@@ -53,15 +53,19 @@ data.groupby(['experience_level', 'employment_type', 'job_title', 'salary_curren
 ## String column overview
 ## | Column                    | Sample values                          | Transformation                 |
 ## |---------------------------|----------------------------------------|--------------------------------|
-## | experience_level          | 'EN', 'EN', 'EN'                      | —                             |
+## | experience_level          | 'EN', 'MI', 'SE', 'EX'                | → ordinal 1/2/3/4             |
 ## | employment_type           | 'CT', 'CT', 'FT'                      | —                             |
 ## | job_title                 | 'Business Data Analyst', 'Staff Dat...| —                             |
 ## | employee_residence        | 'US', 'CA', 'DK'                      | —                             |
 ## | company_location          | 'US', 'CA', 'DK'                      | —                             |
-## | company_size              | 'L', 'L', 'S'                         | —                             |
+## | company_size              | 'S', 'M', 'L'                         | → ordinal 1/2/3               |
 
 ## Feature engineering
-# No actionable transformations for this dataset.
+# experience_level: Entry(EN)=1, Mid(MI)=2, Senior(SE)=3, Executive(EX)=4
+data['experience_level_ord'] = data['experience_level'].map({'EN': 1, 'MI': 2, 'SE': 3, 'EX': 4})
+
+# company_size: Small(S)=1, Medium(M)=2, Large(L)=3
+data['company_size_ord'] = data['company_size'].map({'S': 1, 'M': 2, 'L': 3})
 
 ## Set metadata
 target_name = 'salary_in_usd'

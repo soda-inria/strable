@@ -42,27 +42,61 @@ data = data.replace(-999999, np.nan)
 ## String column overview
 ## | Column                    | Sample values                          | Transformation                 |
 ## |---------------------------|----------------------------------------|--------------------------------|
-## | Date (YYYY/MM/DD)         | '-2000/??/??', '-0759/??/??', '-043...| —                             |
+## | Date (YYYY/MM/DD)         | '-2000/??/??', '-0759/??/??', '-043...| → extract year (int)          |
 ## | Location Name             | 'TURKMENISTAN: W', 'ISRAEL: JERUSAL...| —                             |
 ## | Area                      | 'PR', 'AR', 'MO'                      | —                             |
 ## | Country                   | 'TURKMENISTAN', 'ISRAEL', 'GREECE'    | —                             |
 ## | Region                    | 'Central Asia and Caucasus', 'Middl...| —                             |
-## | Deaths Description        | 'Few (~1 to 50 people)', 'Many (~10...| —                             |
-## | Injuries Description      | 'Very Many (~1001 or more pe...', '...| —                             |
-## | Missing Description       | 'Few (~1 to 50 people)', 'Few (~1 t...| —                             |
-## | Houses Destroyed Descripti| 'Few (~1 to 50 houses)', 'Few (~1 t...| —                             |
-## | Houses Damaged Description| 'Many (~101 to 1000 houses)', 'Many...| —                             |
-## | Damage Description (total)| 'Limited (<$1 million)', 'Severe (~...| —                             |
-## | Deaths Description (total)| 'Few (~1 to 50 people)', 'Many (~10...| —                             |
-## | Injuries Description (tota| 'Very Many (~1001 or more pe...', '...| —                             |
-## | Missing Description (total| 'Few (~1 to 50 people)', 'Many (~10...| —                             |
-## | Houses Destroyed Descripti| 'Few (~1 to 50 houses)', 'Few (~1 t...| —                             |
-## | Houses Damaged Description| 'Many (~101 to 1000 houses)', 'Very...| —                             |
+## | Deaths Description        | 'Few (~1 to 50)', 'Many (~101-1000)'  | → lower bound int             |
+## | Injuries Description      | 'Very Many (~1001 or more)', ...       | → lower bound int             |
+## | Missing Description       | 'Few (~1 to 50 people)', ...           | → lower bound int             |
+## | Houses Destroyed Descripti| 'Few (~1 to 50 houses)', ...           | → lower bound int             |
+## | Houses Damaged Description| 'Many (~101 to 1000 houses)', ...      | → lower bound int             |
+## | Damage Description (total)| 'Limited (<$1 million)', ...           | — (target)                    |
+## | Deaths Description (total)| 'Few (~1 to 50 people)', ...           | → lower bound int             |
+## | Injuries Description (tota| 'Very Many (~1001 or more pe...', ... | → lower bound int             |
+## | Missing Description (total| 'Few (~1 to 50 people)', ...           | → lower bound int             |
+## | Houses Destroyed Descripti| 'Few (~1 to 50 houses)', ...           | → lower bound int             |
+## | Houses Damaged Description| 'Many (~101 to 1000 houses)', ...      | → lower bound int             |
 ## | Comments                  | '2000 B.C. (38.0 N, 58.2 E )...', '...| —                             |
 ## | URL                       | 'https://www.ngdc.noaa.gov/h...', '...| —                             |
 
 ## Feature engineering
-# No actionable transformations for this dataset.
+# Date (YYYY/MM/DD): extract year integer (negative = BC, truncate to 4-digit year prefix)
+data['year'] = (
+    data['Date (YYYY/MM/DD)']
+    .str.extract(r'^(-?\d+)/')[0]
+    .astype(float)
+)
+
+# Casualty/damage description columns: parse lower bound from '~X to Y' or '~X or more'
+# Mapping: None→NaN, 'Few (~1 to 50)'→1, 'Some (~51 to 100)'→51,
+#          'Many (~101 to 1000)'→101, 'Very Many (~1001 or more)'→1001
+_desc_lower = {
+    'Few':      1,
+    'Some':     51,
+    'Many':     101,
+    'Very Many': 1001,
+}
+
+def _parse_desc_lower(s):
+    if pd.isna(s):
+        return np.nan
+    for key, val in _desc_lower.items():
+        if s.strip().startswith(key):
+            return val
+    return np.nan
+
+_desc_cols = [
+    'Deaths Description', 'Injuries Description', 'Missing Description',
+    'Houses Destroyed Description', 'Houses Damaged Description',
+    'Deaths Description (total)', 'Injuries Description (total)',
+    'Missing Description (total)', 'Houses Destroyed Description (total)',
+    'Houses Damaged Description (total)',
+]
+for _col in _desc_cols:
+    if _col in data.columns:
+        data[f'{_col}_lower'] = data[_col].apply(_parse_desc_lower)
 
 ## Clean for specific data formats (dict / list)
 

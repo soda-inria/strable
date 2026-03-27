@@ -47,8 +47,8 @@ data = data.replace(-999, np.nan)
 ## | ContCity                  | 'NORTHDARTMOUTH', 'St. Louis', 'Boc...| —                             |
 ## | ContState                 | 'MA', 'MO', 'FL'                      | —                             |
 ## | ContName                  | 'GLORIA CLARK', 'Gary Duncan', 'Edw...| —                             |
-## | LatDir                    | 'N', 'N', 'N'                         | —                             |
-## | LonDir                    | 'W', 'W', 'W'                         | —                             |
+## | LatDir                    | 'N', 'N', 'N'                         | → 1 if N, 0 if S              |
+## | LonDir                    | 'W', 'W', 'W'                         | → 1 if W, 0 if E              |
 ## | LocAdd                    | 'OLD WESTPORT RD', 'TWR 1 - 1400 DA...| —                             |
 ## | LocCity                   | 'NORTHDARTMOUTH', 'SAINT CLAIR COUN...| —                             |
 ## | LocState                  | 'MA', 'IL', 'CA'                      | —                             |
@@ -57,7 +57,11 @@ data = data.replace(-999, np.nan)
 ## | url                       | 'https://wireless2.fcc.gov/U...', '...| —                             |
 
 ## Feature engineering
-# No actionable transformations for this dataset.
+# LatDir: 'N'→1, 'S'→0
+data['lat_north'] = data['LatDir'].str.strip().str.upper().map({'N': 1, 'S': 0})
+
+# LonDir: 'W'→1, 'E'→0
+data['lon_west'] = data['LonDir'].str.strip().str.upper().map({'W': 1, 'E': 0})
 
 ## Clean for specific data formats (dict / list)
 

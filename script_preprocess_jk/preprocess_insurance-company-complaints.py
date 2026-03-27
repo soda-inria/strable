@@ -43,8 +43,8 @@ data = clean_backslash_operations(data)
 ## | Column                    | Sample values                          | Transformation                 |
 ## |---------------------------|----------------------------------------|--------------------------------|
 ## | Company                   | 'Transamerica Life Insurance...', '...| —                             |
-## | Opened                    | '07/24/2018', '12/31/2015', '04/01/...| —                             |
-## | Closed                    | '08/06/2018', '01/25/2016', '08/12/...| —                             |
+## | Opened                    | '07/24/2018', '12/31/2015', '04/01/...| → opened_year, opened_month   |
+## | Closed                    | '08/06/2018', '01/25/2016', '08/12/...| → closed_year, closed_month   |
 ## | Coverage                  | 'Credit A & H', 'Auto', 'Auto'        | —                             |
 ## | SubCoverage               | 'No SubCov - AH', 'Whole Life', 'Un...| —                             |
 ## | Reason                    | 'Unfair Claims Practice', 'Marketin...| —                             |
@@ -54,7 +54,13 @@ data = clean_backslash_operations(data)
 ## | Status                    | 'Closed', 'Closed', 'Closed'          | —                             |
 
 ## Feature engineering
-# No actionable transformations for this dataset.
+# Opened / Closed: extract year and month
+_opened_dt = pd.to_datetime(data['Opened'], errors='coerce')
+data['opened_year'] = _opened_dt.dt.year
+data['opened_month'] = _opened_dt.dt.month
+_closed_dt = pd.to_datetime(data['Closed'], errors='coerce')
+data['closed_year'] = _closed_dt.dt.year
+data['closed_month'] = _closed_dt.dt.month
 
 ## Set metadata
 target_name = 'Recovery'

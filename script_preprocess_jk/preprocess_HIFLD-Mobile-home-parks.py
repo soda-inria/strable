@@ -53,15 +53,17 @@ data = data.replace(-999, np.nan)
 ## | COUNTY                    | 'WASHINGTON', 'ST JOHNS', 'ST JOHNS'  | —                             |
 ## | NAICS_DESC                | 'RECREATIONAL VEHICLE PARKS', 'MOBI...| —                             |
 ## | SOURCE                    | 'http://www.doh.state.fl.us/...', '...| —                             |
-## | SOURCEDATE                | '1/14/2013 12:00:00 AM', '5/21/2018...| —                             |
+## | SOURCEDATE                | '1/14/2013 12:00:00 AM', '5/21/2018...| → source_year int             |
 ## | VAL_METHOD                | 'IMAGERY/OTHER', 'IMAGERY ONLY', 'I...| —                             |
-## | VAL_DATE                  | '6/8/2018 12:00:00 AM', '5/2/2019 1...| —                             |
+## | VAL_DATE                  | '6/8/2018 12:00:00 AM', '5/2/2019 1...| → val_year int                |
 ## | WEBSITE                   | 'HTTP://WWW.THEGROVESRVRETRE...', '...| —                             |
 ## | SIZE                      | 'SMALL (<50)', 'MEDIUM (51-100)', '...| —                             |
 ## | REVGEOFLAG                | 'NO', 'NO', 'NO'                      | —                             |
 
 ## Feature engineering
-# No actionable transformations for this dataset.
+# SOURCEDATE / VAL_DATE: extract year
+data['source_year'] = pd.to_datetime(data['SOURCEDATE'], errors='coerce').dt.year
+data['val_year'] = pd.to_datetime(data['VAL_DATE'], errors='coerce').dt.year
 
 ## Clean for specific data formats (dict / list)
 

@@ -48,7 +48,7 @@ data.drop(columns=['Filed Date', 'Issued Date'], inplace=True)
 ## |---------------------------|----------------------------------------|--------------------------------|
 ## | Permit Number             | '201412012739', '201504022691', '20...| —                             |
 ## | Permit Type Definition    | 'otc alterations permit', 'addition...| —                             |
-## | Permit Creation Date      | '12/01/2014', '04/02/2015', '09/11/...| —                             |
+## | Permit Creation Date      | '12/01/2014', '04/02/2015', '09/11/...| → permit_creation_year int    |
 ## | Block                     | '1410', '0805', '5865'                | —                             |
 ## | Lot                       | '023', '034', '003'                   | —                             |
 ## | Street Number Suffix      | 'A', 'B', 'V'                         | —                             |
@@ -64,13 +64,34 @@ data.drop(columns=['Filed Date', 'Issued Date'], inplace=True)
 ## | Existing Use              | 'apartments', '2 family dwelling', ...| —                             |
 ## | Proposed Use              | 'apartments', 'apartments', '1 fami...| —                             |
 ## | TIDF Compliance           |                                       | —                             |
-## | Existing Construction Type| 'wood frame (5)', 'wood frame (5)',...| —                             |
-## | Proposed Construction Type| 'wood frame (5)', 'wood frame (5)',...| —                             |
+## | Existing Construction Type| 'wood frame (5)', 'wood frame (5)',...| → existing_constr_type_num    |
+## | Proposed Construction Type| 'wood frame (5)', 'wood frame (5)',...| → proposed_constr_type_num    |
 ## | Neighborhoods - Analysis B| 'Outer Richmond', 'Hayes Valley', '...| —                             |
-## | Location                  | '(37.78250246341156, -122.48...', '...| —                             |
+## | Location                  | '(37.7825, -122.4812)', ...            | → lat, lon float              |
 
 ## Feature engineering
-# No actionable transformations for this dataset.
+# Permit Creation Date: extract year
+data['permit_creation_year'] = pd.to_datetime(
+    data['Permit Creation Date'], errors='coerce'
+).dt.year
+
+# Existing/Proposed Construction Type: 'wood frame (5)' → extract type number
+import re as _re
+data['existing_constr_type_num'] = (
+    data['Existing Construction Type']
+    .str.extract(r'\((\d+)\)', expand=False)
+    .astype(float)
+)
+data['proposed_constr_type_num'] = (
+    data['Proposed Construction Type']
+    .str.extract(r'\((\d+)\)', expand=False)
+    .astype(float)
+)
+
+# Location: '(37.7825, -122.4812)' → lat, lon floats
+_loc = data['Location'].str.extract(r'\(([+-]?\d+\.?\d*),\s*([+-]?\d+\.?\d*)\)')
+data['location_lat'] = _loc[0].astype(float)
+data['location_lon'] = _loc[1].astype(float)
 
 ## Set metadata
 target_name = 'time_to_approve'

@@ -53,10 +53,10 @@ data['compid'] = data['compid'].astype(str)
 ## | city                      | 'Caculo-Cabaca', 'Dala', 'Dundo'      | —                             |
 ## | primary_fuel              | 'hydro', 'hydro', 'hydro'             | —                             |
 ## | investment_type           | 'Debt', 'Debt', 'Debt'                | —                             |
-## | investment_cofinanced_bu  | 'N', 'N', 'N'                         | —                             |
-## | debt_investment_averaged  | 'Y', 'N', 'N'                         | —                             |
-## | debt_investment_weighted  | 'N', 'N', 'N'                         | —                             |
-## | equity_investment_weighted| 'N', 'N', 'Y'                         | —                             |
+## | investment_cofinanced_bu  | 'N', 'N', 'N'                         | → binary 1/0                  |
+## | debt_investment_averaged  | 'Y', 'N', 'N'                         | → binary 1/0                  |
+## | debt_investment_weighted  | 'N', 'N', 'N'                         | → binary 1/0                  |
+## | equity_investment_weighted| 'N', 'N', 'Y'                         | → binary 1/0                  |
 ## | equity_investor_name_1    | 'Jinko Solar Co Ltd', 'Harbin Elect...| —                             |
 ## | equity_investor_name_2    | 'Silk Road Fund', 'China-Africa Dev...| —                             |
 ## | equity_investment_type    | 'Greenfield', 'Greenfield', 'Greenf...| —                             |
@@ -71,7 +71,13 @@ data['compid'] = data['compid'].astype(str)
 ## | cgp_id                    | 'AO.001.1; AO.001.2; AO.001....', '...| —                             |
 
 ## Feature engineering
-# No actionable transformations for this dataset.
+# Y/N investment flag columns → binary 1/0
+_yn_inv_cols = [c for c in data.columns if c in [
+    'investment_cofinanced_bu', 'debt_investment_averaged',
+    'debt_investment_weighted', 'equity_investment_weighted'
+]]
+for _col in _yn_inv_cols:
+    data[f'{_col}_bin'] = data[_col].str.strip().str.upper().map({'Y': 1, 'N': 0})
 
 ## Clean for specific data formats (dict / list)
 

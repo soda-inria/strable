@@ -51,19 +51,23 @@ for col in data.columns:
 ## String column overview
 ## | Column                    | Sample values                          | Transformation                 |
 ## |---------------------------|----------------------------------------|--------------------------------|
-## | third_party_flag          | 'Y', 'Y', 'N'                         | —                             |
-## | life_sustain_support_flag | 'N', 'N', 'N'                         | —                             |
-## | gmp_exempt_flag           | 'N', 'N', 'N'                         | —                             |
+## | third_party_flag          | 'Y', 'Y', 'N'                         | → binary 1/0                  |
+## | life_sustain_support_flag | 'N', 'N', 'N'                         | → binary 1/0                  |
+## | gmp_exempt_flag           | 'N', 'N', 'N'                         | → binary 1/0                  |
 ## | summary_malfunction_report| 'Eligible', 'Eligible', 'Eligible'    | —                             |
 ## | product_code              | 'PHR', 'NRI', 'JSF'                   | —                             |
 ## | review_panel              | 'DE', 'IM', 'MI'                      | —                             |
 ## | device_name               | 'Diammine Silver Fluoride De...', '...| —                             |
-## | device_class              | '2', '2', '1'                         | —                             |
+## | device_class              | '2', '2', '1'                         | — (target)                    |
 ## | definition                | 'Applied to tooth enamel to ...', '...| —                             |
-## | implant_flag              | 'N', 'N', 'N'                         | —                             |
+## | implant_flag              | 'N', 'N', 'N'                         | → binary 1/0                  |
 
 ## Feature engineering
-# No actionable transformations for this dataset.
+# Y/N flag columns → binary 1/0
+_yn_cols = ['third_party_flag', 'life_sustain_support_flag', 'gmp_exempt_flag', 'implant_flag']
+for _col in _yn_cols:
+    if _col in data.columns:
+        data[f'{_col}_bin'] = data[_col].str.strip().str.upper().map({'Y': 1, 'N': 0})
 
 ## Set metadata
 target_name = 'device_class'

@@ -63,11 +63,14 @@ data = clean_backslash_operations(data)
 ## | Population                | 'Medicaid', 'Medicaid', 'Medicaid'    | —                             |
 ## | Methodology               | 'Administrative', 'Administrative',...| —                             |
 ## | Source                    | 'Mathematica analysis of MAC...', '...| —                             |
-## | Rate Used in Calculating S| 'Yes', 'Yes', 'Yes'                   | —                             |
+## | Rate Used in Calculating S| 'Yes', 'Yes', 'Yes'                   | → binary 1/0                  |
 ## | State Specific Comments   | 'Rate includes managed care ...', '...| —                             |
 
 ## Feature engineering
-# No actionable transformations for this dataset.
+# Rate Used in Calculating Summary: 'Yes'/'No' → 1/0
+_rate_col = [c for c in data.columns if 'Rate Used' in c]
+if _rate_col:
+    data['rate_used_bin'] = data[_rate_col[0]].str.strip().str.lower().map({'yes': 1, 'no': 0})
 
 ## Clean for specific data formats (dict / list)
 

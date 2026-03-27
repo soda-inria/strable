@@ -44,20 +44,30 @@ data = data.replace(-999999, np.nan)
 ## |---------------------------|----------------------------------------|--------------------------------|
 ## | Licensee                  | 'ROBERTSON COUNTY EMERGENCY ...', '...| —                             |
 ## | Callsign                  | 'WQJD362', 'WPFE754', 'WPGU887'       | —                             |
-## | LatDir                    | 'N', 'N', 'N'                         | —                             |
-## | LonDir                    | 'W', 'W', 'W'                         | —                             |
+## | LatDir                    | 'N', 'N', 'N'                         | → 1 if N, 0 if S              |
+## | LonDir                    | 'W', 'W', 'W'                         | → 1 if W, 0 if E              |
 ## | LocAdd                    | 'Approx 2.9 miles NNE of Fra...', '...| —                             |
 ## | LocCity                   | 'FRANKLIN', 'DUPONT', 'MARION'        | —                             |
 ## | LocCounty                 | 'ROBERTSON', 'LUZERNE', 'FRANKLIN'    | —                             |
 ## | LocState                  | 'TX', 'PA', 'PA'                      | —                             |
-## | Nepa                      | 'N', 'N', 'N'                         | —                             |
-## | QZone                     | '01/16/2024', '01/08/2013', '02/24/...| —                             |
+## | Nepa                      | 'N', 'N', 'N'                         | → binary 1/0                  |
+## | QZone                     | '01/16/2024', '01/08/2013', '02/24/...| → qzone_year int              |
 ## | StrucType                 | 'GTOWER', 'B', 'TOWER'                | —                             |
 ## | RSC                       | 'CD', 'CD', 'CD'                      | —                             |
 ## | url                       | 'http://wireless2.fcc.gov/Ul...', '...| —                             |
 
 ## Feature engineering
-# No actionable transformations for this dataset.
+# LatDir: 'N'→1, 'S'→0 (north/south hemisphere flag)
+data['lat_north'] = data['LatDir'].str.strip().str.upper().map({'N': 1, 'S': 0})
+
+# LonDir: 'W'→1, 'E'→0 (west/east hemisphere flag)
+data['lon_west'] = data['LonDir'].str.strip().str.upper().map({'W': 1, 'E': 0})
+
+# Nepa: 'Y'/'N' → 1/0
+data['nepa_bin'] = data['Nepa'].str.strip().str.upper().map({'Y': 1, 'N': 0})
+
+# QZone: '01/16/2024' date → year
+data['qzone_year'] = pd.to_datetime(data['QZone'], errors='coerce').dt.year
 
 ## Clean for specific data formats (dict / list)
 

@@ -44,14 +44,17 @@ data = clean_backslash_operations(data)
 ## | Donor Name                | 'Italy', 'Spain', 'Finland'           | —                             |
 ## | Donor Country Code        | 'IT', 'ES', 'FI'                      | —                             |
 ## | Receipt Type              | 'Note', 'Cash', 'Cash'                | —                             |
-## | Receipt Quarter           | 'JUL-SEP', 'OCT-DEC', 'OCT-DEC'       | —                             |
+## | Receipt Quarter           | 'JAN-MAR', 'APR-JUN', 'JUL-SEP', 'OCT-DEC' | → quarter_num 1/2/3/4 |
 ## | Receipt Currency          | 'EUR', 'EUR', 'EUR'                   | —                             |
 ## | Contribution Type         | 'Grant', 'Grant', 'Grant'             | —                             |
 ## | Sub Account               | 'GF03', 'GF03', 'GF03'                | —                             |
 ## | Sector/Theme              | 'Environment/Climate Change', 'Envi...| —                             |
 
 ## Feature engineering
-# No actionable transformations for this dataset.
+# Receipt Quarter: map calendar quarter names to integers 1-4
+data['receipt_quarter_num'] = data['Receipt Quarter'].str.strip().map(
+    {'JAN-MAR': 1, 'APR-JUN': 2, 'JUL-SEP': 3, 'OCT-DEC': 4}
+)
 
 ## Clean for specific data formats (dict / list)
 

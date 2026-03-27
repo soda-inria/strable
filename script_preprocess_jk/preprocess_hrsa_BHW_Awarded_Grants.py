@@ -46,7 +46,7 @@ data = data.drop_duplicates(subset=['Grant Number', 'Financial Assistance']).res
 ## | Grantee County Description| 'County      ', 'County      ', 'Co...| —                             |
 ## | Grantee County Name       | 'Wicomico', 'Sedgwick', 'Woodbury'    | —                             |
 ## | Grantee Name              | 'Three Lower Counties Commun...', '...| —                             |
-## | HRSA Region               | 'Region 3', 'Region 7', 'Region 7'    | —                             |
+## | HRSA Region               | 'Region 3', 'Region 7', 'Region 7'    | → region_num int              |
 ## | Grantee State Abbreviation| 'MD', 'KS', 'IA'                      | —                             |
 ## | State Name                | 'Maryland', 'Kansas', 'Iowa'          | —                             |
 ## | Grantee ZIP Code          | '21804-1773', '67214-4436', '51105-...| —                             |
@@ -64,8 +64,8 @@ data = data.drop_duplicates(subset=['Grant Number', 'Financial Assistance']).res
 ## | U.S. Congressional Represe| 'Andy Harris', 'Ron Estes', 'Randy ...| —                             |
 ## | State and County Federal I| '24045', '20173', '19193'             | —                             |
 ## | State FIPS Code           | '24', '20', '19'                      | —                             |
-## | U.S. - Mexico Border 100 K| 'N', 'N', 'N'                         | —                             |
-## | U.S. - Mexico Border Count| 'N', 'N', 'N'                         | —                             |
+## | U.S. - Mexico Border 100 K| 'N', 'N', 'N'                         | → binary 1/0                  |
+## | U.S. - Mexico Border Count| 'N', 'N', 'N'                         | → binary 1/0                  |
 ## | Name of U.S. Senator Numbe| 'Benjamin L. Cardin', 'Jerry Moran'...| —                             |
 ## | Name of U.S. Senator Numbe| 'Chris Van Hollen', 'Roger Marshall...| —                             |
 ## | Uniform Data System Grant | 'This notice announces the o...', '...| —                             |
@@ -75,7 +75,18 @@ data = data.drop_duplicates(subset=['Grant Number', 'Financial Assistance']).res
 ## | Data Warehouse Record Crea| '2021/03/09', '2021/03/09', '2021/0...| —                             |
 
 ## Feature engineering
-# No actionable transformations for this dataset.
+# HRSA Region: 'Region 3' → 3 (extract region number)
+import re as _re
+data['hrsa_region_num'] = (
+    data['HRSA Region']
+    .str.extract(r'Region\s*(\d+)', expand=False)
+    .astype(float)
+)
+
+# U.S. - Mexico Border flags: 'Y'/'N' → 1/0
+_border_cols = [c for c in data.columns if 'Mexico Border' in c]
+for _col in _border_cols:
+    data[f'{_col}_bin'] = data[_col].str.strip().str.upper().map({'Y': 1, 'N': 0})
 
 ## Clean for specific data formats (dict / list)
 

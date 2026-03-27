@@ -44,16 +44,30 @@ data = data.drop_duplicates(subset=['Product Group'], keep='last')
 ## | Column                    | Sample values                          | Transformation                 |
 ## |---------------------------|----------------------------------------|--------------------------------|
 ## | Ingredient                | 'PERINDOPRIL ERBUMINE', 'PERINDOPRI...| —                             |
-## | Strength                  | '8MG', '4MG', '100MG'                 | —                             |
+## | Strength                  | '8MG', '4MG', '100MG'                 | → strength_mg float           |
 ## | Dosage                    | 'TABLET', 'TABLET', 'TABLET'          | —                             |
 ## | Route                     | 'ORAL', 'ORAL', 'ORAL'                | —                             |
 ## | MDR Unit Type             | 'TAB', 'TAB', 'TAB'                   | —                             |
 ## | NDC                       | '00054011225', '00527191901', '0011...| —                             |
-## | A-Rated                   | 'Yes', 'Yes', 'Yes'                   | —                             |
-## | Multiplier Greater Than 17| 'Y', 'Y', 'N'                         | —                             |
+## | A-Rated                   | 'Yes', 'Yes', 'Yes'                   | → binary 1/0                  |
+## | Multiplier Greater Than 17| 'Y', 'Y', 'N'                         | → binary 1/0                  |
 
 ## Feature engineering
-# No actionable transformations for this dataset.
+# Strength: '8MG', '100MG', '0.5MCG/ML' → extract leading numeric value
+import re as _re
+data['strength_value'] = (
+    data['Strength']
+    .str.extract(r'^(\d+(?:\.\d+)?)', expand=False)
+    .astype(float)
+)
+
+# A-Rated: 'Yes'/'No' → 1/0
+data['a_rated'] = data['A-Rated'].str.strip().str.lower().map({'yes': 1, 'no': 0})
+
+# Multiplier Greater Than 175 (or similar column): 'Y'/'N' → 1/0
+_mult_col = [c for c in data.columns if 'Multiplier' in c]
+if _mult_col:
+    data['multiplier_gt'] = data[_mult_col[0]].str.strip().str.upper().map({'Y': 1, 'N': 0})
 
 ## Clean for specific data formats (dict / list)
 

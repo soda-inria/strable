@@ -47,7 +47,7 @@ data.reset_index(drop=True, inplace=True)
 ## | city                      | 'Chadds Ford', 'Lake Forest', 'Bedf...| —                             |
 ## | state                     | 'PA', 'IL', 'OH'                      | —                             |
 ## | country                   | 'United States', 'United States', '...| —                             |
-## | classification            | 'Class III', 'Class II', 'Class II'   | —                             |
+## | classification            | 'Class I', 'Class II', 'Class III'    | → class_num int 1/2/3         |
 ## | application_number        | 'ANDA077908', 'NDA020124', 'NDA020309'| —                             |
 ## | brand_name                | 'PROPOFOL', 'DIAZEPAM', 'MAGNESIUM ...| —                             |
 ## | generic_name              | 'PROPOFOL', 'DIAZEPAM', 'MAGNESIUM ...| —                             |
@@ -87,7 +87,14 @@ data.reset_index(drop=True, inplace=True)
 ## | termination_date          | '20130621', '20130627', '20130821'    | —                             |
 
 ## Feature engineering
-# No actionable transformations for this dataset.
+# classification: 'Class I'→1, 'Class II'→2, 'Class III'→3
+import re as _re
+data['classification_num'] = (
+    data['classification']
+    .str.upper()
+    .str.extract(r'CLASS\s+([IVX]+)', expand=False)
+    .map({'I': 1, 'II': 2, 'III': 3, 'IV': 4, 'V': 5})
+)
 
 ## Clean for specific data formats (dict / list)
 # Clean for dict-type columns

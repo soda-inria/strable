@@ -61,11 +61,21 @@ data = data.replace(-999, np.nan)
 ## | ALT_NAME                  | 'NOT AVAILABLE', 'NOT AVAILABLE', '...| —                             |
 ## | ST_FIPS                   | '01', '01', '01'                      | —                             |
 ## | OWNER                     | 'PROPRIETARY', 'PROPRIETARY', 'NON-...| —                             |
-## | TRAUMA                    | 'LEVEL III', 'LEVEL III', 'LEVEL III' | —                             |
-## | HELIPAD                   | 'Y', 'N', 'Y'                         | —                             |
+## | TRAUMA                    | 'LEVEL I', 'LEVEL II', 'LEVEL III'    | → trauma_level_num int        |
+## | HELIPAD                   | 'Y', 'N', 'Y'                         | → binary 1/0                  |
 
 ## Feature engineering
-# No actionable transformations for this dataset.
+# HELIPAD: 'Y'/'N' → 1/0
+data['helipad_bin'] = data['HELIPAD'].str.strip().str.upper().map({'Y': 1, 'N': 0})
+
+# TRAUMA: 'LEVEL I'/'LEVEL II'/'LEVEL III'/... → ordinal integer
+import re as _re
+data['trauma_level_num'] = (
+    data['TRAUMA']
+    .str.upper()
+    .str.extract(r'LEVEL\s+(I{1,4}V?|VI{0,3})', expand=False)
+    .map({'I': 1, 'II': 2, 'III': 3, 'IV': 4, 'V': 5})
+)
 
 ## Clean for specific data formats (dict / list)
 

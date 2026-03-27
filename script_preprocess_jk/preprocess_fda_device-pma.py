@@ -65,16 +65,21 @@ for col in data.columns:
 ## | product_code              | 'HQL', 'NRA', 'NIP'                   | —                             |
 ## | advisory_committee        | 'OP', 'OR', 'CV'                      | —                             |
 ## | advisory_committee_descrip| 'Ophthalmic', 'Orthopedic', 'Cardio...| —                             |
-## | expedited_review_flag     | 'N', 'N', 'N'                         | —                             |
-## | date_received             | '1998-10-29', '2007-02-27', '2010-0...| —                             |
-## | decision_date             | '1998-12-28', '2007-07-05', '2010-0...| —                             |
+## | expedited_review_flag     | 'N', 'N', 'N'                         | → binary 1/0                  |
+## | date_received             | '1998-10-29', '2007-02-27', '2010-0...| → received_year int           |
+## | decision_date             | '1998-12-28', '2007-07-05', '2010-0...| → decision_year int           |
 ## | docket_number             | '', '', ''                            | —                             |
 ## | decision_code             | 'APPR', 'APPR', 'APPR'                | —                             |
 ## | openfda                   | 'registration_number: , 3017...', '...| —                             |
 ## | fed_reg_notice_date       | '2017-09-22', '2012-03-09', '2005-0...| —                             |
 
 ## Feature engineering
-# No actionable transformations for this dataset.
+# expedited_review_flag: 'Y'/'N' → 1/0
+data['expedited_review_bin'] = data['expedited_review_flag'].str.strip().str.upper().map({'Y': 1, 'N': 0})
+
+# date_received / decision_date: extract year
+data['received_year'] = pd.to_datetime(data['date_received'], errors='coerce').dt.year
+data['decision_year'] = pd.to_datetime(data['decision_date'], errors='coerce').dt.year
 
 ## Set metadata
 target_name = 'decision_code'

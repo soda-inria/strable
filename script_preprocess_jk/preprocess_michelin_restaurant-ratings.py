@@ -64,11 +64,11 @@ data.drop(columns=drop_col, inplace=True)
 ## | addressCountry            | 'GBR', 'KOR', 'BEL'                   | —                             |
 ## | addressRegion             | 'Cornwall', 'Seoul Capital Area', '...| —                             |
 ## | name                      | 'Narla', 'Collage', 'La Fontanella'   | —                             |
-## | datePublished             | '2025-12-17T08:32', '2025-12-17T07:...| —                             |
+## | datePublished             | '2025-12-17T08:32', '2025-12-17T07:...| → published_year int          |
 ## | description               | 'The picturesque harbour tow...', '...| —                             |
 ## | telephone                 | '+44 1726 473257', '+82 2-2190-4112...| —                             |
 ## | knowsLanguage             | 'en-GB', 'en-KR', 'en-BE'             | —                             |
-## | acceptsReservations       | 'No', 'No', 'No'                      | —                             |
+## | acceptsReservations       | 'No', 'Yes', 'No'                     | → binary 1/0                  |
 ## | servesCuisine             | 'Modern British', 'French Contempor...| —                             |
 ## | currenciesAccepted        | 'GBP', 'KRW', 'EUR'                   | —                             |
 ## | paymentAccepted           | 'Credit card / Debit card ac...', '...| —                             |
@@ -76,7 +76,11 @@ data.drop(columns=drop_col, inplace=True)
 ## | awardFor                  | 'No Ratings', 'No Ratings', 'No Rat...| —                             |
 
 ## Feature engineering
-# No actionable transformations for this dataset.
+# datePublished: extract year
+data['published_year'] = pd.to_datetime(data['datePublished'], errors='coerce').dt.year
+
+# acceptsReservations: 'Yes'→1, 'No'→0
+data['accepts_reservations_bin'] = data['acceptsReservations'].str.strip().str.lower().map({'yes': 1, 'no': 0})
 
 ## Clean for specific data formats (dict / list)
 # Clean for dict-type columns

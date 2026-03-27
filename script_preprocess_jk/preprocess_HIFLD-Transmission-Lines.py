@@ -49,11 +49,12 @@ data = data.replace(-999999, np.nan)
 ## | VAL_METHOD                | 'IMAGERY', 'IMAGERY', 'IMAGERY'       | —                             |
 ## | VAL_DATE                  | '2017/10/25 00:00:00+00', '2019/03/...| —                             |
 ## | OWNER                     | 'EAST KENTUCKY POWER COOP, INC', 'B...| —                             |
-## | VOLT_CLASS                | '100-161', '100-161', 'UNDER 100'     | —                             |
-## | INFERRED                  | 'Y', 'N', 'Y'                         | —                             |
+## | VOLT_CLASS                | '100-161', '100-161', 'UNDER 100'     | — (target)                    |
+## | INFERRED                  | 'Y', 'N', 'Y'                         | → binary 1/0                  |
 
 ## Feature engineering
-# No actionable transformations for this dataset.
+# INFERRED: 'Y'/'N' → 1/0
+data['INFERRED'] = (data['INFERRED'].str.strip().str.upper() == 'Y').astype(int)
 
 ## Clean for specific data formats (dict / list)
 

@@ -49,24 +49,37 @@ data.reset_index(drop=True, inplace=True)
 ## | brand_name                | 'Acetaminophen and Codeine P...', '...| —                             |
 ## | active_ingredients        | 'name: AMOBARBITAL SODIUM, s...', '...| —                             |
 ## | packaging                 | 'package_ndc: 0792-0099-00, ...', '...| —                             |
-## | listing_expiration_date   | '20261231', '20261231', '20261231'    | —                             |
+## | listing_expiration_date   | '20261231', '20261231', '20261231'    | → year, month int             |
 ## | openfda                   | '', '', 'manufacturer_name: PAI Hol...| —                             |
 ## | marketing_category        | 'BULK INGREDIENT', 'BULK INGREDIENT...| —                             |
 ## | dosage_form               | 'POWDER', 'LIQUID', 'SOLUTION'        | —                             |
 ## | spl_id                    | '5cedc2f3-18e6-ece6-e053-2a9...', '...| —                             |
 ## | product_type              | 'BULK INGREDIENT', 'BULK INGREDIENT...| —                             |
 ## | route                     | 'ORAL', 'ORAL', 'SUBLINGUAL'          | —                             |
-## | marketing_start_date      | '19670323', '19790109', '19810821'    | —                             |
+## | marketing_start_date      | '19670323', '19790109', '19810821'    | → marketing_start_year int    |
 ## | product_id                | '0792-0099_5cedc2f3-18e6-ece...', '...| —                             |
 ## | application_number        | 'ANDA087508', 'ANDA086996', 'ANDA07...| —                             |
 ## | brand_name_base           | 'Acetaminophen and Codeine P...', '...| —                             |
-## | marketing_end_date        | '20260930', '20270630', '20271116'    | —                             |
+## | marketing_end_date        | '20260930', '20270630', '20271116'    | → marketing_end_year int      |
 ## | pharm_class               | 'Full Opioid Agonists MoA, O...', '...| —                             |
-## | dea_schedule              | 'CII', 'CIV', 'CV'                    | —                             |
+## | dea_schedule              | 'CII', 'CIV', 'CV'                    | → dea_schedule_num int (1-5)  |
 ## | brand_name_suffix         | 'KIDNEY', 'C', 'TEST-MET'             | —                             |
 
 ## Feature engineering
-# No actionable transformations for this dataset.
+# listing_expiration_date / marketing_start_date / marketing_end_date: YYYYMMDD strings → year int
+data['listing_expiration_year'] = pd.to_datetime(
+    data['listing_expiration_date'], format='%Y%m%d', errors='coerce'
+).dt.year
+data['marketing_start_year'] = pd.to_datetime(
+    data['marketing_start_date'], format='%Y%m%d', errors='coerce'
+).dt.year
+data['marketing_end_year'] = pd.to_datetime(
+    data['marketing_end_date'], format='%Y%m%d', errors='coerce'
+).dt.year
+
+# dea_schedule: 'CI'→1, 'CII'→2, 'CIII'→3, 'CIV'→4, 'CV'→5 (Roman numeral suffix)
+_roman_map = {'I': 1, 'II': 2, 'III': 3, 'IV': 4, 'V': 5}
+data['dea_schedule_num'] = data['dea_schedule'].str.strip().str.lstrip('C').map(_roman_map)
 
 ## Clean for specific data formats (dict / list)
 # Clean for dict-type columns

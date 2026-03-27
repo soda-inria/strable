@@ -42,14 +42,20 @@ data.reset_index(drop=True, inplace=True)
 ## String column overview
 ## | Column                    | Sample values                          | Transformation                 |
 ## |---------------------------|----------------------------------------|--------------------------------|
-## | date_submitted            | '10/18/2017', '01/29/2017', '08/11/...| —                             |
-## | nonuser_affected          | 'No', 'Yes', 'No'                     | —                             |
+## | date_submitted            | '10/18/2017', '01/29/2017', '08/11/...| → submitted_year, month int   |
+## | nonuser_affected          | 'No', 'Yes', 'No'                     | → binary 1/0                  |
 ## | number_health_problems    | '1', '2', '1'                         | —                             |
 ## | reported_product_problems | 'Exploded, caught on fire, o...', '...| —                             |
 ## | tobacco_products          | 'Electronic cigarette, elect...', '...| —                             |
 
 ## Feature engineering
-# No actionable transformations for this dataset.
+# date_submitted: extract year and month
+_submitted_dt = pd.to_datetime(data['date_submitted'], errors='coerce')
+data['submitted_year'] = _submitted_dt.dt.year
+data['submitted_month'] = _submitted_dt.dt.month
+
+# nonuser_affected: 'Yes'/'No' → 1/0
+data['nonuser_affected_bin'] = data['nonuser_affected'].str.strip().str.lower().map({'yes': 1, 'no': 0})
 
 ## Clean for specific data formats (dict / list)
 # Clean for list-type columns

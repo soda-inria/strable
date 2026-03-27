@@ -40,7 +40,7 @@ data = clean_backslash_operations(data)
 ## | Column                    | Sample values                          | Transformation                 |
 ## |---------------------------|----------------------------------------|--------------------------------|
 ## | Whisky                    | 'Macallan 10yo Full Proof 57...', '...| —                             |
-## | Cost                      | '$$$$$+', '$$$$$+', '$$$$$+'          | —                             |
+## | Cost                      | '$', '$$', '$$$', '$$$$', '$$$$$+'    | → cost_level int (count $)    |
 ## | Class                     | 'SingleMalt-like', 'SingleMalt-like...| —                             |
 ## | Super Cluster             | 'ABC', 'ABC', 'ABC'                   | —                             |
 ## | Cluster                   | 'A', 'C', 'C'                         | —                             |
@@ -48,7 +48,8 @@ data = clean_backslash_operations(data)
 ## | Type                      | 'Malt', 'Malt', 'Malt'                | —                             |
 
 ## Feature engineering
-# No actionable transformations for this dataset.
+# Cost: count the '$' characters as an ordinal price level
+data['cost_level'] = data['Cost'].str.count(r'\$').astype(float)
 
 ## Set metadata
 target_name = 'Meta Critic'

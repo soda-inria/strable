@@ -45,17 +45,27 @@ data = clean_backslash_operations(data)
 ## | lot_number                | 'TBCV04007001T', 'COVID20200424', '...| —                             |
 ## | manufacturer              | 'Top Biotech Sdn. Bhd.', 'Aurora Bi...| —                             |
 ## | antibody_truth            | 'Negative', 'Negative', 'Negative'    | —                             |
-## | panel                     | 'Panel 3', 'Panel 1', 'Panel 3'       | —                             |
-## | date_performed            | '9/28/2020', '5/8/2020', '9/28/2020'  | —                             |
+## | panel                     | 'Panel 3', 'Panel 1', 'Panel 3'       | → panel_num int               |
+## | date_performed            | '9/28/2020', '5/8/2020', '9/28/2020'  | → performed_year, month int   |
 ## | evaluation_id             | 'maf3378-a001', 'maf3258-a001', 'ma...| —                             |
 ## | sample_no                 | '20', '14', '31'                      | —                             |
-## | control                   | 'Pass', 'Pass', 'Pass'                | —                             |
+## | control                   | 'Pass', 'Fail', 'Pass'                | → pass_bin 1/0                |
 ## | iga_result                | 'NA', 'NA', 'NA'                      | —                             |
 ## | pan_result                | 'NA', 'NA', 'NA'                      | —                             |
 ## | device                    | 'Top Rapid COVID-19 Rapid An...', '...| —                             |
 
 ## Feature engineering
-# No actionable transformations for this dataset.
+# date_performed: extract year and month
+_perf_dt = pd.to_datetime(data['date_performed'], errors='coerce')
+data['performed_year'] = _perf_dt.dt.year
+data['performed_month'] = _perf_dt.dt.month
+
+# control: 'Pass'→1, 'Fail'→0
+data['control_pass_bin'] = data['control'].str.strip().str.lower().map({'pass': 1, 'fail': 0})
+
+# panel: 'Panel 3' → 3 (extract panel number)
+import re as _re
+data['panel_num'] = data['panel'].str.extract(r'Panel\s*(\d+)', expand=False).astype(float)
 
 ## Set metadata
 target_name = 'antibody_truth'

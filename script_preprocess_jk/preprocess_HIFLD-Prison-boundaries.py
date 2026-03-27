@@ -51,14 +51,16 @@ data = data.replace(-999, np.nan)
 ## | COUNTY                    | 'RAPIDES', 'RAPIDES', 'ST. JOHN THE...| —                             |
 ## | COUNTRY                   | 'USA', 'USA', 'USA'                   | —                             |
 ## | SOURCE                    | 'http://www.rpso.org/correct...', '...| —                             |
-## | SOURCEDATE                | '2017/09/29 00:00:00+00', '2017/09/...| —                             |
+## | SOURCEDATE                | '2017/09/29 00:00:00+00', '2017/09/...| → source_year int             |
 ## | VAL_METHOD                | 'IMAGERY/OTHER', 'IMAGERY/OTHER', '...| —                             |
-## | VAL_DATE                  | '2024/08/16 00:00:00+00', '2024/08/...| —                             |
+## | VAL_DATE                  | '2024/08/16 00:00:00+00', '2024/08/...| → val_year int                |
 ## | WEBSITE                   | 'http://www.rpso.org/correct...', '...| —                             |
 ## | SECURELVL                 | 'NOT AVAILABLE', 'NOT AVAILABLE', '...| —                             |
 
 ## Feature engineering
-# No actionable transformations for this dataset.
+# SOURCEDATE / VAL_DATE: extract year
+data['source_year'] = pd.to_datetime(data['SOURCEDATE'], errors='coerce').dt.year
+data['val_year'] = pd.to_datetime(data['VAL_DATE'], errors='coerce').dt.year
 
 ## Clean for specific data formats (dict / list)
 

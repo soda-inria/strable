@@ -40,8 +40,8 @@ data = clean_backslash_operations(data)
 ## String column overview
 ## | Column                    | Sample values                          | Transformation                 |
 ## |---------------------------|----------------------------------------|--------------------------------|
-## | Award Date                | '12/24/2024', '12/24/2024', '12/23/...| —                             |
-## | Quarter and Fiscal Year   | 'Q2 - FY25', 'Q2 - FY25', 'Q2 - FY25' | —                             |
+## | Award Date                | '12/24/2024', '12/24/2024', '12/23/...| → award_year int              |
+## | Quarter and Fiscal Year   | 'Q2 - FY25', 'Q1 - FY24'             | → fiscal_quarter, fiscal_year |
 ## | Commodity Category        | 'CONSULTING', 'CONSULTING', 'CONTRA...| —                             |
 ## | Contract Description      | 'Recommendation for Service ...', '...| —                             |
 ## | WBG Organization          | 'IBRD', 'IBRD', 'IFC'                 | —                             |
@@ -53,7 +53,24 @@ data = clean_backslash_operations(data)
 ## | VPU description           | 'Office of the Regional Vice...', '...| —                             |
 
 ## Feature engineering
-# No actionable transformations for this dataset.
+# Award Date: extract year
+data['award_year'] = pd.to_datetime(data['Award Date'], errors='coerce').dt.year
+
+# Quarter and Fiscal Year: 'Q2 - FY25' → fiscal_quarter=2, fiscal_year=2025
+import re as _re
+def _parse_qfy(s):
+    if pd.isna(s):
+        return np.nan, np.nan
+    m = _re.search(r'Q(\d+)\s*-\s*FY(\d+)', str(s), _re.IGNORECASE)
+    if m:
+        q = int(m.group(1))
+        fy = int(m.group(2))
+        fy = 2000 + fy if fy < 100 else fy
+        return q, fy
+    return np.nan, np.nan
+data[['fiscal_quarter', 'fiscal_year']] = data['Quarter and Fiscal Year'].apply(
+    lambda s: pd.Series(_parse_qfy(s))
+)
 
 ## Clean for specific data formats (dict / list)
 
