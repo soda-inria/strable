@@ -1,22 +1,47 @@
 """Common functions used for evaluation."""
 
-import os
 import json
 import pandas as pd
 import numpy as np
 from datetime import datetime
+from configs.path_configs import path_configs
+
+
+def get_width(X):
+    """Number of columns/features across DataFrames, arrays, tensors, or
+    nested list-of-tuples.
+    """
+    if hasattr(X, "shape"):
+        return X.shape[1] if len(X.shape) > 1 else 1
+    if isinstance(X, (list, tuple)):
+        if not X:
+            return 0
+        first = X[0]
+        if isinstance(first, (list, tuple)):
+            for item in first:
+                if hasattr(item, "shape"):
+                    return item.shape[1] if len(item.shape) > 1 else 1
+            return len(first)
+        return 1
+    return 0
+
 
 def load_data(data_name):
     """Loads the locally saved raw data."""
-
-    from configs.path_configs import path_configs
 
     # Path of the folder containing data
     data_folder = path_configs["path_data_processed"]
 
     # Dataset
     data_path = f"{data_folder}/{data_name}/data.parquet"
-    data = pd.read_parquet(data_path)
+
+    print(f"Reading: {data_path}")  # ← add this
+    
+    try:
+        data = pd.read_parquet(data_path, engine="pyarrow")
+    except Exception:
+        data = pd.read_parquet(data_path, engine="fastparquet")
+
     data.fillna(value=np.nan, inplace=True)
 
     # Configs
@@ -189,6 +214,7 @@ def return_score(y_target, y_prob, y_pred, task):
         score_f1 = f1_score(y_target, y_pred, average="weighted")
         return score_auc, score_brier, score_f1
 
+
 def _calculate_tabpfn_output(estimator, X_test, batch_size, task):
     """
     Optimized TabPFN output calculation.
@@ -296,29 +322,63 @@ def assign_estimator(
     elif estim_method == "tabpfn":
 
         from tabpfn import TabPFNRegressor, TabPFNClassifier
+        from glob import glob
 
         fixed_params = dict()
         fixed_params["device"] = device
         fixed_params["ignore_pretraining_limits"] = True
-
-        # TabPFN will automatically download or load the weights from its default cache
         if task == "regression":
+            fixed_params["model_path"] = glob(
+                f"{path_configs['models']}/tabpfn_2_5/*tabpfn-v2.5-regressor-v2.5_default*"
+            )[0]
             estimator_ = TabPFNRegressor(**fixed_params)
         else:
+            fixed_params["model_path"] = glob(
+                f"{path_configs['models']}/tabpfn_2_5/*tabpfn-v2.5-classifier-v2.5_default*"
+            )[0]
             estimator_ = TabPFNClassifier(**fixed_params)
-    
-    elif estim_method == "tabstar":
-        
-        from tabstar.tabstar_model import TabSTARClassifier, TabSTARRegressor
+            
+    elif estim_method == "tabicl":
 
+        from tabicl import TabICLClassifier, TabICLRegressor
+
+        fixed_params = dict()
+        fixed_params["device"] = device
+        fixed_params["random_state"] = 1234
+
+        if task == "regression":
+            # Regression checkpoint automatically downloads on first run
+            estimator_ = TabICLRegressor(**fixed_params)
+        else:
+            # Classification checkpoint automatically downloads on first run
+            estimator_ = TabICLClassifier(**fixed_params)
+
+    elif estim_method == "tabstar":
+        # run on Jeanzay with local model cache
+        import os
+
+        # 1. Force Offline Mode
+        os.environ["HF_HUB_OFFLINE"] = "0"
+        os.environ["TRANSFORMERS_OFFLINE"] = "0"
+
+        # 2. SET HF_HOME (Note: Points to the PARENT of your new 'hub' folder)
+        os.environ["HF_HOME"] = f"{path_configs['base_path']}/data/models/tabstar"
+
+        # 3. SET THE ENCODER PATH (Keep absolute path to the snapshot)
+        os.environ["E5_SMALL_LOCAL_PATH"] = f"{path_configs['base_path']}/data/models/e5-small-v2/models--intfloat--e5-small-v2/snapshots/ffb93f3bd4047442299a41ebb6fa998a38507c52"
+
+        # 4. NOW IMPORT THE LIBRARY
+        from tabstar.tabstar_model import TabSTARClassifier, TabSTARRegressor
+        import uuid
         fixed_params = dict()
         fixed_params["device"] = device
         fixed_params["random_state"] = 1234
         fixed_params["keep_model"] = False
         fixed_params["output_dir"] = ".tabstar_checkpoint/" + str(uuid.uuid4()) + '/'
-        # TabSTAR and HuggingFace will handle downloading this model to the user's default cache
+        
+        # 5. USE THE REPO ID (Since HF_HOME is now fixed, this resolves locally)
         fixed_params["pretrain_dataset_or_path"] = "alana89/TabSTAR"
-
+                
         if task == "regression":
             estimator_ = TabSTARRegressor(**fixed_params)
         else:
@@ -327,43 +387,11 @@ def assign_estimator(
     elif estim_method == "contexttab":
 
         from sap_rpt_oss import SAP_RPT_OSS_Classifier, SAP_RPT_OSS_Regressor
-
-        # device is automatically detected
-        # random_state is already defined as random_state=self.seed + bagging_index
         
         if task == "regression":
             estimator_ = SAP_RPT_OSS_Regressor()
         else:
             estimator_ = SAP_RPT_OSS_Classifier()
-
-    elif estim_method == "realtabpfn":
-
-        from tabpfn import TabPFNRegressor, TabPFNClassifier
-        from configs.path_configs import path_configs
-        from glob import glob
-
-        fixed_params = dict()
-        fixed_params["device"] = device
-        fixed_params["ignore_pretraining_limits"] = True
-
-        # Safely check for the custom TabPFN weights
-        model_type = "regressor" if task == "regression" else "classifier"
-        checkpoint_pattern = f"{path_configs['models']}/tabpfn_2_5/*tabpfn-v2.5-{model_type}-v2.5_real*"
-        checkpoints = glob(checkpoint_pattern)
-        
-        if not checkpoints:
-            raise FileNotFoundError(
-                f"\n❌ Custom TabPFN weights not found!\n"
-                f"Expected to find a model matching: {checkpoint_pattern}\n"
-                f"Please download the weights and place them in the correct directory."
-            )
-            
-        fixed_params["model_path"] = checkpoints[0]
-        
-        if task == "regression":
-            estimator_ = TabPFNRegressor(**fixed_params)
-        else:
-            estimator_ = TabPFNClassifier(**fixed_params)
 
     elif estim_method == "logistic":
 
@@ -376,59 +404,52 @@ def assign_estimator(
     elif estim_method == "realmlp":
 
         import uuid
-        from pytabkit import RealMLP_HPO_Regressor, RealMLP_HPO_Classifier
+        import os
+        # from pytabkit import RealMLP_HPO_Regressor, RealMLP_HPO_Classifier
+        from pytabkit import RealMLP_TD_Classifier, RealMLP_TD_Regressor
 
         fixed_params = dict()
         fixed_params["device"] = device
         fixed_params["n_cv"] = 8
         fixed_params["n_repeats"] = 1
-        fixed_params["n_hyperopt_steps"] = 100
+        fixed_params["n_ens"] = 8
         fixed_params["random_state"] = 1234
-        fixed_params["tmp_folder"] = "./pytabkit/" + str(uuid.uuid4())
+        tmp_root = os.environ.get('TMPDIR', '/tmp')
+        tmp_path = os.path.join(tmp_root, "pytabkit_ensembles", str(uuid.uuid4()))
+        os.makedirs(tmp_path, exist_ok=True)
+        fixed_params["tmp_folder"] = tmp_path
         fixed_params["verbosity"] = 0
         if task == "regression":
-            estimator_ = RealMLP_HPO_Regressor(**fixed_params, **best_params)
+            estimator_ = RealMLP_TD_Regressor(**fixed_params, **best_params)
         else:
             fixed_params["val_metric_name"] = "1-auc_ovr"
-            estimator_ = RealMLP_HPO_Classifier(**fixed_params, **best_params)
+            estimator_ = RealMLP_TD_Classifier(**fixed_params, **best_params)
 
     elif estim_method == "tabm":
 
         import uuid
-        from pytabkit import TabM_HPO_Regressor, TabM_HPO_Classifier
+        # from pytabkit import TabM_HPO_Regressor, TabM_HPO_Classifier
+        from pytabkit import TabM_D_Classifier, TabM_D_Regressor
 
         fixed_params = dict()
         fixed_params["device"] = device
         fixed_params["n_cv"] = 8
         fixed_params["n_repeats"] = 1
-        fixed_params["n_hyperopt_steps"] = 100
+        # fixed_params["n_hyperopt_steps"] = 100
         fixed_params["random_state"] = 1234
         fixed_params["tmp_folder"] = "./pytabkit/" + str(uuid.uuid4())
         fixed_params["verbosity"] = 0
         if task == "regression":
-            estimator_ = TabM_HPO_Regressor(**fixed_params, **best_params)
+            estimator_ = TabM_D_Regressor (**fixed_params, **best_params)
         else:
             fixed_params["val_metric_name"] = "1-auc_ovr"
-            estimator_ = TabM_HPO_Classifier(**fixed_params, **best_params)
-    
-    elif estim_method == "tarte":
-        from tarte_ai import TARTEFinetuneRegressor, TARTEFinetuneClassifier
-
-        fixed_params = dict()
-        fixed_params["device"] = device
-        fixed_params["num_model"] = 8
-        fixed_params["n_jobs"] = 8
-        fixed_params["num_heads"] = 24   # Based on paper Page 6
-        fixed_params["batch_size"] = 32 
-        fixed_params["disable_pbar"] = True
-        fixed_params["random_state"] = 1234
-
+            estimator_ = TabM_D_Classifier(**fixed_params, **best_params)
+    elif estim_method == "mambular":
+        from deeptab.models import MambularRegressor, MambularClassifier
         if task == "regression":
-            estimator_ = TARTEFinetuneRegressor(**fixed_params, **best_params)
+            estimator_ = MambularRegressor()
         else:
-            fixed_params['loss'] = 'categorical_crossentropy'
-            estimator_ = TARTEFinetuneClassifier(**fixed_params, **best_params)
-
+            estimator_ = MambularClassifier()
     # GBDT Search estimators
     elif estim_method == "xgb":
 
@@ -446,6 +467,7 @@ def assign_estimator(
         fixed_params = dict()
         fixed_params["n_estimators"] = 1000
         fixed_params["callbacks"] = callbacks
+        fixed_params["enable_categorical"] = True
 
         if task == "regression":
             estimator_ = XGBRegressor(**fixed_params, **best_params)
@@ -469,47 +491,10 @@ def assign_estimator(
             estimator_ = CatBoostRegressor(**fixed_params, **best_params)
         else:
             estimator_ = CatBoostClassifier(**fixed_params, **best_params)
-
-    # Scikit-learn search estimators
-    elif estim_method == "histgb":
-
-        from sklearn.ensemble import (
-            HistGradientBoostingRegressor,
-            HistGradientBoostingClassifier,
-        )
-
-        fixed_params = dict()
-        fixed_params["early_stopping"] = True
-        fixed_params["n_iter_no_change"] = 50
-        fixed_params["random_state"] = 1234
-        if task == "regression":
-            estimator_ = HistGradientBoostingRegressor(
-                **fixed_params,
-                **best_params,
-            )
-        else:
-            estimator_ = HistGradientBoostingClassifier(
-                **fixed_params,
-                **best_params,
-            )
-
-    elif estim_method == "randomforest":
-
-        from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
-
-        fixed_params = dict()
-        fixed_params["n_estimators"] = 250
-        fixed_params["random_state"] = 1234
-        fixed_params["n_jobs"] = len(os.sched_getaffinity(0))
-        if task == "regression":
-            estimator_ = RandomForestRegressor(**fixed_params, **best_params)
-        else:
-            estimator_ = RandomForestClassifier(**fixed_params, **best_params)
-
     elif estim_method == "extrees":
 
         from sklearn.ensemble import ExtraTreesRegressor, ExtraTreesClassifier
-
+        import os
         fixed_params = dict()
         fixed_params["n_estimators"] = 250
         fixed_params["random_state"] = 1234

@@ -3,6 +3,14 @@
 CREATE SUMMARY_DF
 '''
 
+import sys as _sys
+from pathlib import Path as _Path
+_REPO_ROOT = _Path(__file__).resolve().parent.parent
+if str(_REPO_ROOT) not in _sys.path:
+    _sys.path.insert(0, str(_REPO_ROOT))
+del _sys, _Path, _REPO_ROOT
+
+
 import os
 import json
 from pathlib import Path
@@ -11,11 +19,9 @@ import pyarrow.parquet as pq
 import pyarrow as pa
 import pyarrow.compute as pc
 import numpy as np
-from scipy import sparse
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
-pd.set_option('display.max_columns', None)
 from configs.path_configs import path_configs
-
+pd.set_option('display.max_columns', None)
 
 def get_text_column_names(pf: pq.ParquetFile) -> list[str]:
     """
@@ -36,7 +42,7 @@ def get_text_column_names(pf: pq.ParquetFile) -> list[str]:
     return text_cols
 
 
-def compute_text_stats(pf: pq.ParquetFile, text_cols: list[str]) -> tuple[int, float, int, float, float, float, float]:
+def compute_text_stats(pf: pq.ParquetFile, text_cols: list[str]) -> tuple[int, float, int, float, float, float, float, int]:
     """
     Compute text/categorical column statistics (operates on provided text_cols):
       - number of text columns
@@ -46,6 +52,7 @@ def compute_text_stats(pf: pq.ParquetFile, text_cols: list[str]) -> tuple[int, f
       - string similarity: average pairwise cosine similarity between rows
       - proportion missing: fraction of text cells that are missing
       - proportion unique: average (nunique / n_rows) across text columns
+      - string diversity: number of unique character n-grams in a 1000-row sample
 
     Notes:
       - TF-IDF / cosine similarity is computed on the per-row concatenation of
@@ -53,7 +60,7 @@ def compute_text_stats(pf: pq.ParquetFile, text_cols: list[str]) -> tuple[int, f
         rows to control memory/time.
     """
     if not text_cols:
-        return 0, 0.0, 0, 0.0, 0.0, 0.0, 0.0
+        return 0, 0.0, 0, 0.0, 0.0, 0.0, 0.0, 0
 
     total_chars = 0
     total_cells = 0
@@ -69,14 +76,10 @@ def compute_text_stats(pf: pq.ParquetFile, text_cols: list[str]) -> tuple[int, f
         ser = pf.read(columns=[col]).to_pandas()[col]
 
         # Cardinality (unique non-null values)
-        # sample_size = min(1024, len(ser))
         nunique = int(ser.nunique(dropna=True))
         unique_counts.append(nunique)
 
-        # String length statistics via PyArrow for robustness on chunks
-        # arr = ser._data if hasattr(ser, "_data") else None
-        # Fallback: compute lengths in pandas
-        # Use pandas to compute total characters and non-null counts
+        # String length statistics: compute total characters and non-null counts in pandas
         ser_str = ser.dropna().astype(str)
         chars_sum = ser_str.map(len).sum()
         non_null = ser_str.shape[0]
@@ -152,7 +155,6 @@ def compute_text_stats(pf: pq.ParquetFile, text_cols: list[str]) -> tuple[int, f
     string_diversity = 0
     try:
         if diversity_texts:
-            
             # 1. Use Character analyzer with range 2-4 (as per paper)
             div_vec = CountVectorizer(
                 analyzer='char',       # "based on characters"
@@ -236,7 +238,7 @@ def compute_missingness_stats(pf, text_cols):
         
     return prop_missing_total, prop_rows_affected, prop_missing_text
 
-BASE_DIR = Path(path_configs["base_path"] + "/data/data_processed")
+BASE_DIR = Path(f"{path_configs['path_data_processed']}")
 
 records = []
 
@@ -311,6 +313,6 @@ summary_df = pd.DataFrame(records)
 # check that columns are at dataset level (no duplicates per name)
 
 #save
-summary_path = path_configs["base_path"] + "/dataset_summary_wide.parquet"
+summary_path = path_configs["dataset_summary_wide"]
 summary_df.to_parquet(summary_path, index=False, engine="fastparquet")
 print("Saved to:", summary_path)

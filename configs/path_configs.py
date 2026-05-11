@@ -1,40 +1,65 @@
-"""Configurations of paths."""
+"""Centralized path configuration.
+
+All paths are derived from a single ``STRABLE_ROOT`` directory so that the
+repository works without any modification on a user's machine.
+
+Resolution order for ``STRABLE_ROOT``:
+
+1. ``$STRABLE_ROOT`` environment variable, if set.
+2. The repository root, inferred from this file's location
+   (``configs/path_configs.py`` -> repo root is ``..``).
+
+The HuggingFace cache follows the standard ``HF_HOME`` env var (or its
+default of ``~/.cache/huggingface``); it is intentionally outside the
+repo.
+"""
+
 import os
 from pathlib import Path
 
+# Repo root = parent of the configs/ directory containing this file.
+_DEFAULT_ROOT = Path(__file__).resolve().parent.parent
+
+REPO_ROOT = Path(os.environ.get("STRABLE_ROOT", str(_DEFAULT_ROOT)))
+
 path_configs = dict()
 
-# 1. Dynamically find the base path (the root of the 'strable' repository)
-# __file__ is this script. .parent is 'configs/'. .parent.parent is 'strable/'
-base_path = Path(__file__).resolve().parent.parent
-path_configs["base_path"] = str(base_path)
+# --- Top-level roots ----------------------------------------------------
+path_configs["base_path"] = str(REPO_ROOT)
 
-# 2. Build all other paths relative to the base path
-# Preprocessed data
-path_configs["path_data_processed"] = str(base_path / "data" / "data_processed")
+# --- Data ---------------------------------------------------------------
+path_configs["path_data_processed"] = str(REPO_ROOT / "data" / "data_processed")
+path_configs["path_data_raw"] = str(REPO_ROOT / "data" / "data_raw")
+path_configs["llm_embeddings"] = str(REPO_ROOT / "data" / "llm_embeding")
 
-# caching folder for embeddings
-path_configs["folder_cache_emb"] = str(base_path / "__cache__")
+# Sibling benchmarks for cross-corpus comparisons (see scripts/
+# natural_language_test_VSE_vs_STRABLE_vs_CARTE_vs_TTB.py).
+path_configs["vse_datasets"] = str(REPO_ROOT / "data" / "VSE_datasets")
+path_configs["carte_datasets"] = str(REPO_ROOT / "data" / "CARTE_datasets")
+path_configs["ttb_datasets"] = str(REPO_ROOT / "data" / "TTB_datasets")
 
-# models
-path_configs["models"] = str(base_path / "data" / "models")
+# --- Results / outputs --------------------------------------------------
+path_configs["results"] = str(REPO_ROOT / "results")
+path_configs["compiled_results"] = str(REPO_ROOT / "results" / "compiled_results")
+path_configs["results_pics"] = str(REPO_ROOT / "results_pics")
+path_configs["results_tables"] = str(REPO_ROOT / "results_tables")
 
-# LLM cached
-# This creates a 'hub' folder inside the repo for HuggingFace downloads. 
-# Alternatively, you can remove this entirely to let HF use the user's default ~/.cache/huggingface/
-path_configs["huggingface_cache_folder"] = str(base_path / "hub")
+# --- Caches & summaries --------------------------------------------------
+path_configs["folder_cache_emb"] = str(REPO_ROOT / "__cache__")
+path_configs["dataset_summary_wide"] = str(REPO_ROOT / "dataset_summary_wide.parquet")
+path_configs["openml_features"] = str(REPO_ROOT / "openml_features.csv")
 
-# Fasttext path
-path_configs["fasttext_path"] = str(base_path / "data" / "language_models" / "cc.en.300.bin")
+# --- NLTK data ----------------------------------------------------------
+path_configs["nltk_data"] = str(REPO_ROOT / "nltk_data")
 
-# 3. (Optional but recommended) Automatically create these folders if they don't exist
-folders_to_create = [
-    path_configs["path_data_processed"],
-    path_configs["folder_cache_emb"],
-    path_configs["models"],
-    path_configs["huggingface_cache_folder"],
-    str(base_path / "data" / "language_models") # Ensure the folder for fasttext exists
-]
+# --- Models -------------------------------------------------------------
+path_configs["models"] = str(REPO_ROOT / "data" / "models")
+path_configs["fasttext_path"] = str(
+    REPO_ROOT / "data" / "language_models" / "cc.en.300.bin"
+)
 
-for folder in folders_to_create:
-    os.makedirs(folder, exist_ok=True)
+# HuggingFace cache — deliberately outside the repo; falls back to HF default.
+path_configs["huggingface_cache_folder"] = os.environ.get(
+    "HF_HOME",
+    str(Path.home() / ".cache" / "huggingface"),
+)

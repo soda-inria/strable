@@ -1,48 +1,65 @@
-"""Script to compile all benchmark results into a single CSV."""
+"""Aggregate per-fold scores from ``script_evaluate*.py`` into one CSV."""
 
-import os
-import pandas as pd
+from __future__ import annotations
+
+import argparse
+import sys
 from pathlib import Path
+
+import pandas as pd
 from joblib import Parallel, delayed
 
-from configs.path_configs import path_configs
+_REPO_ROOT = Path(__file__).resolve().parent.parent
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
 
-def compile_results():
-    # 1. Dynamically locate the benchmark results directory
-    base_path = Path(path_configs["base_path"])
-    score_dir = base_path / "results" / "benchmark"
-    
-    if not score_dir.exists():
-        print(f"❌ Directory not found: {score_dir}")
-        return
+from configs.path_configs import path_configs  # noqa: E402
 
-    print(f"Scanning for result files in: {score_dir}...")
-    
-    # 2. Find all CSVs located inside any 'score' subfolder
-    score_files = list(score_dir.rglob("score/*.csv"))
-    
-    # Safety check: Prevent crash if no files have been generated yet
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Compile per-fold scores into one CSV.")
+    parser.add_argument(
+        "run_name",
+        help=(
+            "Path under <STRABLE_ROOT>/results/, of the form "
+            "<ABLATION>/<save_dir> (e.g. 'default/benchmark_main', "
+            "'no-pca/qwen_runs', 'ct30-ohe/main'). The ABLATION segment "
+            "is hardcoded by each evaluate script; see its top-of-file "
+            "ABLATION constant."
+        ),
+    )
+    parser.add_argument(
+        "--out",
+        type=Path,
+        default=None,
+        help=(
+            "Output CSV path. Defaults to "
+            "<STRABLE_ROOT>/results/compiled_results/"
+            "result_<run_name with / -> _>.csv."
+        ),
+    )
+    args = parser.parse_args()
+
+    score_dir = Path(path_configs["results"]) / args.run_name
+    if not score_dir.is_dir():
+        raise SystemExit(f"Results directory not found: {score_dir}")
+
+    score_files = list(score_dir.glob("**/score/*.csv"))
     if not score_files:
-        print("⚠️ No score files found to compile. Run the evaluation script first.")
-        return
-        
-    print(f"Found {len(score_files)} result files. Compiling...")
+        raise SystemExit(f"No score CSVs found under {score_dir}")
+    print(f"Found {len(score_files)} score files under {score_dir}")
 
-    # 3. Read and concatenate all files in parallel
-    df_score_ = Parallel(n_jobs=-1)(delayed(pd.read_csv)(file) for file in score_files)
-    
-    # ignore_index=True does the exact same thing as your reset_index(drop=True)
-    df_score_runs = pd.concat(df_score_, axis=0, ignore_index=True)
+    rows = Parallel(n_jobs=-1)(delayed(pd.read_csv)(p) for p in score_files)
+    df = pd.concat(rows, axis=0).reset_index(drop=True)
 
-    # 4. Ensure the compiled output folder exists
-    compiled_results_dir = base_path / "results" / "compiled_results"
-    compiled_results_dir.mkdir(parents=True, exist_ok=True)
+    flat_name = args.run_name.replace("/", "_")
+    out = args.out or (
+        Path(path_configs["compiled_results"]) / f"result_{flat_name}.csv"
+    )
+    out.parent.mkdir(parents=True, exist_ok=True)
+    df.to_csv(out, index=False)
+    print(f"Wrote {len(df)} rows to {out}")
 
-    # 5. Save the final compiled CSV
-    save_path = compiled_results_dir / "result_comparison.csv"
-    df_score_runs.to_csv(save_path, index=False)
-    
-    print(f"✅ Successfully compiled {len(score_files)} files into:\n{save_path}")
 
 if __name__ == "__main__":
-    compile_results()
+    main()

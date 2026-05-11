@@ -1,22 +1,25 @@
-"""Functions used for hyperparameter serach."""
+"""Hyperparameter search"""
 
 import time
-import re
-import pandas as pd
-import numpy as np
-
-from sklearn.model_selection import RandomizedSearchCV, ParameterSampler, ParameterGrid
 from copy import deepcopy
-from joblib import Parallel, delayed
 from itertools import product
+
+import numpy as np
+import pandas as pd
+from joblib import Parallel, delayed
+from sklearn.base import clone
+from sklearn.ensemble import VotingClassifier, VotingRegressor
+from sklearn.frozen import FrozenEstimator
+from sklearn.model_selection import ParameterGrid, ParameterSampler
+
+from configs.exp_configs import estim_configs
 from configs.model_parameters import param_distributions_total
 from src.utils_evaluation import (
     assign_estimator,
     calculate_output,
-    reshape_pred_output,
     check_pred_output,
+    reshape_pred_output,
     return_score,
-    shorten_param,
 )
 
 
@@ -25,38 +28,34 @@ def run_param_search(
     y_train,
     task,
     estim_method,
+    tune_indicator,
     cv,
     n_iter,
     n_jobs,
-    scoring,
     device,
     cat_features=None,
 ):
-    """Function to run search for evaluation."""
+    """Run hyperparameter search for one (estimator, dataset, fold).
 
-    # Basic settings
-    # ridge,realmlp,tabm have its owns search mechanism, so included in no_search logic
-    param_method = estim_method.split("-")[-1]
-    no_search_estimators = [
-        "ridge",
-        "tabpfn",
-        "realtabpfn",
-        "realmlp",
-        "tabm",
-        "default",
-        "tabstar",
-        "contexttab",
-    ]
-    gbdt_estimators_with_val = ["xgb", "catboost"]
+    Returns
+    -------
+    cv_results : pandas.DataFrame or None
+        Per-parameter-set summary (one row per sampled hyperparameter set,
+        with mean/std test score and timing). ``None`` when no search runs.
+    best_params : dict
+        The best hyperparameter set, or ``{}`` if no tuning was performed.
+    best_estimator : estimator
+        Either an already-fitted ``Voting{Regressor,Classifier}`` (when the
+        learner uses ``fit_with_val=True`` and tuning ran), or a fresh
+        unfitted estimator with ``best_params`` baked in. The caller should
+        pass it to ``run_inference``.
+    """
+    method_cfg = estim_configs.get(estim_method, {"search_method": "no-search", "fit_with_val": False})
+    search_method = method_cfg["search_method"]
+    fit_with_val = method_cfg["fit_with_val"]
 
-    # No search for certain estimators
-    if param_method in no_search_estimators:
-        return None, {}, None
-
-    # Parameter distribution
-    param_distributions = param_distributions_total[param_method]
-
-    # Run hyperparmeter search
+    # Always start with a fresh estimator carrying defaults — used both for
+    # no-search and as the template that gets cloned per fold.
     estimator = assign_estimator(
         estim_method,
         task,
@@ -65,315 +64,221 @@ def run_param_search(
         cat_features=cat_features,
     )
 
-    if param_method in gbdt_estimators_with_val:
-        cv_results, best_params, best_split_idx = run_gbdt_param_search(
-            estimator,
-            X_train,
-            y_train,
-            "random",
-            param_distributions,
-            n_iter,
-            cv,
-            n_jobs,
+    # TARTE batch-size override for large training sets (only the finetune
+    # variant needs it; harmless for default Tarte).
+    if "TARTEFinetune" in estimator.__class__.__name__ and len(X_train) > 500:
+        estimator.batch_size = 256
+
+    # Skip the search either when the model has no search space, or when the
+    # user explicitly asked for the default (untuned) variant.
+    if search_method == "no-search" or tune_indicator == "default":
+        return None, {}, estimator
+
+    # TARTE's grid-search uses per-epoch internal validation rather than CV.
+    if estim_method == "tarte":
+        return _tarte_grid_search(estimator, X_train, y_train)
+
+    # Build the parameter list.
+    param_distributions = param_distributions_total[estim_method]
+    if search_method == "random-search":
+        # Sample n_iter - 1 random points and explicitly include the empty
+        # dict so the model's defaults are always evaluated alongside the
+        # search.
+        param_dict = list(
+            ParameterSampler(
+                param_distributions,
+                n_iter=max(n_iter - 1, 1),
+                random_state=1234,
+            )
         )
-        return cv_results, best_params, best_split_idx
-    elif param_method == "tarte":
-        cv_results, best_params = run_tarte_param_search(
-            estimator,
-            X_train,
-            y_train,
-            param_distributions,
-            n_jobs,
-        )
-        return cv_results, best_params, None
+        param_dict += [{}]
+    elif search_method == "grid-search":
+        param_dict = list(ParameterGrid(param_distributions))
     else:
-        cv_results, best_params = run_sklearn_param_search(
-            estimator,
+        raise ValueError(f"Unknown search_method: {search_method!r}")
+
+    # Pre-compute the CV splits once.
+    split_index_list = list(enumerate(cv.split(X_train, y_train)))
+
+    # Cartesian product (param_set x cv_fold) to feed joblib in parallel.
+    run_args_list = list(product(enumerate(param_dict), split_index_list))
+
+    fold_results = Parallel(n_jobs=n_jobs)(
+        delayed(_fit_and_score_fold)(
+            clone(estimator),
+            task,
             X_train,
             y_train,
-            param_distributions,
-            n_iter,
-            cv,
-            n_jobs,
-            scoring,
+            fit_with_val,
+            run_args,
         )
-        return cv_results, best_params, None
-
-def run_tarte_param_search(
-    estimator,
-    X_train,
-    y_train,
-    param_distributions,
-    n_jobs,
-):
-    """Grid Search function for TARTE"""
-
-    # Set paramater list
-    param_distributions_ = param_distributions.copy()
-    param_list = list(ParameterGrid(param_distributions_))
-
-    if len(X_train) > 1000:
-        # Tarte specific setting for large datasets
-        print(f"Setting TARTE batch_size to 256 in gridsearch for large dataset: {len(X_train)}")
-        estimator.set_params(batch_size=256)
-
-    # Run Gridsearch
-    gridsearch_result = Parallel(n_jobs=1)(
-        delayed(_run_single_tarte_fit)(estimator, X_train, y_train, params)
-        for params in param_list
+        for run_args in run_args_list
     )
-    cv_results = pd.concat(gridsearch_result, axis=0).reset_index(drop=True)
-    
-    # Add rank
-    cv_results["rank_test_score"] = (
-        cv_results["mean_test_score"].rank(ascending=True).astype(int)
+
+    # Re-shape into a (n_params, n_folds) grid keyed by (param_idx, cv_idx).
+    n_params = len(param_dict)
+    n_folds = len(split_index_list)
+    score_grid = np.zeros((n_params, n_folds))
+    fit_time_grid = np.zeros((n_params, n_folds))
+    score_time_grid = np.zeros((n_params, n_folds))
+    # Per-(param, fold) trained estimator, kept only when fit_with_val=True.
+    estimator_grid: list[list] = [[None] * n_folds for _ in range(n_params)]
+    for (param_idx, cv_idx), score, fit_time, score_time, fitted in fold_results:
+        score_grid[param_idx, cv_idx] = score
+        fit_time_grid[param_idx, cv_idx] = fit_time
+        score_time_grid[param_idx, cv_idx] = score_time
+        if fit_with_val:
+            estimator_grid[param_idx][cv_idx] = fitted
+
+    # Aggregate per-parameter statistics.
+    cv_results = _build_cv_results(
+        param_dict, score_grid, fit_time_grid, score_time_grid
     )
-    
-    # Best params
-    best_params = cv_results.loc[cv_results["rank_test_score"].argmin(), "params"]
-    if str(best_params) == "nan":
-        best_params = {}
 
-    # TARTE does not use external CV splits, so we return None for best_split_idx
-    return cv_results, best_params
+    # Pick the best parameter set by mean test score.
+    best_param_idx = int(np.argmax(cv_results["mean_test_score"].to_numpy()))
+    best_params = deepcopy(param_dict[best_param_idx])
 
-def _run_single_tarte_fit(estimator, X_train, y_train, params):
-    """Helper to run a single TARTE fit and extract internal validation stats."""
-    
-    import copy
-    from time import perf_counter
-    
-    # Measure time
-    start_time = perf_counter()
-
-    # Run estimator
-    estimator_ = copy.deepcopy(estimator)
-    estimator_.__dict__.update(params)
-    estimator_.fit(X_train, y_train)
-    
-    # Measure time
-    duration = round(perf_counter() - start_time, 4)
-    
-    # Statistics
-    vl = np.array(estimator_.valid_loss_)
-    
-    # Obtain results
-    result_run = {
-        "params": params,
-        "mean_test_score": np.mean(vl),
-        "std_test_score": np.std(vl),
-        "mean_fit_time": duration,
-    }
-
-    # Add individual split scores for completeness
-    for i, loss in enumerate(vl):
-        result_run[f"split{i}_test_score"] = loss
-        
-    return pd.DataFrame([result_run])
-
-def _run_estimator(estimator, X_train, y_train, run_args):
-    """Function to run fit/predict on the given train/validation set."""
-
-    # Set preliminaries
-    param_idx = run_args[0][0]
-    params = run_args[0][1]
-    cv_idx = run_args[1][0]
-    split_index = run_args[1][1]
-    if estimator._estimator_type == "regressor":
-        task = "regression"
-    else:
-        if len(np.unique(y_train)) == 2:
-            task = "b-classification"
+    # Build the best estimator. Two cases:
+    #
+    #   - fit_with_val=True: use the eight already-fitted models from the
+    #     winning row, wrapped in FrozenEstimators inside a Voting estimator.
+    #     The Voting's `fit` is a no-op (each leaf is frozen) so downstream
+    #     `run_inference` can still call .fit(X, y) for symmetry.
+    #
+    #   - fit_with_val=False: just instantiate a new estimator with
+    #     `best_params`. The caller fits it on the full training set.
+    if fit_with_val:
+        leaves = [
+            (f"fold{cv_idx}", FrozenEstimator(estimator_grid[best_param_idx][cv_idx]))
+            for cv_idx in range(n_folds)
+        ]
+        if task == "regression":
+            best_estimator = VotingRegressor(estimators=leaves)
         else:
-            task = "m-classification"
-    est_name = estimator.__class__.__name__
+            best_estimator = VotingClassifier(estimators=leaves, voting="soft")
+    else:
+        best_estimator = assign_estimator(
+            estim_method,
+            task,
+            device,
+            best_params=best_params,
+            cat_features=cat_features,
+        )
 
-    # Set the estimator
+    return cv_results, best_params, best_estimator
+
+
+# --------------------------------------------------------------------------
+# Internal helpers
+# --------------------------------------------------------------------------
+
+def _fit_and_score_fold(estimator, task, X_train, y_train, fit_with_val, run_args):
+    """Fit ``estimator`` on one (param-set, fold) pair, return val score."""
+    (param_idx, params), (cv_idx, split_index) = run_args
     estimator_ = deepcopy(estimator)
-    if "CatBoost" in est_name:
+    if "CatBoost" in estimator_.__class__.__name__:
+        # CatBoost stashes constructor params in `_init_params`; updating
+        # `__dict__` directly does not propagate to the underlying booster.
         estimator_.__dict__["_init_params"].update(params)
     else:
         estimator_.__dict__.update(params)
 
-    # Set the train and validation set
     X_train_, X_valid = X_train[split_index[0]], X_train[split_index[1]]
     y_train_, y_valid = y_train[split_index[0]], y_train[split_index[1]]
     eval_set = [(X_valid, y_valid)]
 
-    # Measure fit_time
-    start_time = time.perf_counter()
-
-    if "LGBM" in est_name:
-        estimator_.fit(X_train_, y_train_, eval_set=eval_set)
+    start = time.perf_counter()
+    if fit_with_val:
+        if "XGB" in estimator_.__class__.__name__:
+            estimator_.fit(X_train_, y_train_, eval_set=eval_set, verbose=False)
+        else:
+            estimator_.fit(X_train_, y_train_, eval_set=eval_set)
     else:
-        estimator_.fit(X_train_, y_train_, eval_set=eval_set, verbose=False)
+        estimator_.fit(X_train_, y_train_)
+    fit_time = round(time.perf_counter() - start, 4)
 
-    end_time = time.perf_counter()
-    fit_time = round(end_time - start_time, 4)
-
-    # Measure score_time
-    start_time = time.perf_counter()
-
+    start = time.perf_counter()
     y_prob, y_pred = calculate_output(X_valid, estimator_, task)
-
-    # Reshape prediction
     if "classification" in task:
         y_prob = reshape_pred_output(y_prob)
-
-    # Check the output
     if task == "regression":
         y_pred = check_pred_output(y_train, y_pred)
-
-    # obtain scores
     score = return_score(y_valid, y_prob, y_pred, task)
+    score_time = round(time.perf_counter() - start, 4)
 
-    end_time = time.perf_counter()
-    score_time = round(end_time - start_time, 4)
-
-    return (param_idx, cv_idx), score[0], fit_time, score_time
-
-def run_gbdt_param_search(
-    estimator,
-    X_train,
-    y_train,
-    search_method,
-    param_distributions,
-    n_iter,
-    cv,
-    n_jobs,
-):
-    """Grid/Random Search function for GBDT (XGB/CatBoost) models."""
-
-    # Set parameters depending on the search method
-    if search_method == "random":
-        param_dict = list(
-            enumerate(
-                ParameterSampler(
-                    param_distributions,
-                    n_iter=n_iter - 1,
-                    random_state=1234,
-                )
-            )
-        )
-        param_dict += [(n_iter - 1, {})]
-    elif search_method == "grid":
-        param_dict = list(enumerate(ParameterGrid(param_distributions)))
-
-    # Set splits
-    cv_splits = list(enumerate(cv.split(X_train, y_train)))
-
-    # Iterate all the cases to run
-    run_args_list = list(product(param_dict, cv_splits))
-
-    search_result = Parallel(n_jobs=n_jobs)(
-        delayed(_run_estimator)(estimator, X_train, y_train, run_args)
-        for run_args in run_args_list
+    return (
+        (param_idx, cv_idx),
+        score[0],
+        fit_time,
+        score_time,
+        estimator_ if fit_with_val else None,
     )
 
-    # Format into DataFrame (as in sklearn search)
-    test_score_result = np.zeros(shape=(len(param_dict), len(cv_splits)))
-    fit_time_result = np.zeros(shape=(len(param_dict), len(cv_splits)))
-    score_time_result = np.zeros(shape=(len(param_dict), len(cv_splits)))
-    for x in search_result:
-        test_score_result[x[0]] = x[1]
-        fit_time_result[x[0]] = x[2]
-        score_time_result[x[0]] = x[3]
 
-    test_score_result = pd.DataFrame(test_score_result)
-    split_test_columns = [
-        f"split{x}_test_score" for x in range(test_score_result.shape[1])
-    ]
-    test_score_result.columns = split_test_columns
-    test_score_result["mean_test_score"] = test_score_result[split_test_columns].mean(
-        axis=1
+def _build_cv_results(param_dict, score_grid, fit_time_grid, score_time_grid):
+    """Assemble a DataFrame mirroring sklearn ``cv_results_``."""
+    n_folds = score_grid.shape[1]
+    df = pd.DataFrame(
+        score_grid, columns=[f"split{i}_test_score" for i in range(n_folds)]
     )
-    test_score_result["std_test_score"] = test_score_result[split_test_columns].std(
-        axis=1
-    )
-    test_score_result["rank_test_score"] = (
-        test_score_result["mean_test_score"].rank(ascending=False).astype(int)
-    )
-    test_score_result["mean_fit_time"] = fit_time_result.mean(axis=1)
-    test_score_result["std_fit_time"] = fit_time_result.std(axis=1)
-    test_score_result["mean_score_time"] = score_time_result.mean(axis=1)
-    test_score_result["std_score_time"] = score_time_result.std(axis=1)
+    df["mean_test_score"] = df.mean(axis=1)
+    df["std_test_score"] = df.std(axis=1)
+    df["mean_fit_time"] = fit_time_grid.mean(axis=1)
+    df["std_fit_time"] = fit_time_grid.std(axis=1)
+    df["mean_score_time"] = score_time_grid.mean(axis=1)
+    df["std_score_time"] = score_time_grid.std(axis=1)
+    df["rank_test_score"] = df["mean_test_score"].rank(ascending=False).astype(int)
 
-    df_params = pd.DataFrame([params for (_, params) in param_dict])
-    df_params.columns = [f"param_{col}" for col in df_params.columns]
-    df_params["params"] = pd.DataFrame(param_dict)[1]
+    df_params = pd.DataFrame(param_dict).add_prefix("param_")
+    df_params["params"] = [str(p) for p in param_dict]
+    return pd.concat([df_params, df], axis=1)
 
-    cv_results = pd.concat([df_params, test_score_result], axis=1)
-    best_params = cv_results.loc[cv_results["rank_test_score"].argmin(), "params"]
+
+def _tarte_grid_search(estimator, X_train, y_train):
+    """Grid search for TARTE — uses the model's per-epoch valid_loss_."""
+    param_distributions = param_distributions_total["tarte"]
+    param_list = list(ParameterGrid(param_distributions))
+
+    if len(X_train) > 1000:
+        estimator.set_params(batch_size=256)
+
+    rows = Parallel(n_jobs=1)(
+        delayed(_run_single_tarte_fit)(estimator, X_train, y_train, params)
+        for params in param_list
+    )
+    cv_results = pd.concat(rows, axis=0).reset_index(drop=True)
+    cv_results["rank_test_score"] = (
+        cv_results["mean_test_score"].rank(ascending=True).astype(int)
+    )
+    best_idx = cv_results["rank_test_score"].argmin()
+    best_params = cv_results.loc[best_idx, "params"]
     if str(best_params) == "nan":
         best_params = {}
 
-    best_split_idx = cv_results.loc[
-        cv_results["rank_test_score"].argmin(), split_test_columns
-    ].idxmax()
-    # best_split_idx = (
-    #     cv_results[cv_results["rank_test_score"] == 1][split_test_columns]
-    #     .max()
-    #     .idxmax()
-    # )
-    best_split_idx = int(re.findall(r"\d+", best_split_idx)[0])
-
-    return cv_results, best_params, best_split_idx
+    # TARTE re-fits fresh on the full training set in run_inference; we just
+    # hand back a fresh estimator carrying the chosen params.
+    fresh = deepcopy(estimator)
+    if best_params:
+        fresh.__dict__.update(best_params)
+    return cv_results, best_params, fresh
 
 
-def run_sklearn_param_search(
-    estimator,
-    X_train,
-    y_train,
-    param_distributions,
-    n_iter,
-    cv,
-    n_jobs,
-    scoring,
-):
-    """Function to run the scikit-learn parameter search."""
+def _run_single_tarte_fit(estimator, X_train, y_train, params):
+    """Fit one TARTE configuration and harvest its internal validation curve."""
+    start = time.perf_counter()
+    estimator_ = deepcopy(estimator)
+    estimator_.__dict__.update(params)
+    estimator_.fit(X_train, y_train)
+    duration = round(time.perf_counter() - start, 4)
 
-    # First run with the default parameters.
-    default_search = RandomizedSearchCV(
-        estimator,
-        param_distributions=[{}],
-        n_iter=1,  # Excluding default
-        cv=cv,
-        scoring=scoring,
-        refit=False,
-        n_jobs=n_jobs,
-        random_state=1234,
-    )
-    default_search.fit(X_train, y_train)
-    cv_default = pd.DataFrame(default_search.cv_results_)
-
-    # Run without the default
-    hyperparameter_search = RandomizedSearchCV(
-        estimator,
-        param_distributions=param_distributions,
-        n_iter=n_iter - 1,  # Excluding default
-        cv=cv,
-        scoring=scoring,
-        refit=False,
-        n_jobs=n_jobs,
-        random_state=1234,
-    )
-    hyperparameter_search.fit(X_train, y_train)
-    cv_results = pd.DataFrame(hyperparameter_search.cv_results_)
-
-    # Format the cv results with the default added
-    cv_results = pd.concat([cv_results, cv_default])
-    cv_results = cv_results.rename(shorten_param, axis=1)
-    cv_results.reset_index(drop=True, inplace=True)
-    rank = (
-        cv_results["mean_test_score"]
-        .rank(method="min", ascending=False)
-        .astype(int)
-        .copy()
-    )
-    cv_results["rank_test_score"] = rank
-    params_ = cv_results["params"]
-    best_params = params_[cv_results["rank_test_score"] == 1].iloc[0]
-    if str(best_params) == "nan":
-        best_params = {}
-
-    return cv_results, best_params
+    valid_loss = np.array(estimator_.valid_loss_)
+    row = {
+        "params": params,
+        "mean_test_score": float(np.mean(valid_loss)),
+        "std_test_score": float(np.std(valid_loss)),
+        "mean_fit_time": duration,
+    }
+    for i, loss in enumerate(valid_loss):
+        row[f"split{i}_test_score"] = float(loss)
+    return pd.DataFrame([row])

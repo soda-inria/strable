@@ -8,9 +8,10 @@ from datetime import datetime
 from sklearn.preprocessing import LabelEncoder
 from skrub import DatetimeEncoder
 from src.utils_evaluation import load_data, set_split_cv, col_names_per_type
+from configs.path_configs import path_configs
 
 
-def embed_table(data_name, n_split, fold_index, embed_method, normalization, no_pca):
+def embed_table(data_name, n_split, fold_index, embed_method, normalization, no_pca, n_dimensions):
     """Function to encode the tables to prepare for evaluations."""
 
     # Preliminaries
@@ -64,7 +65,6 @@ def embed_table(data_name, n_split, fold_index, embed_method, normalization, no_
     elif "llm-" in encode_method:
         
         if no_pca==False:
-            '''30-dimension PCA with or without standard scaling'''
             print(f'Current hour before prepare_llm: {datetime.now().strftime("%H:%M:%S")}')
             X_train, X_test, duration_llm = prepare_llm(
                 X_train,
@@ -72,25 +72,22 @@ def embed_table(data_name, n_split, fold_index, embed_method, normalization, no_
                 data_name,
                 encode_method,
                 normalization,
-                n_dimensions=30 # This is the number of components for the PCA.
+                n_dimensions # This is the number of components for the PCA.
             )
             duration_embed += duration_llm
         else:
-            '''Treating Matryoshka representation by taking the first 30 dimensions'''
             print(f'Current hour before prepare_llm_no_pca_mrl: {datetime.now().strftime("%H:%M:%S")}')
             X_train, X_test, duration_llm = prepare_llm_no_pca_mrl(
                 X_train,
                 X_test,
                 data_name,
                 encode_method,
-                n_dimensions=30 # This is the number of dimensions to keep for the no-PCA version. 
+                n_dimensions # This is the number of dimensions to keep for the no-PCA version. 
             )
             duration_embed += duration_llm
     elif encode_method == "catboost":
         X_train, X_test, cat_features = prepare_catboost(X_train, X_test)
-    elif encode_method == "tabpfn":
-        X_train, X_test = prepare_tabpfn(X_train, X_test)
-    elif encode_method == "tabstar":
+        elif encode_method == "tabstar":
         X_train, X_test = prepare_tabstar(X_train, X_test, y_train)
         # convert y_train to pandas Series if not already
         if not isinstance(y_train, pd.Series):
@@ -99,6 +96,8 @@ def embed_table(data_name, n_split, fold_index, embed_method, normalization, no_
         X_train, X_test = prepare_tarte(X_train, X_test, y_train)
     elif encode_method == "contexttab":
         X_train, X_test = prepare_contexttab(X_train, X_test)
+    elif encode_method == "mambular":
+        X_train, X_test = prepare_mambular(X_train, X_test)
 
     end_time = time.perf_counter()
     duration_embed += round(end_time - start_time, 4)
@@ -173,12 +172,12 @@ def prepare_tarenc(X_train, X_test, y_train, task):
 
     return X_train, X_test
 
+
 def prepare_llm(X_train, X_test, data_name, llm_model_name, normalization, n_dimensions=30):
     """Function to prepare with LLM embeddings."""
 
     from skrub import TableVectorizer, SquashingScaler
     from src.llm_encoder import LLM_Encoder
-    from configs.path_configs import path_configs
 
     # First, set the dataframe in appropriate format
     cleaner = TableVectorizer(cardinality_threshold=0, high_cardinality="passthrough")
@@ -213,10 +212,8 @@ def prepare_llm(X_train, X_test, data_name, llm_model_name, normalization, n_dim
 def prepare_llm_no_pca_mrl(X_train, X_test, data_name, llm_model_name, n_dimensions):
     """Function to prepare LLMs that have matrioska representation and thus do not require PCA."""
 
-    from sklearn.pipeline import Pipeline
     from sklearn.preprocessing import FunctionTransformer
-    from skrub import TableVectorizer, SquashingScaler, DatetimeEncoder
-    from configs.path_configs import path_configs
+    from skrub import TableVectorizer, SquashingScaler
 
     # First, set the dataframe in appropriate format
     cleaner = TableVectorizer(cardinality_threshold=0, high_cardinality="passthrough")
@@ -225,7 +222,12 @@ def prepare_llm_no_pca_mrl(X_train, X_test, data_name, llm_model_name, n_dimensi
 
     # Load LLM embeddings
     llm_embed_path = f"{path_configs['base_path']}/data/llm_embeding/{llm_model_name}/{llm_model_name}|{data_name}.parquet"
-    llm_embeddings = pd.read_parquet(llm_embed_path)
+    # llm_embeddings = pd.read_parquet(llm_embed_path)
+
+    try:
+        llm_embeddings = pd.read_parquet(llm_embed_path, engine="pyarrow")
+    except Exception:
+        llm_embeddings = pd.read_parquet(llm_embed_path, engine="fastparquet")
 
     def _replace_with_llm_embedding(column, n_dimensions=n_dimensions):
         column_name = column.columns.tolist()[0]
@@ -305,24 +307,6 @@ def prepare_catboost(X_train, X_test):
     return X_train, X_test, cat_features
 
 
-def prepare_tabpfn(X_train, X_test):
-    """Function to prepare with TabPFN(Internal)."""
-
-    from skrub import TableVectorizer
-
-    tabvec = TableVectorizer(cardinality_threshold=0, high_cardinality="passthrough")
-    X_train = tabvec.fit_transform(X_train)
-    X_test = tabvec.transform(X_test)
-
-    # Apply necessary dtype configurations
-    categories = tabvec.kind_to_columns_["high_cardinality"]
-    for col in categories:
-        X_train[col] = X_train[col].astype("category")
-        X_test[col] = X_test[col].astype("category")
-
-    return X_train, X_test
-
-
 def prepare_tabstar(X_train, X_test, y_train):
     """Function to prepare with TabSTAR(Internal).
     X_train, X_test: pd.DataFrame
@@ -379,6 +363,22 @@ def prepare_tarte(X_train, X_test, y_train):
 
 def prepare_contexttab(X_train, X_test):
     """Function to prepare with TabSTAR(Internal)."""
+
+    from skrub import TableVectorizer
+
+    tabvec = TableVectorizer(cardinality_threshold=0, # prevent OneHotEncoding of low-cardinality columns
+                             high_cardinality="passthrough", 
+                            #  low_cardinality="passthrough",  # Keep categories as strings
+                             numeric="passthrough",  # Keep numbers as numbers (default)
+                             datetime=DatetimeEncoder() # Decompose dates as per paper (default)
+                             ) 
+    X_train = tabvec.fit_transform(X_train)
+    X_test = tabvec.transform(X_test)
+
+    return X_train, X_test
+
+def prepare_mambular(X_train, X_test):
+    """Function to prepare with mambular"""
 
     from skrub import TableVectorizer
 

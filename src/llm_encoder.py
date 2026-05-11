@@ -51,10 +51,9 @@ class LLM_Encoder(SingleColumnTransformer):
 
     References
     ----------
-    .. [1]  L. Grinsztajn, M. Kim, E. Oyallon, G. Varoquaux
-            "Vectorizing string entries for data processing on tables: when are larger
-            language models better?", 2023.
-            https://hal.science/hal-04345931
+    .. [1]  "Vectorizing string entries for data processing on tables: when are
+            larger language models better?", 2023. (Citation suppressed for
+            double-blind review.)
 
     """
 
@@ -96,8 +95,11 @@ class LLM_Encoder(SingleColumnTransformer):
         self._check_params()
 
         # Load LLM embeddings
-        self.llm_embeddings_ = pd.read_parquet(self.cached_llm_embedding_path)
-
+        try:
+            self.llm_embeddings_ = pd.read_parquet(self.cached_llm_embedding_path, engine="pyarrow")
+        except Exception:
+            self.llm_embeddings_ = pd.read_parquet(self.cached_llm_embedding_path, engine="fastparquet")
+            
         # Set preliminaries
         mask_null = column.isnull().to_numpy()
 
@@ -133,19 +135,12 @@ class LLM_Encoder(SingleColumnTransformer):
                     "Set n_components=None to keep all dimensions and remove "
                     "this warning."
                 )
-                # self.n_components can be greater than the number
-                # of dimensions of X_out.
-                # Therefore, self.n_components_ below stores the resulting
-                # number of dimensions of X_out.
+
                 X_out_ = X_out_[~mask_null, : self.n_components]
                 self.scaling_factor_ = scaling_factor(X_out)
 
         X_out[~mask_null] = X_out_
         X_out[mask_null] = np.nan
-
-        # block normalize
-        # self.scaling_factor_ = scaling_factor(X_out)
-        # X_out /= self.scaling_factor_
 
         # Transform back to pandas df
         X_out = pd.DataFrame(X_out)
