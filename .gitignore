@@ -17,8 +17,6 @@ build/
 *.egg-info/
 .eggs/
 
-tables/
-
 *.manifest
 *.spec
 
