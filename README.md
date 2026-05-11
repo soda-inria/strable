@@ -4,7 +4,7 @@
 
 # STRABLE: Benchmarking Tabular Machine Learning with Strings
 
-![Pareto optimality of tabular learners and string encoders](plots/pareto_plot.png)
+![Pareto optimality of tabular learners and string encoders](figures/pareto_plot.png)
 *Trade-off between prediction performance and run time, colored by encoder on the left and by learner on the right.*
 
 ## 🗂️ Repository layout

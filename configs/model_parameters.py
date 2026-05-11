@@ -3,7 +3,6 @@ Parameter distributions for hyperparameter optimization
 """
 
 import numpy as np
-import copy
 
 from typing import List
 from scipy.stats import loguniform, randint, uniform, norm, multinomial
@@ -74,6 +73,10 @@ param_distributions_total["logistic"] = param_distributions
 param_distributions = dict()
 param_distributions_total["tabpfn"] = param_distributions
 
+# tabicl
+param_distributions = dict()
+param_distributions_total["tabicl"] = param_distributions
+
 # tabstar
 param_distributions = dict()
 param_distributions_total["tabstar"] = param_distributions
@@ -120,10 +123,7 @@ param_distributions_total["histgb"] = param_distributions
 # RandomForest
 param_distributions = dict()
 param_distributions["max_depth"] = choice([None, 2, 3, 4], [0.7, 0.1, 0.1, 0.1])
-param_distributions["max_features"] = [
-    "sqrt",
-    "log2",
-    None,
+param_distributions["max_features"] = ["sqrt", "log2", None,
     0.1,
     0.2,
     0.3,

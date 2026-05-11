@@ -1,46 +1,40 @@
-"""Function to run inference given a method."""
+"""Final fit on the training set before scoring on test."""
 
-from src.utils_evaluation import assign_estimator
+from sklearn.ensemble import VotingClassifier, VotingRegressor
 
 
 def run_inference(
+    best_estimator,
+    fit_with_val,
     X_train,
     y_train,
-    task,
-    estim_method,
+    tune_indicator,
     cv,
-    device,
-    best_params,
-    best_split_idx,
-    cat_features=None,
 ):
-    """Function to run inference. Needed to separate out the models with validation set."""
+    """Fit ``best_estimator`` and return it ready to predict."""
 
-    # Preliminary settings
-    gbdt_estimators_with_val = ["xgb", "catboost"]
-
-    # Set the estimator
-    estimator = assign_estimator(
-        estim_method,
-        task,
-        device,
-        best_params=best_params,
-        cat_features=cat_features,
+    is_voting_ensemble = isinstance(
+        best_estimator, (VotingRegressor, VotingClassifier)
     )
 
-    if estim_method=='tarte' and len(X_train) > 1000:
-        # Tarte specific setting for large datasets
-        print(f"Setting TARTE batch_size to 256 in inference for large dataset: {len(X_train)}")
-        estimator.set_params(batch_size=256)
+    # Voting ensembles are already fitted (each leaf is a FrozenEstimator).
+    # Calling .fit on them is a no-op but satisfies sklearn's contract that
+    # an estimator must be fitted before .predict.
+    if is_voting_ensemble:
+        best_estimator.fit(X_train, y_train)
+        return best_estimator
 
-    # Final fit and predict
-    if estim_method in gbdt_estimators_with_val:
-        split_index = list(cv.split(X_train, y_train))[best_split_idx]
-        X_train_, X_valid = X_train[split_index[0]], X_train[split_index[1]]
-        y_train_, y_valid = y_train[split_index[0]], y_train[split_index[1]]
+    # Default mode + needs-eval-set: pick the first fold to provide a
+    # validation set for early stopping.
+    if tune_indicator == "default" and fit_with_val:
+        train_idx, valid_idx = next(iter(cv.split(X_train, y_train)))
+        X_train_ = X_train[train_idx] if not hasattr(X_train, "iloc") else X_train.iloc[train_idx]
+        X_valid = X_train[valid_idx] if not hasattr(X_train, "iloc") else X_train.iloc[valid_idx]
+        y_train_, y_valid = y_train[train_idx], y_train[valid_idx]
         eval_set = [(X_valid, y_valid)]
-        estimator.fit(X_train_, y_train_, eval_set=eval_set, verbose=False)
-    else:
-        estimator.fit(X_train, y_train)
+        best_estimator.fit(X_train_, y_train_, eval_set=eval_set, verbose=False)
+        return best_estimator
 
-    return estimator
+    # Everything else: fit on the full training set.
+    best_estimator.fit(X_train, y_train)
+    return best_estimator
