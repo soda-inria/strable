@@ -7,8 +7,22 @@
 
 > **TL;DR** — STRABLE is a benchmark of **108 real-world tables with strings**. We evaluate modular pipelines that combine and **encoder** with a **learner**, as well as **end-to-end** architectures.
 
+## 🔑 Key findings
+
+- **Decoder-only LLM embeddings need the right post-processing.**
+
+![Post-processing affects LLM embeddings](figures/post_processing.png)
+*Average score across 108 tables and five learners for 7 LM encoders under three post-processing variants (default 30-PCA, standard scaling + 30-PCA, no PCA).*
+
+- **Modular pipelines (encoder + learner) outperform today's end-to-end string-tabular architectures.**
+
+![Critical-difference diagram of encoder–learner pipelines](figures/CD_diagram.png)
+*Critical-difference diagram across the 108 datasets (lower rank = better). Solid lines: modular pipelines. Dashed lines: end-to-end models.*
+
+- **Lightweight encoders paired with advanced learners dominate the Pareto frontier** — a consequence of STRABLE's string taxonomy: ~90% of columns are short and repetitive (Categoricals 49%, Names 23%, Structured Codes 17%, Datetimes 2%, Identifiers 0.5%) and only **8%** are Free Text. Large LLMs only enter the top-10 on the free-text-dominant tables.
+
 ![Pareto optimality of tabular learners and string encoders](figures/pareto_plot.png)
-*Trade-off between prediction performance and run time, colored by encoder on the left and by learner on the right.*
+*Trade-off between prediction performance and run time, colored by encoder on the left and by learner on the right. The dotted line is the Pareto frontier.*
 
 ---
 
