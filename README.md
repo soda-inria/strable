@@ -1,28 +1,25 @@
 ![Python versions](https://img.shields.io/badge/python-3.12-blue)
 ![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)
 [![Hugging Face Benchmark](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Benchmark-FFD21E.svg)](https://huggingface.co/datasets/inria-soda/STRABLE-benchmark)
-[![arXiv](https://img.shields.io/badge/arXiv-{INSERT_ARXIV_LINK}-b31b1b.svg)]({INSERT_ARXIV_LINK})
+[![arXiv](https://img.shields.io/badge/arXiv-<ARXIV_LINK_PLACEHOLDER>-b31b1b.svg)](<ARXIV_LINK_PLACEHOLDER>)
 
 # STRABLE: Benchmarking Tabular Machine Learning with Strings
 
-> **TL;DR** — STRABLE is a benchmark of **108 real-world tables with strings**. We evaluate modular pipelines that combine an **encoder** with a **learner**, as well as **end-to-end** architectures.
+> **TL;DR** — STRABLE is a benchmark of **108 real-world tables with strings**. We evaluate **modular pipelines** (a string encoder feeding a tabular learner) as well as **end-to-end** architectures that jointly model strings and numbers.
 
 ## 🔑 Key findings
 
-- **Decoder-only LLM embeddings need the right post-processing.**
+- **Decoder-only LLM embeddings need the right post-processing — i.e. dimensionality reduction.** Default PCA hurts them; standard-scaling-then-PCA, or no-PCA (slicing the first N raw embedding dimensions), recovers their performance.
 
 ![Post-processing affects LLM embeddings](figures/post_processing.png)
-*Average score across 108 tables and five learners for 7 LM encoders under three post-processing variants (default 30-PCA, standard scaling + 30-PCA, no PCA).*
 
-- **Modular pipelines (encoder + learner) outperform today's end-to-end string-tabular architectures.**
+- **Modular pipelines outperform today's end-to-end string-tabular architectures**.
 
 ![Critical-difference diagram of encoder–learner pipelines](figures/CD_diagram.png)
-*Critical-difference diagram across the 108 datasets (lower rank = better). Solid lines: modular pipelines. Dashed lines: end-to-end models.*
 
-- **Lightweight encoders paired with advanced learners dominate the Pareto frontier** is a consequence of STRABLE's string taxonomy: Categoricals 49%, Names 23%, Structured Codes 17%, Datetimes 2%, Identifiers 0.5% and only **8%** are Free Text.
+- **Lightweight encoders paired with advanced learners dominate the Pareto frontier (the best performance-vs-runtime trade-off)** — a consequence of STRABLE's string taxonomy: Categoricals 49%, Names 23%, Structured Codes 17%, Datetimes 2%, Identifiers 0.5% and only **8%** Free Text.
 
 ![Pareto optimality of tabular learners and string encoders](figures/pareto_plot.png)
-*Trade-off between prediction performance and run time, colored by encoder on the left and by learner on the right. The dashed line is the Pareto frontier.*
 
 ---
 
@@ -30,32 +27,32 @@
 
 ```text
 strable/
-├── configs/                            # Per-experiment config: paths, hparam grids, model registry
+├── configs/
 │   ├── exp_configs.py
 │   ├── model_parameters.py
 │   └── path_configs.py
 ├── data/
-│   └── download_datasets.py            # Mirror the Hugging Face benchmark into data/data_processed/
+│   └── download_datasets.py
 ├── figures/
-│   ├── _main.py                        # Shared loaders, palettes, dtype/encoder/learner maps
+│   ├── _main.py
 │   ├── pareto_plot.png
-│   ├── main_paper/                     # figure_1a, 1b, 2, 3, 4a, 4b, 5a–c, 6
-│   └── appendix/                       # figure_C1, E1–E13 (with E4a, E4b)
+│   ├── main_paper/
+│   └── appendix/
 ├── scripts/
-│   ├── download_datasets.py            # Same as data/download_datasets.py (CLI variant entrypoint)
-│   ├── compile_results.py              # Per-fold scores → compiled CSV under results/compiled_results/
-│   ├── compile_results_llm_times.py    # LLM embedding-extraction wall-clock summary
-│   ├── datasets_metadata_recap.py      # Builds the 108-table metadata parquet
-│   ├── datasets_representation.py      # Per-column structural meta-features (uniqueness, words/cell, …)
-│   ├── embedding_extraction_scripts/   # Pre-compute LLM embeddings (default / FULL / feat-eng variants)
-│   ├── evaluate_scripts/               # Pipeline & evaluation entry points (one per ablation)
-│   ├── script_preprocess_data/         # 108 per-source preprocessing scripts (raw → data_processed/)
-│   ├── script_data_modification/       # 75k subsample + feature-eng + raw-target-transform variants
+│   ├── download_datasets.py
+│   ├── compile_results.py
+│   ├── compile_results_llm_times.py
+│   ├── datasets_metadata_recap.py
+│   ├── datasets_representation.py
+│   ├── embedding_extraction_scripts/
+│   ├── evaluate_scripts/
+│   ├── script_preprocess_data/
+│   ├── script_data_modification/
 │   ├── natural_language_test_VSE_vs_STRABLE_vs_CARTE_vs_TTB.py
 │   ├── OHE_vs_passthrough_analysis_xgb.py
 │   └── qwen-3-8b_matrioska_embedding_check.py
-├── src/                                # Encoders, search, inference, learners, utils
-│   ├── encoding.py                     # + encoding_{FULL,feature_eng,missing_val,skew,thres_*}.py
+├── src/
+│   ├── encoding.py
 │   ├── llm_encoder.py
 │   ├── inference.py
 │   ├── param_search.py
@@ -234,7 +231,7 @@ python scripts/compile_results.py default/benchmark_main
 
 ### 6. No-PCA ablation (Fig. E.4)
 
-The no-PCA path is a flag on the main script; `--no_pca True` keeps the first `--n_dimensions` raw embedding dimensions instead of running PCA. Re-uses the same embeddings as the default run; only the post-encoding step differs. Results land under `results/no-pca/...`.
+The no-PCA path is a flag on the main script; `--no_pca True` keeps the first `--n_dimensions` raw embedding dimensions instead of running PCA. Re-uses the same embeddings as the default run; only the dimensionality-reduction step differs. Results land under `results/no-pca/...`.
 
 ```bash
 python scripts/evaluate_scripts/script_evaluate.py \
@@ -247,7 +244,7 @@ python scripts/compile_results.py no-pca/benchmark_main
 
 ### 7. CT=30 routing (Fig. E.11)
 
-Routes string columns with cardinality `<30` through OHE (Ridge) or passthrough (XGBoost / TabPFN); columns with cardinality `≥30` still go through the LLM encoder. Two scripts, one per learner family:
+Routes string columns with cardinality `<30` through one-hot encoding (Ridge) or passthrough (XGBoost / TabPFN); columns with cardinality `≥30` still go through the LLM encoder. Two scripts, one per learner family:
 
 ```bash
 # OHE branch (Ridge)
@@ -338,13 +335,7 @@ The `_default` / `_tune` suffix is appended automatically based on `-ti / --tune
 If you use STRABLE in your work, please cite:
 
 ```bibtex
-@article{strable2026,
-  title   = {STRABLE: Benchmarking Tabular Machine Learning with Strings},
-  author  = {{INSERT_AUTHOR_LIST}},
-  journal = {arXiv preprint},
-  year    = {2026},
-  url     = {{INSERT_ARXIV_LINK}}
-}
+<BIBTEX_PLACEHOLDER>
 ```
 
 ## ⚖️ License
