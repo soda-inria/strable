@@ -5,7 +5,7 @@
 
 # STRABLE: Benchmarking Tabular Machine Learning with Strings
 
-> **TL;DR** — STRABLE is a benchmark of **108 real-world tables with strings**. We evaluate modular pipelines that combine and **encoder** with a **learner**, as well as **end-to-end** architectures.
+> **TL;DR** — STRABLE is a benchmark of **108 real-world tables with strings**. We evaluate modular pipelines that combine an **encoder** with a **learner**, as well as **end-to-end** architectures.
 
 ## 🔑 Key findings
 
@@ -19,10 +19,10 @@
 ![Critical-difference diagram of encoder–learner pipelines](figures/CD_diagram.png)
 *Critical-difference diagram across the 108 datasets (lower rank = better). Solid lines: modular pipelines. Dashed lines: end-to-end models.*
 
-- **Lightweight encoders paired with advanced learners dominate the Pareto frontier** — a consequence of STRABLE's string taxonomy: ~90% of columns are short and repetitive (Categoricals 49%, Names 23%, Structured Codes 17%, Datetimes 2%, Identifiers 0.5%) and only **8%** are Free Text. Large LLMs only enter the top-10 on the free-text-dominant tables.
+- **Lightweight encoders paired with advanced learners dominate the Pareto frontier** is a consequence of STRABLE's string taxonomy: Categoricals 49%, Names 23%, Structured Codes 17%, Datetimes 2%, Identifiers 0.5% and only **8%** are Free Text.
 
 ![Pareto optimality of tabular learners and string encoders](figures/pareto_plot.png)
-*Trade-off between prediction performance and run time, colored by encoder on the left and by learner on the right. The dotted line is the Pareto frontier.*
+*Trade-off between prediction performance and run time, colored by encoder on the left and by learner on the right. The dashed line is the Pareto frontier.*
 
 ---
 

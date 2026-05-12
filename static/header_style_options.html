@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #f0f2f5; padding: 20px; }
+    .preview-container { margin-bottom: 40px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden; }
+    .preview-label { background: #333; color: white; padding: 8px 15px; font-weight: bold; font-size: 14px; }
+    
+    /* Option 1: Modern Gradient */
+    .option-1 {
+      background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+      border-bottom: 1px solid #c2d3ec;
+    }
+
+    /* Option 2: Data Grid Pattern */
+    .option-2 {
+      background-color: #f8fafc;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2394a3b8' fill-opacity='0.2'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      border-bottom: 2px solid #e2e8f0;
+    }
+  </style>
+</head>
+<body>
+
+  <h2 class="title is-4">Header Simulations</h2>
+
+  <div class="preview-container">
+    <div class="preview-label">Option 1: Modern Gradient (Sleek, trending in AI papers)</div>
+    <section class="hero option-1 is-medium">
+      <div class="hero-body has-text-centered">
+        <h1 class="title is-2" style="font-weight: 800; color: #1a1a1a;">STRABLE: Benchmarking Tabular<br>Machine Learning with Strings</h1>
+        <p class="subtitle is-5 mt-4" style="color: #333;">Anonymous Authors<br><br>TBD</p>
+        <div class="buttons is-centered mt-5">
+          <button class="button is-dark is-rounded">📄 Paper</button>
+          <button class="button is-dark is-rounded">🤗 Dataset</button>
+          <button class="button is-dark is-rounded">🐙 Code</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="preview-container">
+    <div class="preview-label">Option 2: Data Grid Pattern (Subtle, fits the "tabular" theme)</div>
+    <section class="hero option-2 is-medium">
+      <div class="hero-body has-text-centered">
+        <h1 class="title is-2" style="font-weight: 800; color: #1a1a1a;">STRABLE: Benchmarking Tabular<br>Machine Learning with Strings</h1>
+        <p class="subtitle is-5 mt-4" style="color: #333;">Anonymous Authors<br><br>TBD</p>
+        <div class="buttons is-centered mt-5">
+          <button class="button is-dark is-rounded">📄 Paper</button>
+          <button class="button is-dark is-rounded">🤗 Dataset</button>
+          <button class="button is-dark is-rounded">🐙 Code</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+</body>
+</html>

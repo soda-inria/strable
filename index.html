@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Primary SEO -->
+  <title>STRABLE — Benchmarking Tabular Machine Learning with Strings</title>
+  <meta name="title" content="STRABLE — Benchmarking Tabular Machine Learning with Strings">
+  <meta name="description" content="STRABLE is an open benchmark of 108 real-world tables with string columns. We evaluate 445 pipelines (modular encoder–learner and end-to-end) across encoders from Tf-Idf to LLMs (Qwen-3-8B, LLaMA-3.1-8B) and learners from Ridge to TabPFN-2.5 / TabICLv2 / TabSTAR / ConTextTab. Lightweight encoders paired with advanced tabular learners dominate the Pareto frontier; large LLMs only pay off on free-text-dominant tables.">
+  <meta name="keywords" content="tabular machine learning, tables with strings, string encoding, tabular benchmark, LLM embeddings, TabPFN, TabICL, TabSTAR, ConTextTab, CARTE, TARTE, XGBoost, ridge, sentence transformers, fastText, Qwen-3, LLaMA, BGE, MTEB, NeurIPS 2026, Inria Soda, AutoML">
+  <meta name="author" content="{INSERT_AUTHOR_LIST}">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+  <meta name="language" content="English">
+  <link rel="canonical" href="https://soda-inria.github.io/strable/">
+
+  <!-- Open Graph / Facebook / LinkedIn -->
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="STRABLE Benchmark">
+  <meta property="og:title" content="STRABLE — Benchmarking Tabular Machine Learning with Strings">
+  <meta property="og:description" content="108 real-world tables with strings. 445 evaluated pipelines. The first large-scale empirical study of how to encode strings for tabular learning — from Tf-Idf to LLMs, from Ridge to TabPFN-2.5.">
+  <meta property="og:url" content="https://soda-inria.github.io/strable/">
+  <meta property="og:image" content="https://soda-inria.github.io/strable/static/images/figure_4.png">
+  <meta property="og:image:secure_url" content="https://soda-inria.github.io/strable/static/images/figure_4.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Pareto frontier of tabular learners and string encoders on the STRABLE benchmark.">
+  <meta property="og:locale" content="en_US">
+  <meta property="article:published_time" content="2026-01-01">
+  <meta property="article:author" content="{INSERT_AUTHOR_LIST}">
+  <meta property="article:section" content="Machine Learning Research">
+  <meta property="article:tag" content="Tabular Machine Learning">
+  <meta property="article:tag" content="String Encoding">
+  <meta property="article:tag" content="LLM Embeddings">
+  <meta property="article:tag" content="Benchmark">
+  <meta property="article:tag" content="TabPFN">
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@inria">
+  <meta name="twitter:title" content="STRABLE — Benchmarking Tabular Machine Learning with Strings">
+  <meta name="twitter:description" content="108 real-world tables with strings. 445 evaluated pipelines. Lightweight encoders + advanced tabular learners (TabPFN-2.5) dominate the Pareto frontier; large LLMs only pay off on free-text-dominant tables.">
+  <meta name="twitter:image" content="https://soda-inria.github.io/strable/static/images/figure_4.png">
+  <meta name="twitter:image:alt" content="Pareto frontier of tabular learners and string encoders on the STRABLE benchmark.">
+
+  <!-- Academic / Google Scholar -->
+  <meta name="citation_title" content="STRABLE: Benchmarking Tabular Machine Learning with Strings">
+  <meta name="citation_author" content="{INSERT_AUTHOR_LIST}">
+  <meta name="citation_publication_date" content="2026">
+  <meta name="citation_online_date" content="2026">
+  <meta name="citation_language" content="en">
+  <meta name="citation_keywords" content="tabular machine learning; string encoding; LLM embeddings; benchmark; TabPFN; TabICL; tables with strings">
+  <meta name="citation_public_url" content="https://soda-inria.github.io/strable/">
+  <meta name="citation_abstract_html_url" content="{INSERT_ARXIV_LINK}">
+  <meta name="citation_arxiv_id" content="{INSERT_ARXIV_ID}">
+  <!-- <meta name="citation_pdf_url" content="{INSERT_ARXIV_PDF_LINK}"> -->
+
+  <!-- App + theme -->
+  <meta name="theme-color" content="#2563eb">
+  <meta name="msapplication-TileColor" content="#2563eb">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://ajax.googleapis.com">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="static/images/favicon.svg">
+  <link rel="apple-touch-icon" href="static/images/favicon.svg">
+
+  <!-- Critical CSS -->
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+
+  <!-- Non-critical CSS -->
+  <link rel="preload" href="static/css/bulma-carousel.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="static/css/bulma-slider.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="static/css/fontawesome.all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  </noscript>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Defer non-critical JavaScript -->
+  <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script defer src="static/js/bulma-carousel.min.js"></script>
+  <script defer src="static/js/bulma-slider.min.js"></script>
+  <script defer src="static/js/index.js"></script>
+
+  <!-- Structured Data: Dataset -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "name": "STRABLE Benchmark",
+    "alternateName": "STRABLE — Tables with Strings",
+    "description": "STRABLE is a benchmark of 108 real-world tabular learning problems whose tables contain string columns (categoricals, names, structured codes, free text, datetimes, identifiers). It spans 33 sources across 8 application domains and supports the evaluation of 445 modular and end-to-end pipelines.",
+    "url": "https://soda-inria.github.io/strable/",
+    "sameAs": [
+      "https://huggingface.co/datasets/inria-soda/STRABLE-benchmark",
+      "https://github.com/soda-inria/strable"
+    ],
+    "keywords": ["tabular machine learning", "tables with strings", "string encoding", "LLM embeddings", "TabPFN", "benchmark"],
+    "license": "https://opensource.org/licenses/BSD-3-Clause",
+    "creator": {
+      "@type": "Organization",
+      "name": "Inria Soda",
+      "url": "https://team.inria.fr/soda/"
+    },
+    "distribution": [
+      {
+        "@type": "DataDownload",
+        "encodingFormat": "parquet",
+        "contentUrl": "https://huggingface.co/datasets/inria-soda/STRABLE-benchmark"
+      }
+    ]
+  }
+  </script>
+
+  <!-- Structured Data: Scholarly Article -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "headline": "STRABLE: Benchmarking Tabular Machine Learning with Strings",
+    "description": "First large-scale empirical study (445 pipelines) of tabular learning with string columns, on a corpus of 108 real-world tables.",
+    "author": [
+      {
+        "@type": "Person",
+        "name": "{INSERT_AUTHOR_LIST}",
+        "affiliation": {
+          "@type": "Organization",
+          "name": "Inria Soda"
+        }
+      }
+    ],
+    "datePublished": "2026",
+    "url": "https://soda-inria.github.io/strable/",
+    "image": "https://soda-inria.github.io/strable/static/images/figure_4.png",
+    "keywords": ["tabular machine learning", "string encoding", "benchmark", "LLM embeddings", "TabPFN", "tables with strings"],
+    "isAccessibleForFree": true,
+    "license": "https://creativecommons.org/licenses/by/4.0/"
+  }
+  </script>
+</head>
+<body>
+
+  <!-- Scroll to Top Button -->
+  <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+  <main id="main-content">
+
+  <!-- ============================== HERO ============================== -->
+  <section class="hero main-header">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">STRABLE: Benchmarking Tabular Machine Learning with Strings</h1>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">{INSERT_AUTHOR_LIST}</span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">Inria Soda &middot; NeurIPS 2026 (under review)</span>
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+
+                <span class="link-block">
+                  <a href="{INSERT_ARXIV_LINK}" class="external-link button is-normal is-rounded is-dark" title="arXiv preprint">
+                    <span class="icon"><i class="ai ai-arxiv"></i></span>
+                    <span>arXiv</span>
+                  </a>
+                </span>
+
+                <span class="link-block">
+                  <a href="https://huggingface.co/datasets/inria-soda/STRABLE-benchmark" class="external-link button is-normal is-rounded is-dark" title="STRABLE on Hugging Face">
+                    <span class="icon">🤗</span>
+                    <span>Dataset</span>
+                  </a>
+                </span>
+
+                <span class="link-block">
+                  <a href="https://github.com/soda-inria/strable" class="external-link button is-normal is-rounded is-dark" title="STRABLE code on GitHub">
+                    <span class="icon"><i class="fab fa-github"></i></span>
+                    <span>Code</span>
+                  </a>
+                </span>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== TL;DR / KEY FINDINGS ============================== -->
+  <section class="section hero is-light" aria-labelledby="tldr-heading">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3" id="tldr-heading">TL;DR</h2>
+          <div class="content is-medium">
+            <ul>
+              <li><strong>STRABLE is a benchmark of 108 real-world tables with strings</strong>, covering 33 sources across 8 application domains (Economy, Health, Infrastructure, Energy, Education, Commerce, Food, Social).</li>
+              <li><strong>Strings carry signal that tabular learners cannot afford to ignore</strong> — every learner improves once string columns are added on top of numerical ones.</li>
+              <li><strong>Modular pipelines (encoder → learner) outperform today's end-to-end string-tabular architectures</strong> (TabSTAR, ConTextTab, Mambular).</li>
+              <li><strong>Lightweight encoders + advanced tabular learners (Tf-Idf + TabPFN-2.5 / TabICLv2) dominate the Pareto frontier</strong> of performance vs. runtime.</li>
+              <li><strong>Large LLM encoders are competitive only with the right post-processing</strong> — decoder-only embeddings (LLaMA-3.1-8B, Qwen-3-8B, OPT-6.7B) need standard scaling or Matryoshka-style direct slicing rather than default PCA.</li>
+              <li><strong>String length is the dominant ranking disruptor</strong>: large LLMs only enter the top-10 on free-text-dominant tables (~8% of STRABLE columns).</li>
+              <li><strong>STRABLE's rankings approach the oracle</strong> (τ ≈ 0.95 at N = 108) and are stable across domains and data-preparation choices.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== PART 1: THE DATASET ============================== -->
+  <section class="section" aria-labelledby="part1-heading">
+    <div class="container is-max-desktop">
+
+      <div class="columns is-centered has-text-centered mb-5">
+        <div class="column is-full-width">
+          <p class="subtitle is-6 has-text-grey" style="letter-spacing: 0.1em; text-transform: uppercase;">Part 1</p>
+          <h2 class="title is-2" id="part1-heading">The STRABLE Dataset</h2>
+        </div>
+      </div>
+
+      <!-- Overview bullets -->
+      <div class="columns is-centered mb-6">
+        <div class="column is-four-fifths">
+          <div class="content is-medium">
+            <ul>
+              <li><strong>108 supervised learning problems</strong> — 13 binary classification, 19 multi-class classification, 76 regression tasks.</li>
+              <li><strong>33 sources, 8 application domains</strong> — from large institutional repositories (FDA, World Bank, HRSA, FCC) to community-driven platforms (Kaggle, Yelp, Mercari).</li>
+              <li><strong>At least 2 string columns and ≥ 500 rows per table</strong>; large tables sub-sampled to 75,000 rows so foundation learners (TabPFN-2.5, TabICLv2) remain tractable.</li>
+              <li><strong>Minimal preprocessing</strong> — we keep raw strings instead of flattening them into integer codes, so future architectures can process them however they want.</li>
+              <li><strong>String taxonomy</strong> — every string column is profiled into one of five types: Categoricals 49%, Names 23%, Structured Codes 17%, Free Text 8%, Datetimes 2%, Identifiers 0.5%.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Figure 1: metadata distribution -->
+      <div class="columns is-centered has-text-centered mb-6">
+        <div class="column is-full-width">
+          <h3 class="title is-4">Tables in the wild are not OpenML-like</h3>
+          <img src="static/images/figure_1.png" alt="STRABLE column metadata distribution vs OpenML — STRABLE has roughly 5× more rows, more string columns, and shorter, more repetitive strings." loading="lazy" style="max-width: 85%; border-radius: 8px; border: 1px solid #ddd;">
+          <div class="content has-text-justified mt-3">
+            <p>
+              STRABLE (solid) vs. OpenML (dashed). Compared to a generic tabular repository, STRABLE tables have <strong>5× more rows</strong>, <strong>higher string-column cardinality (median 1.2K)</strong>, and <strong>shorter, more repetitive strings (median 17 characters)</strong>. Half of the string columns are modalities that string-excluding and string-flattening benchmarks typically destroy.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================== PART 2: ANALYSIS & TAKEAWAYS ============================== -->
+  <section class="section hero is-light" aria-labelledby="part2-heading">
+    <div class="container is-max-desktop">
+
+      <div class="columns is-centered has-text-centered mb-5">
+        <div class="column is-full-width">
+          <p class="subtitle is-6 has-text-grey" style="letter-spacing: 0.1em; text-transform: uppercase;">Part 2</p>
+          <h2 class="title is-2" id="part2-heading">Analysis &amp; Main Take-aways</h2>
+          <p class="subtitle is-5 mt-3">We benchmark <strong>445 pipelines</strong> spanning modular (encoder × learner) and end-to-end architectures, from Tf-Idf to LLMs (Qwen-3-8B, LLaMA-3.1-8B, Jasper-0.6B), and from Ridge to TabPFN-2.5 / TabICLv2 / TabSTAR / ConTextTab.</p>
+        </div>
+      </div>
+
+      <!-- Takeaway 1: Strings matter -->
+      <div class="columns is-centered has-text-centered mb-6">
+        <div class="column is-full-width">
+          <h3 class="title is-4">1. Strings carry signal — every learner benefits from them</h3>
+          <img src="static/images/figure_2.png" alt="Average performance per learner with Num-only, Str-only, and Num+Str features. Adding string columns boosts every learner." loading="lazy" style="max-width: 80%; border-radius: 8px; border: 1px solid #ddd;">
+          <div class="content has-text-justified mt-3">
+            <p>
+              For every learner, integrating string columns on top of numerical ones yields a tangible performance improvement (averaged across encoders for modular pipelines, across datasets for end-to-end ones). Numeric and string features are complementary.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Takeaway 2: Modular pipelines beat end-to-end -->
+      <div class="columns is-centered has-text-centered mb-6">
+        <div class="column is-full-width">
+          <h3 class="title is-4">2. Modular pipelines beat end-to-end string-tabular architectures</h3>
+          <img src="static/images/figure_3.png" alt="Critical difference diagram across 108 datasets. Modular encoder–learner pipelines cluster at the top of the ranking; end-to-end models (TabSTAR, ConTextTab, Mambular) sit lower." loading="lazy" style="max-width: 90%; border-radius: 8px; border: 1px solid #ddd;">
+          <div class="content has-text-justified mt-3">
+            <p>
+              Critical-difference diagram (lower rank = better) across the 108 datasets. Pipelines connected by horizontal bars are not statistically distinguishable. <strong>Tf-Idf + TabPFN-2.5</strong> and <strong>LLM + TabPFN-2.5</strong> sit at the top; end-to-end string-tabular models — TabSTAR, ConTextTab, Mambular — fall behind.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Takeaway 3: Pareto frontier -->
+      <div class="columns is-centered has-text-centered mb-6">
+        <div class="column is-full-width">
+          <h3 class="title is-4">3. Lightweight encoders + advanced learners dominate the Pareto frontier</h3>
+          <img src="static/images/figure_4.png" alt="Trade-off between prediction performance and run time per 1K samples on the STRABLE benchmark, colored by encoder on the left and by learner on the right." loading="lazy" style="max-width: 95%; border-radius: 8px; border: 1px solid #ddd;">
+          <div class="content has-text-justified mt-3">
+            <p>
+              Once runtime is taken into account, <strong>Tf-Idf + TabPFN-2.5 / TabICLv2</strong> hits the sweet spot. Encoders explain most of the runtime: for a given encoder, performance varies a lot with the learner while runtime varies little. <strong>Simple learners benefit more from heavy encoders</strong> (Ridge improves with LLMs); <strong>advanced learners do not</strong> (TabPFN-2.5 + Tf-Idf is hard to beat). Driving this: ~90% of STRABLE's string columns are short and repetitive — Tf-Idf captures the signal at a fraction of the cost.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Takeaway 4: Post-processing -->
+      <div class="columns is-centered has-text-centered mb-6">
+        <div class="column is-full-width">
+          <h3 class="title is-4">4. Decoder-only LLM embeddings need the right post-processing</h3>
+          <img src="static/images/figure_6.png" alt="Average off-diagonal cosine similarity heatmaps for LLaMA-3.1-8B, Qwen-3-8B, Tf-Idf and MiniLM-L6-v2 — decoder embeddings concentrate in a narrow cone while encoder ones spread evenly." loading="lazy" style="max-width: 75%; border-radius: 8px; border: 1px solid #ddd;">
+          <div class="content has-text-justified mt-3">
+            <p>
+              Decoder-only LLM embeddings (LLaMA-3.1-8B, Qwen-3-8B, OPT-6.7B) concentrate most of their variance in a few dimensions and cluster into a <strong>narrow cone</strong> (avg cosine similarity ≈ 0.57 vs. 0.25 for MiniLM-L6-v2). Default 30-PCA understates their performance. Replacing it with <strong>standard scaling before PCA</strong> or with <strong>Matryoshka-style direct slicing</strong> of the first 30 dimensions recovers <strong>up to +12%</strong> over the default baseline. Encoder-only models are largely insensitive to this choice.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Takeaway 5: Generalizability -->
+      <div class="columns is-centered has-text-centered mb-6">
+        <div class="column is-full-width">
+          <h3 class="title is-4">5. The benchmark generalizes — rankings approach the oracle</h3>
+          <div class="columns">
+            <div class="column">
+              <img src="static/images/figure_9.png" alt="Expected Kendall-τ convergence: the agreement between two independent STRABLE-like benchmarks of size N (blue curve) versus the implied convergence of a single benchmark to the oracle ranking (purple curve), reaching τ ≈ 0.95 at N = 108." loading="lazy" style="max-width: 100%; border-radius: 8px; border: 1px solid #ddd;">
+              <p class="is-size-7 has-text-grey mt-2">Convergence of STRABLE rankings to the oracle (τ ≈ 0.95 at N = 108).</p>
+            </div>
+            <div class="column">
+              <img src="static/images/figure_10.png" alt="Kendall-τ correlation between rankings on each held-out application domain and the full benchmark ranking — all but one domain fall inside the size-matched null band." loading="lazy" style="max-width: 100%; border-radius: 8px; border: 1px solid #ddd;">
+              <p class="is-size-7 has-text-grey mt-2">Rankings are stable across application fields (Leave-One-Domain-Out Kendall-τ).</p>
+            </div>
+          </div>
+          <div class="content has-text-justified mt-3">
+            <p>
+              With <strong>108 datasets</strong>, the agreement between STRABLE's ranking and the oracle ranking reaches <strong>τ ≈ 0.95</strong> (only ~2.5% disagreeing model pairs). The ranking is also robust to alternative data-preparation choices — feature engineering, target transformation, missing-value imputation, sub-sampling — all yield Kendall-τ ≥ 0.7 vs. the default. Pipeline rankings shift mainly with <strong>average words per cell</strong>: large LLMs only break into the top-10 on the few free-text-dominant tables.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================== BIBTEX ============================== -->
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <div class="bibtex-header">
+        <h2 class="title">BibTeX</h2>
+        <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
+          <i class="fas fa-copy"></i>
+          <span class="copy-text">Copy</span>
+        </button>
+      </div>
+<pre id="bibtex-code"><code>@article{strable2026,
+  title   = {STRABLE: Benchmarking Tabular Machine Learning with Strings},
+  author  = {{INSERT_AUTHOR_LIST}},
+  journal = {arXiv preprint},
+  year    = {2026},
+  url     = {{INSERT_ARXIV_LINK}}
+}</code></pre>
+    </div>
+  </section>
+
+  </main>
+
+  <!-- ============================== FOOTER ============================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content has-text-centered">
+            <p>
+              <a href="https://github.com/soda-inria/strable" target="_blank" rel="noopener">Code</a> &middot;
+              <a href="https://huggingface.co/datasets/inria-soda/STRABLE-benchmark" target="_blank" rel="noopener">Dataset</a> &middot;
+              <a href="{INSERT_ARXIV_LINK}" target="_blank" rel="noopener">Paper</a>
+            </p>
+            <p>
+              Released under the <a href="https://opensource.org/licenses/BSD-3-Clause" target="_blank" rel="noopener">BSD&nbsp;3-Clause License</a>.
+              This page was built from the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank" rel="noopener">Academic Project Page Template</a>, itself adapted from <a href="https://nerfies.github.io" target="_blank" rel="noopener">Nerfies</a>, and is licensed under <a href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
