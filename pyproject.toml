@@ -11,7 +11,17 @@ requires-python = ">=3.10"
 keywords = ["strable", "tabular", "benchmark"]
 license = { text = "BSD-3-Clause" }
 authors = [
-    { name = "TBD" },
+    { name = "Gioia Blayer", email = "gioia.blayer@inria.fr" },
+    { name = "Myung Jun Kim" },
+    { name = "Félix Lefebvre" },
+    { name = "Lennart Purucker" },
+    { name = "Alan Arazi" },
+    { name = "Eilam Shapira" },
+    { name = "Roi Reichart" },
+    { name = "Frank Hutter" },
+    { name = "Marine Le Morvan" },
+    { name = "David Holzmüller" },
+    { name = "Gaël Varoquaux" },
 ]
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
