@@ -4,26 +4,27 @@
   <meta charset="utf-8">
 
   <title>STRABLE: Benchmarking Tabular Machine Learning with Strings</title>
-  <meta name="description" content="STRABLE is a novel benchmark for evaluating tabular machine learning models using string representations.">
+  <link rel="canonical" href="https://soda-inria.github.io/strable/">
+  <meta name="description" content="STRABLE: a benchmark of 108 real-world tabular datasets with raw string columns.">
   <meta name="keywords" content="Machine Learning, Tabular Data, Benchmark, LLM, Strings, STRABLE, Deep Learning, Artificial Intelligence">
   <meta name="author" content="Gioia Blayer, Myung Jun Kim, Félix Lefebvre, Lennart Purucker, Alan Arazi, Eilam Shapira, Roi Reichart, Frank Hutter, Marine Le Morvan, David Holzmüller, Gaël Varoquaux">
   <meta property="og:title" content="STRABLE: Benchmarking Tabular Machine Learning with Strings">
-  <meta property="og:description" content="A new benchmark for evaluating tabular machine learning models using string representations.">
+  <meta property="og:description" content="108 real-world tabular datasets with raw string columns. Evaluates string encoders × tabular learners — Tf-Idf to LLM embeddings, Ridge to TabPFN-2.5.">
   <meta property="og:url" content="https://soda-inria.github.io/strable/">
-  <meta property="og:type" content="website">
+  <meta property="og:type" content="article">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="STRABLE: Benchmarking Tabular Machine Learning with Strings">
-  <meta name="twitter:description" content="A new benchmark for evaluating tabular machine learning models using string representations.">
+  <meta name="twitter:description" content="108 real-world tabular datasets with raw string columns. Evaluates string encoders × tabular learners — Tf-Idf to LLM embeddings, Ridge to TabPFN-2.5.">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="index, follow">
   <meta name="language" content="English">
 
-  <meta property="og:image" content="https://soda-inria.github.io/strable/static/images/figure_4a.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
+  <meta property="og:image" content="https://soda-inria.github.io/strable/website/images/figure_4a.png">
+  <meta property="og:image:width" content="1717">
+  <meta property="og:image:height" content="1324">
   <meta property="og:image:alt" content="STRABLE: Benchmarking Tabular Machine Learning with Strings">
-  <meta name="twitter:image" content="https://soda-inria.github.io/strable/static/images/figure_4a.png">
+  <meta name="twitter:image" content="https://soda-inria.github.io/strable/website/images/figure_4a.png">
   <meta name="twitter:image:alt" content="STRABLE: Benchmarking Tabular Machine Learning with Strings">
 
   <meta name="citation_title" content="STRABLE: Benchmarking Tabular Machine Learning with Strings">
@@ -50,31 +51,31 @@
   <link rel="preconnect" href="https://ajax.googleapis.com">
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
 
-  <link rel="icon" type="image/svg+xml" href="static/images/favicon.svg">
-  <link rel="apple-touch-icon" href="static/images/favicon.svg">
+  <link rel="icon" type="image/svg+xml" href="website/images/favicon.svg">
+  <link rel="apple-touch-icon" href="website/images/favicon.svg">
 
-  <link rel="stylesheet" href="static/css/bulma.min.css">
-  <link rel="stylesheet" href="static/css/index.css">
+  <link rel="stylesheet" href="website/css/bulma.min.css">
+  <link rel="stylesheet" href="website/css/index.css">
 
-  <link rel="preload" href="static/css/bulma-carousel.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" href="static/css/bulma-slider.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" href="static/css/fontawesome.all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="website/css/bulma-carousel.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="website/css/bulma-slider.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="website/css/fontawesome.all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <link rel="preload" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
 
   <noscript>
-    <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
-    <link rel="stylesheet" href="static/css/bulma-slider.min.css">
-    <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="website/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="website/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="website/css/fontawesome.all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   </noscript>
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script defer src="static/js/fontawesome.all.min.js"></script>
-  <script defer src="static/js/bulma-carousel.min.js"></script>
-  <script defer src="static/js/bulma-slider.min.js"></script>
-  <script defer src="static/js/index.js"></script>
+  <script defer src="website/js/fontawesome.all.min.js"></script>
+  <script defer src="website/js/bulma-carousel.min.js"></script>
+  <script defer src="website/js/bulma-slider.min.js"></script>
+  <script defer src="website/js/index.js"></script>
 
   <script type="application/ld+json">
   {
@@ -95,9 +96,9 @@
       { "@type": "Person", "name": "David Holzmüller", "affiliation": { "@type": "Organization", "name": "SODA Team, INRIA Saclay" } },
       { "@type": "Person", "name": "Gaël Varoquaux", "affiliation": [{ "@type": "Organization", "name": "SODA Team, INRIA Saclay" }, { "@type": "Organization", "name": "Probabl" }] }
     ],
-    "datePublished": "2026-01-01",
+    "datePublished": "2026-05-12",
     "url": "https://soda-inria.github.io/strable/",
-    "image": "https://soda-inria.github.io/strable/static/images/figure_4a.png",
+    "image": "https://soda-inria.github.io/strable/website/images/figure_4a.png",
     "keywords": ["tabular machine learning", "string encoding", "benchmark", "dataset", "LLM"],
     "isAccessibleForFree": true,
     "license": "https://creativecommons.org/licenses/by/4.0/",
@@ -105,6 +106,50 @@
       "@type": "WebPage",
       "@id": "https://soda-inria.github.io/strable/"
     }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "name": "STRABLE: Benchmarking Tabular Machine Learning with Strings",
+    "alternateName": "STRABLE",
+    "description": "A benchmark of 108 real-world tabular datasets with raw string columns, for evaluating encoder-learner pipelines and end-to-end string-tabular architectures in tabular machine learning.",
+    "url": "https://soda-inria.github.io/strable/",
+    "sameAs": [
+      "https://huggingface.co/datasets/inria-soda/STRABLE-benchmark",
+      "https://github.com/soda-inria/strable"
+    ],
+    "keywords": ["tabular machine learning", "tabular benchmark", "string columns", "string encoding", "LLM embeddings", "TabPFN", "TabICL"],
+    "creator": [
+      { "@type": "Person", "name": "Gioia Blayer", "affiliation": { "@type": "Organization", "name": "SODA Team, INRIA Saclay" }, "email": "gioia.blayer@inria.fr" },
+      { "@type": "Person", "name": "Myung Jun Kim", "affiliation": { "@type": "Organization", "name": "SODA Team, INRIA Saclay" } },
+      { "@type": "Person", "name": "Félix Lefebvre", "affiliation": { "@type": "Organization", "name": "SODA Team, INRIA Saclay" } },
+      { "@type": "Person", "name": "Lennart Purucker", "affiliation": [{ "@type": "Organization", "name": "Prior Labs" }, { "@type": "Organization", "name": "University of Freiburg" }] },
+      { "@type": "Person", "name": "Alan Arazi", "affiliation": [{ "@type": "Organization", "name": "Prior Labs" }, { "@type": "Organization", "name": "Technion – Israel Institute of Technology" }] },
+      { "@type": "Person", "name": "Eilam Shapira", "affiliation": { "@type": "Organization", "name": "Technion – Israel Institute of Technology" } },
+      { "@type": "Person", "name": "Roi Reichart", "affiliation": { "@type": "Organization", "name": "Technion – Israel Institute of Technology" } },
+      { "@type": "Person", "name": "Frank Hutter", "affiliation": [{ "@type": "Organization", "name": "Prior Labs" }, { "@type": "Organization", "name": "ELLIS Institute Tübingen" }, { "@type": "Organization", "name": "University of Freiburg" }] },
+      { "@type": "Person", "name": "Marine Le Morvan", "affiliation": { "@type": "Organization", "name": "SODA Team, INRIA Saclay" } },
+      { "@type": "Person", "name": "David Holzmüller", "affiliation": { "@type": "Organization", "name": "SODA Team, INRIA Saclay" } },
+      { "@type": "Person", "name": "Gaël Varoquaux", "affiliation": [{ "@type": "Organization", "name": "SODA Team, INRIA Saclay" }, { "@type": "Organization", "name": "Probabl" }] }
+    ],
+    "datePublished": "2026-05-12",
+    "license": "https://creativecommons.org/licenses/by/4.0/",
+    "isAccessibleForFree": true,
+    "distribution": [
+      {
+        "@type": "DataDownload",
+        "encodingFormat": "application/parquet",
+        "contentUrl": "https://huggingface.co/datasets/inria-soda/STRABLE-benchmark"
+      },
+      {
+        "@type": "DataDownload",
+        "encodingFormat": "text/html",
+        "contentUrl": "https://github.com/soda-inria/strable"
+      }
+    ]
   }
   </script>
 </head>
@@ -174,6 +219,13 @@
                   </a>
                 </span>
 
+                <span class="link-block">
+                  <a href="https://team.inria.fr/soda/" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon"><i class="fas fa-university"></i></span>
+                    <span>Inria SODA</span>
+                  </a>
+                </span>
+
               </div>
             </div>
           </div>
@@ -181,6 +233,17 @@
       </div>
     </div>
   </section>
+
+
+  <nav class="section py-3 has-text-centered" aria-label="Page sections">
+    <div class="container is-max-desktop">
+      <a href="#dataset" class="mx-3 has-text-weight-semibold">Dataset</a>
+      <span class="has-text-grey-light">·</span>
+      <a href="#analysis" class="mx-3 has-text-weight-semibold">Analysis</a>
+      <span class="has-text-grey-light">·</span>
+      <a href="#BibTeX" class="mx-3 has-text-weight-semibold">Share / Cite</a>
+    </div>
+  </nav>
 
 
   <!-- TL;DR -->
@@ -244,7 +307,7 @@
           </div>
 
           <div class="has-text-centered mt-5 mb-5">
-            <img src="static/images/figure_1a.png" alt="Distribution of column-level metadata in STRABLE vs OpenML" style="max-width: 90%; border-radius: 8px; border: 1px solid #ddd;">
+            <img loading="lazy" src="website/images/figure_1a.png" alt="Distribution of column-level metadata in STRABLE vs OpenML" style="max-width: 90%; border-radius: 8px; border: 1px solid #ddd;">
             <p class="is-size-6 has-text-grey mt-3 has-text-justified">
               <strong>STRABLE vs OpenML column metadata.</strong> Solid lines: STRABLE; dashed lines: OpenML. STRABLE has comparable column counts but ~5&times; more rows per table, with string columns that are shorter and more repetitive than in prior text-tabular studies.
             </p>
@@ -306,7 +369,7 @@ ds = load_dataset("inria-soda/STRABLE-benchmark", "yelp_business")
             </p>
           </div>
           <div class="has-text-centered mb-6">
-            <img src="static/images/figure_1b.png" alt="Performance by learner: Num-only vs Str-only vs Num+Str" style="max-width: 80%; border-radius: 8px; border: 1px solid #ddd;">
+            <img loading="lazy" src="website/images/figure_1b.png" alt="Performance by learner: Num-only vs Str-only vs Num+Str" style="max-width: 80%; border-radius: 8px; border: 1px solid #ddd;">
           </div>
 
           <h3 class="title is-4">2. Lightweight encoders + advanced learners win the accuracy/runtime trade-off</h3>
@@ -319,7 +382,7 @@ ds = load_dataset("inria-soda/STRABLE-benchmark", "yelp_business")
             </p>
           </div>
           <div class="has-text-centered mb-6">
-            <img src="static/images/figure_4a.png" alt="Trade-off between prediction accuracy and runtime; Pareto frontier" style="max-width: 95%; border-radius: 8px; border: 1px solid #ddd;">
+            <img loading="lazy" src="website/images/figure_4a.png" alt="Trade-off between prediction accuracy and runtime; Pareto frontier" style="max-width: 95%; border-radius: 8px; border: 1px solid #ddd;">
           </div>
 
           <h3 class="title is-4">3. LLM embeddings need careful dimensionality reduction</h3>
@@ -332,7 +395,7 @@ ds = load_dataset("inria-soda/STRABLE-benchmark", "yelp_business")
             </p>
           </div>
           <div class="has-text-centered mb-6">
-            <img src="static/images/figure_2.png" alt="Effect of three dimensionality-reduction strategies on LLM embeddings" style="max-width: 95%; border-radius: 8px; border: 1px solid #ddd;">
+            <img loading="lazy" src="website/images/figure_2.png" alt="Effect of three dimensionality-reduction strategies on LLM embeddings" style="max-width: 95%; border-radius: 8px; border: 1px solid #ddd;">
           </div>
 
           <h3 class="title is-4">4. Modular pipelines outperform today's end-to-end string-tabular models</h3>
@@ -342,7 +405,7 @@ ds = load_dataset("inria-soda/STRABLE-benchmark", "yelp_business")
             </p>
           </div>
           <div class="has-text-centered mb-6">
-            <img src="static/images/figure_3.png" alt="Critical-difference diagram of encoder-learner pipelines and end-to-end models" style="max-width: 100%; border-radius: 8px; border: 1px solid #ddd;">
+            <img loading="lazy" src="website/images/figure_3.png" alt="Critical-difference diagram of encoder-learner pipelines and end-to-end models" style="max-width: 100%; border-radius: 8px; border: 1px solid #ddd;">
           </div>
 
           <h3 class="title is-4">5. The leading string type determines which pipeline wins</h3>
@@ -352,7 +415,7 @@ ds = load_dataset("inria-soda/STRABLE-benchmark", "yelp_business")
             </p>
           </div>
           <div class="has-text-centered mb-6">
-            <img src="static/images/figure_6.png" alt="Top-10 pipelines per leading string type" style="max-width: 100%; border-radius: 8px; border: 1px solid #ddd;">
+            <img loading="lazy" src="website/images/figure_6.png" alt="Top-10 pipelines per leading string type" style="max-width: 100%; border-radius: 8px; border: 1px solid #ddd;">
           </div>
 
           <h3 class="title is-4">6. STRABLE rankings generalize</h3>
@@ -366,21 +429,21 @@ ds = load_dataset("inria-soda/STRABLE-benchmark", "yelp_business")
           </div>
           <div class="columns is-centered">
             <div class="column is-half has-text-centered">
-              <img src="static/images/figure_4b.png" alt="Convergence of STRABLE rankings to the oracle ranking" style="max-width: 100%; border-radius: 8px; border: 1px solid #ddd;">
+              <img loading="lazy" src="website/images/figure_4b.png" alt="Convergence of STRABLE rankings to the oracle ranking" style="max-width: 100%; border-radius: 8px; border: 1px solid #ddd;">
               <p class="is-size-7 has-text-grey mt-2">Convergence to the oracle ranking.</p>
             </div>
             <div class="column is-half has-text-centered">
-              <img src="static/images/figure_5b.png" alt="Stability of rankings under different data-preparation choices" style="max-width: 100%; border-radius: 8px; border: 1px solid #ddd;">
+              <img loading="lazy" src="website/images/figure_5b.png" alt="Stability of rankings under different data-preparation choices" style="max-width: 100%; border-radius: 8px; border: 1px solid #ddd;">
               <p class="is-size-7 has-text-grey mt-2">Stability across data-preparation choices.</p>
             </div>
           </div>
           <div class="columns is-centered">
             <div class="column is-half has-text-centered">
-              <img src="static/images/figure_5a.png" alt="Stability of rankings across application fields" style="max-width: 100%; border-radius: 8px; border: 1px solid #ddd;">
+              <img loading="lazy" src="website/images/figure_5a.png" alt="Stability of rankings across application fields" style="max-width: 100%; border-radius: 8px; border: 1px solid #ddd;">
               <p class="is-size-7 has-text-grey mt-2">Stability across application fields.</p>
             </div>
             <div class="column is-half has-text-centered">
-              <img src="static/images/figure_5c.png" alt="Which string meta-features disrupt the ranking" style="max-width: 100%; border-radius: 8px; border: 1px solid #ddd;">
+              <img loading="lazy" src="website/images/figure_5c.png" alt="Which string meta-features disrupt the ranking" style="max-width: 100%; border-radius: 8px; border: 1px solid #ddd;">
               <p class="is-size-7 has-text-grey mt-2">String length is the dominant ranking disruptor.</p>
             </div>
           </div>
@@ -391,11 +454,36 @@ ds = load_dataset("inria-soda/STRABLE-benchmark", "yelp_business")
   </section>
 
 
-  <!-- BibTeX -->
+  <!-- Share / Cite -->
   <section class="section" id="BibTeX">
     <div class="container is-max-desktop content">
+      <h2 class="title">Share / Cite</h2>
+
+      <p>Share this page:</p>
+      <div class="buttons">
+        <a class="button is-rounded is-dark"
+           href="https://bsky.app/intent/compose?text=STRABLE%3A%20Benchmarking%20Tabular%20Machine%20Learning%20with%20Strings%20https%3A%2F%2Fsoda-inria.github.io%2Fstrable%2F"
+           target="_blank" rel="noopener" aria-label="Share on Bluesky">
+          <span class="icon"><i class="fab fa-bluesky"></i></span>
+          <span>Bluesky</span>
+        </a>
+        <a class="button is-rounded is-dark"
+           href="https://twitter.com/intent/tweet?text=STRABLE%3A%20Benchmarking%20Tabular%20Machine%20Learning%20with%20Strings&amp;url=https%3A%2F%2Fsoda-inria.github.io%2Fstrable%2F"
+           target="_blank" rel="noopener" aria-label="Share on X (Twitter)">
+          <span class="icon"><i class="fab fa-x-twitter"></i></span>
+          <span>X</span>
+        </a>
+        <a class="button is-rounded is-dark"
+           href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fsoda-inria.github.io%2Fstrable%2F"
+           target="_blank" rel="noopener" aria-label="Share on LinkedIn">
+          <span class="icon"><i class="fab fa-linkedin"></i></span>
+          <span>LinkedIn</span>
+        </a>
+      </div>
+
+      <p class="mt-5">Cite this benchmark:</p>
       <div class="bibtex-header">
-        <h2 class="title">BibTeX</h2>
+        <h3 class="title is-5">BibTeX</h3>
         <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
           <i class="fas fa-copy"></i>
           <span class="copy-text">Copy</span>
