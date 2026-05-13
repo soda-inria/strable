@@ -1,7 +1,7 @@
 ![Python versions](https://img.shields.io/badge/python-3.12-blue)
 ![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)
 [![Hugging Face Benchmark](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Benchmark-FFD21E.svg)](https://huggingface.co/datasets/inria-soda/STRABLE-benchmark)
-[![arXiv](https://img.shields.io/badge/arXiv-<ARXIV_LINK_PLACEHOLDER>-b31b1b.svg)](<ARXIV_LINK_PLACEHOLDER>)
+[![arXiv](https://img.shields.io/badge/arXiv-2605.12292-b31b1b.svg)](https://arxiv.org/abs/2605.12292)
 
 # STRABLE: Benchmarking Tabular Machine Learning with Strings
 
@@ -335,7 +335,15 @@ The `_default` / `_tune` suffix is appended automatically based on `-ti / --tune
 If you use STRABLE in your work, please cite:
 
 ```bibtex
-<BIBTEX_PLACEHOLDER>
+@misc{blayer2026strablebenchmarkingtabularmachine,
+      title={STRABLE: Benchmarking Tabular Machine Learning with Strings},
+      author={Gioia Blayer and Myung Jun Kim and Félix Lefebvre and Lennart Purucker and Alan Arazi and Eilam Shapira and Roi Reichart and Frank Hutter and Marine Le Morvan and David Holzmüller and Gaël Varoquaux},
+      year={2026},
+      eprint={2605.12292},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2605.12292},
+}
 ```
 
 ## ⚖️ License
