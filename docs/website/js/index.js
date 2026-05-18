@@ -102,27 +102,37 @@ Huge thanks to my co-authors @Myung Jun Kim, @Félix Lefebvre, @Lennart Purucker
 function sharePost(event, platform) {
     if (event) event.preventDefault();
 
-    // Always copy the full post to the clipboard.
+    const enc = encodeURIComponent;
+
+    // Always copy the full post to the clipboard. This is essential for
+    // LinkedIn (no text-prefill support) and a useful backup for X / Bluesky.
     const copyPromise = (navigator.clipboard && navigator.clipboard.writeText)
         ? navigator.clipboard.writeText(SHARE_POST_TEXT).catch(() => {})
         : Promise.resolve();
 
-    let shareUrl;
+    let shareUrl, needsManualPaste = false;
     if (platform === 'bluesky') {
-        shareUrl = 'https://bsky.app/intent/compose';
+        // Bluesky pre-fills the compose box with this text (counter goes red
+        // if over 300 chars — user trims before posting).
+        shareUrl = 'https://bsky.app/intent/compose?text=' + enc(SHARE_POST_TEXT);
     } else if (platform === 'twitter') {
-        shareUrl = 'https://twitter.com/intent/tweet';
+        // Same idea on X (280-char limit).
+        shareUrl = 'https://twitter.com/intent/tweet?text=' + enc(SHARE_POST_TEXT);
     } else if (platform === 'linkedin') {
-        shareUrl = 'https://www.linkedin.com/sharing/share-offsite/?url=' +
-                   encodeURIComponent(SHARE_POST_URL);
+        // LinkedIn's share-offsite endpoint only accepts a URL — text-prefill
+        // is not supported. We rely on the clipboard copy for the post body.
+        shareUrl = 'https://www.linkedin.com/sharing/share-offsite/?url=' + enc(SHARE_POST_URL);
+        needsManualPaste = true;
     } else {
         return;
     }
 
-    const platformLabel = { bluesky: 'Bluesky', twitter: 'X', linkedin: 'LinkedIn' }[platform];
+    const toastMsg = needsManualPaste
+        ? 'Post copied — paste it into the LinkedIn editor (Ctrl/Cmd+V)'
+        : 'Post pre-filled and copied to clipboard — trim if over the platform limit';
 
     copyPromise.finally(() => {
-        showShareToast('Post copied — paste into the ' + platformLabel + ' editor (trim as needed for X/Bluesky)');
+        showShareToast(toastMsg);
         window.open(shareUrl, '_blank', 'noopener,noreferrer');
     });
 }
