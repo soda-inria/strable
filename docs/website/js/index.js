@@ -72,6 +72,85 @@ function copyBibTeX() {
     }
 }
 
+// Share to social media: copies the long-form post to the clipboard and opens
+// the platform's compose window. We deliberately do NOT prefill the text via
+// the URL: the post exceeds X (280) and Bluesky (300) character limits, so
+// pre-filling would either truncate awkwardly or produce a massive URL.
+// Users paste from the clipboard and trim per platform as needed.
+const SHARE_POST_URL = "https://soda-inria.github.io/strable/";
+const SHARE_POST_TEXT = `Real-world tables aren't just numbers. They're full of categories, names, codes, free text — and we've been benchmarking tabular ML as if those didn't exist.
+
+So we built STRABLE (STRing-tABLE): the first large-scale empirical study of tabular learning with strings where we evaluate 445 pipelines on 108 real-world tables with raw strings.
+
+Here's what we found:
+
+🔤 Strings carry signal — numbers and strings are complementary, not redundant.
+
+⚡ LLMs gain ground on free-text-heavy tables, while Simple encoders suffice when strings are categorical-dominant
+
+📐 Dimensionality reduction matters for LLM embeddings — especially for decoder-only models
+
+🌍 Rankings generalize — STRABLE's 108 datasets yield pipeline rankings close to the oracle.
+
+📄 Paper: https://huggingface.co/papers/2605.12292
+🤗 Dataset: https://huggingface.co/datasets/inria-soda/STRABLE-benchmark
+🌐 Project page: https://soda-inria.github.io/strable/
+💻 Code: https://github.com/soda-inria/strable
+
+Huge thanks to my co-authors @Myung Jun Kim, @Félix Lefebvre, @Lennart Purucker, @Alan Arazi, @Eilam Shapira, @Roi Reichart, @Frank Hutter, @Marine Le Morvan, @David Holzmüller, @Gaël Varoquaux`;
+
+function sharePost(event, platform) {
+    if (event) event.preventDefault();
+
+    // Always copy the full post to the clipboard.
+    const copyPromise = (navigator.clipboard && navigator.clipboard.writeText)
+        ? navigator.clipboard.writeText(SHARE_POST_TEXT).catch(() => {})
+        : Promise.resolve();
+
+    let shareUrl;
+    if (platform === 'bluesky') {
+        shareUrl = 'https://bsky.app/intent/compose';
+    } else if (platform === 'twitter') {
+        shareUrl = 'https://twitter.com/intent/tweet';
+    } else if (platform === 'linkedin') {
+        shareUrl = 'https://www.linkedin.com/sharing/share-offsite/?url=' +
+                   encodeURIComponent(SHARE_POST_URL);
+    } else {
+        return;
+    }
+
+    const platformLabel = { bluesky: 'Bluesky', twitter: 'X', linkedin: 'LinkedIn' }[platform];
+
+    copyPromise.finally(() => {
+        showShareToast('Post copied — paste into the ' + platformLabel + ' editor (trim as needed for X/Bluesky)');
+        window.open(shareUrl, '_blank', 'noopener,noreferrer');
+    });
+}
+
+function showShareToast(message) {
+    let toast = document.getElementById('share-toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'share-toast';
+        toast.setAttribute('role', 'status');
+        toast.setAttribute('aria-live', 'polite');
+        toast.style.cssText = [
+            'position:fixed', 'bottom:24px', 'left:50%',
+            'transform:translateX(-50%)', 'background:#1f2937',
+            'color:#fff', 'padding:10px 18px', 'border-radius:8px',
+            'z-index:9999', 'opacity:0', 'transition:opacity 0.25s',
+            'font-size:14px', 'font-weight:500',
+            'box-shadow:0 4px 12px rgba(0,0,0,0.15)',
+            'max-width:90vw', 'text-align:center'
+        ].join(';');
+        document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    requestAnimationFrame(() => { toast.style.opacity = '1'; });
+    clearTimeout(toast._hideTimer);
+    toast._hideTimer = setTimeout(() => { toast.style.opacity = '0'; }, 2500);
+}
+
 // Scroll to top functionality
 function scrollToTop() {
     window.scrollTo({
