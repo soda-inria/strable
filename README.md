@@ -2,6 +2,7 @@
 ![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)
 [![Hugging Face Benchmark](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Benchmark-FFD21E.svg)](https://huggingface.co/datasets/inria-soda/STRABLE-benchmark)
 [![arXiv](https://img.shields.io/badge/arXiv-2605.12292-b31b1b.svg)](https://arxiv.org/abs/2605.12292)
+[![Agent-friendly](https://img.shields.io/badge/Agent--friendly-AGENTS.md-7B61FF.svg)](AGENTS.md)
 
 # STRABLE: Benchmarking Tabular Machine Learning with Strings
 
@@ -144,7 +145,7 @@ Required only to reproduce the cross-benchmark appendix Figure E.1.
 ## 🚦 Pipeline
 
 1. **Data** (Step 2 above).
-2. **Pre-compute LLM embeddings** — only for LLM-encoder pipelines. CSV-based encoders (TableVectorizer / TargetEncoder / Tf-Idf) and end-to-end learners (ContextTab / TabSTAR / TabICLv2) do **not** need this step:
+2. **Pre-compute LLM embeddings** — only for LLM-encoder pipelines. Non-LLM encoders (TableVectorizer / TargetEncoder / Tf-Idf) and end-to-end learners (ContextTab / TabSTAR / Mambular / Catboost) do **not** need this step:
    ```bash
    python scripts/embedding_extraction_scripts/script_extract_llm_embeddings.py \
        -m llm-qwen3-8b -dn all-wide -ns 3 -fi all -dv cuda -cf False -oc False

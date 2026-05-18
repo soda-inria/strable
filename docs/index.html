@@ -459,22 +459,25 @@ ds = load_dataset("inria-soda/STRABLE-benchmark", "yelp_business")
     <div class="container is-max-desktop content">
       <h2 class="title">Share / Cite</h2>
 
-      <p>Share this page:</p>
+      <p>Share this page <span class="has-text-grey is-size-7">(the full post is auto-copied to your clipboard — paste it into the compose box that opens; trim as needed for X / Bluesky character limits)</span>:</p>
       <div class="buttons">
         <a class="button is-rounded is-dark"
-           href="https://bsky.app/intent/compose?text=STRABLE%3A%20Benchmarking%20Tabular%20Machine%20Learning%20with%20Strings%20https%3A%2F%2Fsoda-inria.github.io%2Fstrable%2F"
+           href="https://bsky.app/intent/compose"
+           onclick="sharePost(event, 'bluesky')"
            target="_blank" rel="noopener" aria-label="Share on Bluesky">
           <span class="icon"><i class="fab fa-bluesky"></i></span>
           <span>Bluesky</span>
         </a>
         <a class="button is-rounded is-dark"
-           href="https://twitter.com/intent/tweet?text=STRABLE%3A%20Benchmarking%20Tabular%20Machine%20Learning%20with%20Strings&amp;url=https%3A%2F%2Fsoda-inria.github.io%2Fstrable%2F"
+           href="https://twitter.com/intent/tweet"
+           onclick="sharePost(event, 'twitter')"
            target="_blank" rel="noopener" aria-label="Share on X (Twitter)">
           <span class="icon"><i class="fab fa-x-twitter"></i></span>
           <span>X</span>
         </a>
         <a class="button is-rounded is-dark"
            href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fsoda-inria.github.io%2Fstrable%2F"
+           onclick="sharePost(event, 'linkedin')"
            target="_blank" rel="noopener" aria-label="Share on LinkedIn">
           <span class="icon"><i class="fab fa-linkedin"></i></span>
           <span>LinkedIn</span>
