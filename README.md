@@ -150,7 +150,11 @@ Required only to reproduce the cross-benchmark appendix Figure E.1.
    python scripts/embedding_extraction_scripts/script_extract_llm_embeddings.py \
        -m llm-qwen3-8b -dn all-wide -ns 3 -fi all -dv cuda -cf False -oc False
    ```
-3. **Run the experiment.** Each `scripts/evaluate_scripts/script_evaluate*.py` carries an `ABLATION` tag (`default`, `no-pca`, `ct30-ohe`, `ct30-passthrough`, `feature-eng`, `full-data`, `imputed`, `no-target-transform`). Output lands at:
+3. **Run the experiment.** Each `scripts/evaluate_scripts/script_evaluate*.py` carries an `ABLATION` tag (`default`, `no-pca`, `ct30-ohe`, `ct30-passthrough`, `feature-eng`, `full-data`, `imputed`, `no-target-transform`).
+
+   ![STRABLE cross-validation protocol](figures/strable_cv_protocol.png)
+
+   Output lands at:
 
    ```
    results/<ABLATION>/<save_dir>/<dataset>/<method_marker>/score/<marker>.csv
