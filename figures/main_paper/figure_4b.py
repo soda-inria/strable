@@ -105,14 +105,6 @@ def _bootstrap_fit(df_stability, n_bootstraps, target_y, x_range):
     return np.array(all_popt), np.array(curves)
 
 
-def _oracle(x, a, b, factor):
-    """Agreement of an ``x``-dataset benchmark with the oracle ranking: the
-    two-benchmark disagreement ``a / sqrt(x) * exp(-b x)`` divided by
-    ``factor`` (1 = no correction, sqrt(2) = finite-N value used in the
-    paper, 2 = asymptotic value)."""
-    return 1 - (a / (factor * np.sqrt(x))) * np.exp(-b * x)
-
-
 # ---------------------------------------------------------------------------
 # 2. Main
 # ---------------------------------------------------------------------------
@@ -156,18 +148,21 @@ def plot_kendalltau_convergence(n_iterations=2000, n_bootstraps=2000, target_y=0
     print(f"95% CI for a: [{ci_lower[0]:.4f}, {ci_upper[0]:.4f}]")
     print(f"95% CI for b: [{ci_lower[1]:.4f}, {ci_upper[1]:.4f}]")
 
-    tau_strable = 1 - (mean_params[0] / np.sqrt(n_datasets)) * np.exp(-mean_params[1] * n_datasets)
+    a, b = mean_params
+    tau_strable = model_ref_1(n_datasets, a, b)
     disagreement_pct_strable = ((1 - tau_strable) / 2) * 100
 
-    a, b = mean_params
-    tau_oracle_boot = [_oracle(n_datasets, *p, np.sqrt(2)) for p in all_popt]
+    # Agreement with the oracle ranking: model_ref_1 with a divided by a
+    # factor (1 = no correction, sqrt(2) = finite-N value used in the paper,
+    # 2 = asymptotic value).
+    tau_oracle_boot = [model_ref_1(n_datasets, p[0] / np.sqrt(2), p[1]) for p in all_popt]
     print(f"tau two-benchmark @N={n_datasets}: {tau_strable:.4f}")
     print(f"tau oracle (factor sqrt2) @N={n_datasets}: "
-          f"{_oracle(n_datasets, a, b, np.sqrt(2)):.4f}, 95% CI "
+          f"{model_ref_1(n_datasets, a / np.sqrt(2), b):.4f}, 95% CI "
           f"[{np.percentile(tau_oracle_boot, 2.5):.4f}, "
           f"{np.percentile(tau_oracle_boot, 97.5):.4f}]")
     print(f"oracle bounds (factor 1..2) @N={n_datasets}: "
-          f"[{_oracle(n_datasets, a, b, 1):.4f}, {_oracle(n_datasets, a, b, 2):.4f}]")
+          f"[{model_ref_1(n_datasets, a, b):.4f}, {model_ref_1(n_datasets, a / 2, b):.4f}]")
 
     # --- Figure ---
     plt.rcParams.update({'font.size': 8})
@@ -197,12 +192,12 @@ def plot_kendalltau_convergence(n_iterations=2000, n_bootstraps=2000, target_y=0
         # band between no correction (factor 1) and the asymptotic factor 2.
         x_oracle = np.linspace(3, max_plot_x, 300)
         ax.plot(
-            x_oracle, _oracle(x_oracle, a, b, np.sqrt(2)),
+            x_oracle, model_ref_1(x_oracle, a / np.sqrt(2), b),
             color='#A900D3', linestyle='--', linewidth=2,
             label=r'Agreement to oracle: $1-\frac{a}{\sqrt{2N}}e^{-bN}$',
         )
         ax.fill_between(
-            x_oracle, _oracle(x_oracle, a, b, 1), _oracle(x_oracle, a, b, 2),
+            x_oracle, model_ref_1(x_oracle, a, b), model_ref_1(x_oracle, a / 2, b),
             color='grey', alpha=0.12, label='Oracle bounds (factor $\\in[1,2]$)',
         )
 
