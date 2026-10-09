@@ -13,7 +13,50 @@ _REPO_ROOT = Path(__file__).resolve().parent.parent
 if str(_REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT))
 
+from configs.exp_configs import estim_configs  # noqa: E402
 from configs.path_configs import compiled_results_path, path_configs  # noqa: E402
+
+TUNE_INDICATORS = ("default", "tune")
+
+
+def tune_indicator_of(score_file, method):
+    """``-ti`` value of the run that wrote ``score_file``.
+
+    The evaluate scripts save each score under
+    ``<dataset>/<method>_<tune_indicator>[_<flags>]/score/``.
+    """
+    method_marker = Path(score_file).parent.parent.name
+    tune_indicator = method_marker[len(method) + 1:].split("_")[0]
+    if not method_marker.startswith(f"{method}_") or tune_indicator not in TUNE_INDICATORS:
+        raise ValueError(
+            f"{score_file}: folder {method_marker!r} is not "
+            f"'{method}_<{'|'.join(TUNE_INDICATORS)}>'"
+        )
+    return tune_indicator
+
+
+def label_method(method, tune_indicator):
+    """Method label used in the compiled CSV and by the figures.
+
+    Learners with an ``estim_configs`` entry get ``_<tune_indicator>``
+    (``num-str_tabvec_xgb_default``, ``..._tune``); the others (ContextTab,
+    TabSTAR, TabICLv2, TabM, RealMLP, Mambular) keep the bare name, as in the
+    paper's compiled CSVs. A name that already ends in a tune indicator is
+    returned unchanged.
+    """
+    last = method.rsplit("_", 1)[-1]
+    if last in TUNE_INDICATORS or last not in estim_configs:
+        return method
+    return f"{method}_{tune_indicator}"
+
+
+def read_score(score_file):
+    """One score CSV with its ``method`` column labelled by ``label_method``."""
+    df = pd.read_csv(score_file)
+    df["method"] = [
+        label_method(m, tune_indicator_of(score_file, m)) for m in df["method"]
+    ]
+    return df
 
 
 def main() -> None:
@@ -49,7 +92,7 @@ def main() -> None:
         raise SystemExit(f"No score CSVs found under {score_dir}")
     print(f"Found {len(score_files)} score files under {score_dir}")
 
-    rows = Parallel(n_jobs=-1)(delayed(pd.read_csv)(p) for p in score_files)
+    rows = Parallel(n_jobs=-1)(delayed(read_score)(p) for p in score_files)
     df = pd.concat(rows, axis=0).reset_index(drop=True)
 
     out = args.out or compiled_results_path(args.run_name)
