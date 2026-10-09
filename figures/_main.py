@@ -19,7 +19,8 @@ import matplotlib.colors as mcolors
 import numpy as np
 import pandas as pd
 
-from configs.path_configs import path_configs
+from configs.paper_runs import PAPER_RUNS
+from configs.path_configs import compiled_results_path, path_configs
 
 
 # ---------------------------------------------------------------------------
@@ -312,9 +313,24 @@ def load_dataset_summary():
     return pd.read_parquet(f"{path_configs['dataset_summary_wide']}")
 
 
+def load_run(key):
+    """Compiled CSV of the evaluation run ``PAPER_RUNS[key]``
+    (see ``configs/paper_runs.py``)."""
+    spec = PAPER_RUNS[key]
+    path = compiled_results_path(spec['run'])
+    if not path.exists():
+        raise FileNotFoundError(
+            f"{path} not found. Run {spec['script']} with --save_dir "
+            f"{spec['run'].split('/', 1)[1]} {spec['flags']}, then "
+            f"`python scripts/compile_results.py {spec['run']}` "
+            f"(commands: `python configs/paper_runs.py`)."
+        )
+    return pd.read_csv(path)
+
+
 def load_results(min_results_per_method=303, drop_realtabpfn=True):
-    """Load and prepare ``result_comparison.csv`` exactly as the original
-    monolith did. Returns one row per (data_name, method, fold) plus per-row
+    """Load and prepare the main benchmark run (``PAPER_RUNS['main']``)
+    exactly as the original monolith did. Returns one row per (data_name, method, fold) plus per-row
     normalized scores and dataset metadata.
 
     Parameters
@@ -326,7 +342,7 @@ def load_results(min_results_per_method=303, drop_realtabpfn=True):
     drop_realtabpfn : bool, default True
         Drop ``RealTabPFN-2.5`` rows. The paper reports ``TabPFN-2.5`` only.
     """
-    results = pd.read_csv(f"{path_configs['compiled_results']}/result_comparison.csv")
+    results = load_run('main')
     results['score'] = results['r2'].fillna(results['roc_auc'])
 
     meta = results['method'].str.split('_', expand=True, n=2)
