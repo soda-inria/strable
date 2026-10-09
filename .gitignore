@@ -94,3 +94,10 @@ Desktop.ini
 *.pyc
 __cache__/
 
+
+# Runtime outputs: results CSVs are produced locally, never committed.
+results/
+results_compiled/
+results_pics/
+results_tables/
+data/data_processed*/

@@ -33,6 +33,7 @@ strable/
 ├── configs/                            # Per-experiment config: paths, hparam grids, model registry
 │   ├── exp_configs.py
 │   ├── model_parameters.py
+│   ├── paper_runs.py                   # Runs (<ABLATION>/<save_dir>) each paper figure reads
 │   └── path_configs.py
 ├── data/
 │   └── download_datasets.py            # Mirror the Hugging Face benchmark into data/data_processed/
@@ -67,7 +68,7 @@ strable/
 └── LICENSE
 ```
 
-`results/`, `results_pics/`, `results_compiled/`, and `data/data_processed*` are runtime-generated and gitignored.
+`results/`, `results_pics/`, `results_tables/`, `results_compiled/`, and `data/data_processed*` are runtime-generated and gitignored. The repository ships no results CSV: every figure input is produced by the pipeline below.
 
 ---
 
@@ -170,12 +171,13 @@ Required only to reproduce the cross-benchmark appendix Figure E.1.
    python scripts/compile_results.py default/benchmark_main
    # → results/compiled_results/result_default_benchmark_main.csv
    ```
-5. **Figures**: one script per figure, runnable independently:
+   The output name is always `result_<run name with "/" → "_">.csv` (`compiled_results_path()` in [`configs/path_configs.py`](configs/path_configs.py)).
+5. **Figures**: one script per figure, runnable independently. Scripts read benchmark results only from compiled runs; the runs they need (run name, script, flags, methods) are listed once in [`configs/paper_runs.py`](configs/paper_runs.py). `python configs/paper_runs.py` prints the evaluate + compile commands for all of them.
    ```bash
    python figures/main_paper/figure_3.py
    python figures/appendix/figure_E10.py
    ```
-   Outputs land in `results_pics/<YYYY-MM-DD>/`.
+   Outputs land in `results_pics/<YYYY-MM-DD>/` (tables in `results_tables/<YYYY-MM-DD>/`).
 
 ---
 
