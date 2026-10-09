@@ -38,7 +38,6 @@ COMMON_COLS = [
 def _load_run_with_filter(key, contains):
     df = load_run(key)
     df = df[df['method'].str.contains(contains)].copy()
-    df['method'] = df['method'] + '_default'
     return df
 
 

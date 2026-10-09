@@ -65,19 +65,12 @@ def _load_post_processing_data(results):
 
     nemotron_xgb_extrees_default = load_run('nemotron_classic')
     nemotron_xgb_extrees_default['post_processing'] = 'Default PCA'
-    nemotron_xgb_extrees_default['method'] = nemotron_xgb_extrees_default['method'] + '_default'
 
     llama_qwen_nemotron_ridge_xgb_extrees_standscal = load_run('standscal_llama_qwen_nemotron_classic')
     llama_qwen_nemotron_ridge_xgb_extrees_standscal['post_processing'] = 'StandScal + 30-PCA'
-    llama_qwen_nemotron_ridge_xgb_extrees_standscal['method'] = (
-        llama_qwen_nemotron_ridge_xgb_extrees_standscal['method'] + '_default'
-    )
 
     llama_qwen_nemotron_ridge_xgb_extrees_nopca = load_run('nopca_llama_qwen_nemotron_classic')
     llama_qwen_nemotron_ridge_xgb_extrees_nopca['post_processing'] = 'No PCA'
-    llama_qwen_nemotron_ridge_xgb_extrees_nopca['method'] = (
-        llama_qwen_nemotron_ridge_xgb_extrees_nopca['method'] + '_default'
-    )
 
     # --- MiniLM-L6 × {ridge, XGB, ExtraTrees} ---
     minilml6_ridge_xgb_extrees_default = results[results['method'].isin([
@@ -92,18 +85,12 @@ def _load_post_processing_data(results):
         minilml6_ridge_xgb_extrees_standscal['method'].str.contains('MiniLM-L6')
     ].copy()
     minilml6_ridge_xgb_extrees_standscal['post_processing'] = 'StandScal + 30-PCA'
-    minilml6_ridge_xgb_extrees_standscal['method'] = (
-        minilml6_ridge_xgb_extrees_standscal['method'] + '_default'
-    )
 
     minilml6_ridge_xgb_extrees_nopca = load_run('nopca_minilm_bge_e5large_classic')
     minilml6_ridge_xgb_extrees_nopca = minilml6_ridge_xgb_extrees_nopca[
         minilml6_ridge_xgb_extrees_nopca['method'].str.contains('MiniLM-L6')
     ].copy()
     minilml6_ridge_xgb_extrees_nopca['post_processing'] = 'No PCA'
-    minilml6_ridge_xgb_extrees_nopca['method'] = (
-        minilml6_ridge_xgb_extrees_nopca['method'] + '_default'
-    )
 
     # --- E5-base-v2 × {ridge, XGB, ExtraTrees} ---
     e5basev2_ridge_xgb_extrees_default = results[results['method'].isin([
@@ -115,15 +102,9 @@ def _load_post_processing_data(results):
 
     e5basev2_ridge_xgb_extrees_standscal = load_run('standscal_e5base_classic')
     e5basev2_ridge_xgb_extrees_standscal['post_processing'] = 'StandScal + 30-PCA'
-    e5basev2_ridge_xgb_extrees_standscal['method'] = (
-        e5basev2_ridge_xgb_extrees_standscal['method'] + '_default'
-    )
 
     e5basev2_ridge_xgb_extrees_nopca = load_run('nopca_e5base_classic')
     e5basev2_ridge_xgb_extrees_nopca['post_processing'] = 'No PCA'
-    e5basev2_ridge_xgb_extrees_nopca['method'] = (
-        e5basev2_ridge_xgb_extrees_nopca['method'] + '_default'
-    )
 
     # --- {OPT-6.7B, BGE-large} × {ridge, XGB, ExtraTrees} (ported from salts) ---
     opt_bge_ridge_xgb_extrees_default = results[results['method'].isin([
@@ -137,15 +118,9 @@ def _load_post_processing_data(results):
     opt_bge_ridge_xgb_extrees_default['post_processing'] = 'Default PCA'
 
     opt_bge_ridge_xgb_extrees_standscal = load_run('standscal_opt_bge_classic')
-    opt_bge_ridge_xgb_extrees_standscal['method'] = (
-        opt_bge_ridge_xgb_extrees_standscal['method'] + '_default'
-    )
     opt_bge_ridge_xgb_extrees_standscal['post_processing'] = 'StandScal + 30-PCA'
 
     opt_bge_ridge_xgb_extrees_nopca = load_run('nopca_opt_bge_classic')
-    opt_bge_ridge_xgb_extrees_nopca['method'] = (
-        opt_bge_ridge_xgb_extrees_nopca['method'] + '_default'
-    )
     opt_bge_ridge_xgb_extrees_nopca['post_processing'] = 'No PCA'
 
     # --- Qwen-3-8B × {TabPFN-2.5, TabICLv2} ---
@@ -162,10 +137,6 @@ def _load_post_processing_data(results):
 
     qwen_tabpfn_tabicl_standscal = load_run('standscal_qwen_tabpfn_tabicl')
     qwen_tabpfn_tabicl_standscal['post_processing'] = 'StandScal + 30-PCA'
-    qwen_tabpfn_tabicl_standscal['method'] = [
-        e + '_default' if e == 'num-str_llm-qwen3-8b_tabpfn' else e
-        for e in qwen_tabpfn_tabicl_standscal['method']
-    ]
 
     qwen_tabpfn_nopca = load_run('nopca_qwen_tabpfn')
     qwen_tabpfn_nopca['post_processing'] = 'No PCA'
@@ -192,7 +163,6 @@ def _load_post_processing_data(results):
         llama_tabpfn_standscal['method'].str.contains('llama-3.1-8b')
     ].copy()
     llama_tabpfn_standscal['post_processing'] = 'StandScal + 30-PCA'
-    llama_tabpfn_standscal['method'] = llama_tabpfn_standscal['method'] + '_default'
 
     llama_tabicl_standscal = load_run('standscal_llama_tabicl')
     llama_tabicl_standscal['post_processing'] = 'StandScal + 30-PCA'
@@ -205,10 +175,6 @@ def _load_post_processing_data(results):
         llama_tabpfn_tabicl_nopca['method'].str.contains('llama-3.1-8b')
     ].copy()
     llama_tabpfn_tabicl_nopca['post_processing'] = 'No PCA'
-    llama_tabpfn_tabicl_nopca['method'] = [
-        e + '_default' if e == 'num-str_llm-llama-3.1-8b_tabpfn' else e
-        for e in llama_tabpfn_tabicl_nopca['method']
-    ]
 
     # --- Nemotron-1B × {TabPFN-2.5, TabICLv2} ---
     nemotron_tabpfn_default = results[results['method'].isin([
@@ -227,7 +193,6 @@ def _load_post_processing_data(results):
         nemotron_tabpfn_standscal['method'].str.contains('nemotron')
     ].copy()
     nemotron_tabpfn_standscal['post_processing'] = 'StandScal + 30-PCA'
-    nemotron_tabpfn_standscal['method'] = nemotron_tabpfn_standscal['method'] + '_default'
 
     nemotron_tabicl_standscal = load_run('standscal_tabicl_minilm_e5_nemotron')
     nemotron_tabicl_standscal = nemotron_tabicl_standscal[
@@ -240,10 +205,6 @@ def _load_post_processing_data(results):
         nemotron_tabpfn_tabicl_nopca['method'].str.contains('nemotron')
     ].copy()
     nemotron_tabpfn_tabicl_nopca['post_processing'] = 'No PCA'
-    nemotron_tabpfn_tabicl_nopca['method'] = [
-        e + '_default' if e == 'num-str_llm-llama-nemotron-embed-1b-v2_tabpfn' else e
-        for e in nemotron_tabpfn_tabicl_nopca['method']
-    ]
 
     # --- MiniLM-L6 × {TabPFN-2.5, TabICLv2} ---
     minilml6_tabpfn_default = results[results['method'].isin([
@@ -262,7 +223,6 @@ def _load_post_processing_data(results):
         minilml6_tabpfn_standscal['method'].str.contains('MiniLM-L6')
     ].copy()
     minilml6_tabpfn_standscal['post_processing'] = 'StandScal + 30-PCA'
-    minilml6_tabpfn_standscal['method'] = minilml6_tabpfn_standscal['method'] + '_default'
 
     minilml6_tabicl_standscal = load_run('standscal_tabicl_minilm_e5_nemotron')
     minilml6_tabicl_standscal['post_processing'] = 'StandScal + 30-PCA'
@@ -272,10 +232,6 @@ def _load_post_processing_data(results):
         minilml6_tabpfn_tabicl_nopca['method'].str.contains('MiniLM-L6')
     ].copy()
     minilml6_tabpfn_tabicl_nopca['post_processing'] = 'No PCA'
-    minilml6_tabpfn_tabicl_nopca['method'] = [
-        e + '_default' if e == 'num-str_llm-all-MiniLM-L6-v2_tabpfn' else e
-        for e in minilml6_tabpfn_tabicl_nopca['method']
-    ]
 
     # --- E5-base-v2 × {TabPFN-2.5, TabICLv2} ---
     e5basev2_tabpfn_default = results[results['method'].isin([
@@ -294,7 +250,6 @@ def _load_post_processing_data(results):
         e5basev2_tabpfn_standscal['method'].str.contains('e5-base-v2')
     ].copy()
     e5basev2_tabpfn_standscal['post_processing'] = 'StandScal + 30-PCA'
-    e5basev2_tabpfn_standscal['method'] = e5basev2_tabpfn_standscal['method'] + '_default'
 
     e5basev2_tabicl_standscal = load_run('standscal_tabicl_minilm_e5_nemotron')
     e5basev2_tabicl_standscal = e5basev2_tabicl_standscal[
@@ -307,37 +262,15 @@ def _load_post_processing_data(results):
         e5basev2_tabpfn_tabicl_nopca['method'].str.contains('e5-base-v2')
     ].copy()
     e5basev2_tabpfn_tabicl_nopca['post_processing'] = 'No PCA'
-    e5basev2_tabpfn_tabicl_nopca['method'] = [
-        e + '_default' if e == 'num-str_llm-e5-base-v2_tabpfn' else e
-        for e in e5basev2_tabpfn_tabicl_nopca['method']
-    ]
 
     # --- {OPT-6.7B, BGE-large} × {TabPFN-2.5, TabICLv2} (ported from salts) ---
     opt_bge_tabpfn_tabicl_default = load_run('opt_bge_tabpfn_tabicl')
-    opt_bge_tabpfn_tabicl_default['method'] = [
-        e + '_default'
-        if e in ('num-str_llm-opt-6.7b_tabpfn', 'num-str_llm-bge-large_tabpfn')
-        else e
-        for e in opt_bge_tabpfn_tabicl_default['method']
-    ]
     opt_bge_tabpfn_tabicl_default['post_processing'] = 'Default PCA'
 
     opt_bge_tabpfn_tabicl_standscal = load_run('standscal_opt_bge_tabpfn_tabicl')
-    opt_bge_tabpfn_tabicl_standscal['method'] = [
-        e + '_default'
-        if e in ('num-str_llm-opt-6.7b_tabpfn', 'num-str_llm-bge-large_tabpfn')
-        else e
-        for e in opt_bge_tabpfn_tabicl_standscal['method']
-    ]
     opt_bge_tabpfn_tabicl_standscal['post_processing'] = 'StandScal + 30-PCA'
 
     opt_bge_tabpfn_tabicl_nopca = load_run('nopca_opt_bge_tabpfn_tabicl')
-    opt_bge_tabpfn_tabicl_nopca['method'] = [
-        e + '_default'
-        if e in ('num-str_llm-opt-6.7b_tabpfn', 'num-str_llm-bge-large_tabpfn')
-        else e
-        for e in opt_bge_tabpfn_tabicl_nopca['method']
-    ]
     opt_bge_tabpfn_tabicl_nopca['post_processing'] = 'No PCA'
 
     common_columns = [

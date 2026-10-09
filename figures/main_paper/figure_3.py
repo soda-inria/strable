@@ -93,7 +93,6 @@ def _load_pca30_standscal_llama_tabpfn():
     """LLaMA-3.1-8B + TabPFN-2.5 with standard-scaling-before-PCA."""
     df = load_run('standscal_tabpfn')
     df['score']  = df['r2'].fillna(df['roc_auc'])
-    df['method'] = df['method'] + '_default'
     meta = df['method'].str.split('_', expand=True, n=2)
     df['dtype']   = meta[0].replace(dtype_map)
     df['encoder'] = meta[1].replace(encoder_map)
@@ -132,7 +131,6 @@ def _load_30_thresh_ridge():
     """{Ridge, XGBoost, TabPFN-2.5} × {LLaMA, Qwen} with cardinality-threshold-30 + OHE."""
     df = load_run('ct30_ohe_llama_qwen_ridge')
     df['score']  = df['r2'].fillna(df['roc_auc'])
-    df['method'] = df['method'] + '_default'
     meta = df['method'].str.split('_', expand=True, n=2)
     df['dtype']   = meta[0].replace(dtype_map)
     df['encoder'] = meta[1].replace(encoder_map)

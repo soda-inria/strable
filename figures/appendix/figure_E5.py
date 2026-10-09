@@ -60,7 +60,6 @@ def _load_qwen_nopca_30():
 def _load_pca30_standscal_llama_tabpfn():
     df = load_run('standscal_tabpfn')
     df['score']  = df['r2'].fillna(df['roc_auc'])
-    df['method'] = df['method'] + '_default'
     meta = df['method'].str.split('_', expand=True, n=2)
     df['dtype']   = meta[0].replace(dtype_map)
     df['encoder'] = meta[1].replace(encoder_map) + ' (StandScal + PCA (30))'
@@ -86,7 +85,6 @@ def _load_extra_run(key, drop=()):
 def _load_30_thresh_ridge():
     df = load_run('ct30_ohe_llama_qwen_ridge')
     df['score']  = df['r2'].fillna(df['roc_auc'])
-    df['method'] = df['method'] + '_default'
     meta = df['method'].str.split('_', expand=True, n=2)
     df['dtype']   = meta[0].replace(dtype_map)
     df['encoder'] = meta[1].replace(encoder_map)

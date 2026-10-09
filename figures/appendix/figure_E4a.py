@@ -29,7 +29,7 @@ def _load_pca60():
     meta = df['method'].str.split('_', expand=True, n=2)
     df['dtype']   = meta[0].replace(dtype_map)
     df['encoder'] = meta[1].replace(encoder_map)
-    df['learner'] = (meta[2] + "_default").replace(learner_map)
+    df['learner'] = meta[2].replace(learner_map)
     df['PCA_dimensions'] = '60-PCA'
     return df
 
@@ -40,7 +40,7 @@ def _load_pca120():
     meta = df['method'].str.split('_', expand=True, n=2)
     df['dtype']   = meta[0].replace(dtype_map)
     df['encoder'] = meta[1].replace(encoder_map)
-    df['learner'] = (meta[2] + "_default").replace(learner_map)
+    df['learner'] = meta[2].replace(learner_map)
     df['PCA_dimensions'] = '120-PCA'
     return df
 

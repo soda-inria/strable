@@ -59,17 +59,12 @@ REALMLP_METHODS = [
 ]
 
 
-def _add_meta(df, append_default_for=None):
+def _add_meta(df):
     df['score'] = df['r2'].fillna(df['roc_auc'])
     meta = df['method'].str.split('_', expand=True, n=2)
     df['dtype']   = meta[0].replace(dtype_map)
     df['encoder'] = meta[1].replace(encoder_map)
-    learner = meta[2]
-    if append_default_for is not None:
-        learner = (learner + '_default').where(
-            learner.isin(append_default_for), learner,
-        )
-    df['learner'] = learner.replace(learner_map)
+    df['learner'] = meta[2].replace(learner_map)
     df['encoder_learner'] = df['encoder'] + ' - ' + df['learner']
     return df
 
@@ -77,14 +72,14 @@ def _add_meta(df, append_default_for=None):
 def _load_full():
     df = load_run('full_data')
     df['data_name'] = df['data_name'].str.replace('-FULL', '', regex=False)
-    df = _add_meta(df, append_default_for=['extrees', 'xgb', 'ridge'])
+    df = _add_meta(df)
     df['Dataset_sampling'] = 'Full_Dataset'
     return df
 
 
 def _load_full_realmlp(common_datasets):
     df = load_run('realmlp')
-    df = _add_meta(df, append_default_for=None)
+    df = _add_meta(df)
     df['Dataset_sampling'] = 'Sampled_Dataset_75k'
     return df[
         df['data_name'].isin(common_datasets)
