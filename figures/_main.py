@@ -93,6 +93,7 @@ learner_map = {
     'tabpfn_default': 'TabPFN-2.5',
     'extrees_tune': 'ExtraTrees-tuned',
     'catboost_tune': 'CatBoost-tuned',
+    'realtabpfn_default': 'RealTabPFN-2.5',
     'contexttab': 'ContextTab',
     'tabstar': 'TabSTAR',
     'tabicl': 'TabICLv2',
@@ -448,6 +449,7 @@ learner_colors = {
     'TabPFN':     '#CC79A7',  # Reddish Purple
     'ContextTab': '#56B4E9',  # Sky Blue
     'CatBoost':   '#F0E442',  # Yellow
+    'Tarte':      '#882255',  # Wine
     'RealMLP':    '#FF00FF',  # Magenta
     'TabM':       '#0E9594',  # Cyan/teal
     'TabICLv2':   '#A0522D',  # Sienna
