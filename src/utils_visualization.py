@@ -346,8 +346,12 @@ def critical_difference_diagram(
         dtype=bool,
     )
 
-    ranks = Series(ranks)  # Standardize if ranks is dict
-    points_left, points_right = np.array_split(ranks.sort_values(), 2)
+    ranks = Series(ranks).sort_values()  # Standardize if ranks is dict
+    # Split with pandas .iloc, not np.array_split: recent NumPy/pandas return
+    # bare ndarrays there (index lost), which breaks the .items()/.iloc calls
+    # below. The left half gets the ceil, as np.array_split(..., 2) did.
+    half = (len(ranks) + 1) // 2
+    points_left, points_right = ranks.iloc[:half], ranks.iloc[half:]
 
     # Sets of points under the same crossbar
     crossbar_sets = _find_maximal_cliques(adj_matrix)
