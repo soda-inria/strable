@@ -18,13 +18,13 @@ import numpy as np
 import pandas as pd
 from scipy.stats import kendalltau
 
-from configs.path_configs import path_configs
 from figures._main import (
     dtype_map,
     encoder_map,
     get_encoder_color,
     learner_map,
     load_results,
+    load_run,
     save_figure,
 )
 
@@ -33,10 +33,7 @@ SCORE_COL = 'score'
 
 
 def _load_uniform_impute():
-    df = pd.read_csv(
-        f"{path_configs['compiled_results']}/"
-        "REBUTTAL_missing_values_run_uniform_impute.csv"
-    )
+    df = load_run('imputed')
     df['score'] = df['r2'].fillna(df['roc_auc'])
     meta = df['method'].str.split('_', expand=True, n=2)
     df['dtype']   = meta[0].replace(dtype_map)

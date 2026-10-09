@@ -1,7 +1,6 @@
 """Figure E.10 — Two side-by-side bar charts comparing pipeline rankings between:
-* ``Full Dataset`` — re-ran on the un-subsampled tables (uses the
-  ``REBUTTALS_tfidf_minilm6_xgb_extratrees_contexttab`` rebuttal CSV;
-  for RealMLP, the additional ``realMLP_..._30pca`` rebuttal CSV).
+* ``Full Dataset`` — re-ran on the un-subsampled tables (run
+  ``PAPER_RUNS['full_data']``; for RealMLP, ``PAPER_RUNS['realmlp']``).
 * ``Sampled Dataset (75k)`` — pulled from the main results, using the
   default 75k cap."""
 
@@ -19,13 +18,13 @@ import numpy as np
 import pandas as pd
 from scipy.stats import kendalltau
 
-from configs.path_configs import path_configs
 from figures._main import (
     dtype_map,
     encoder_map,
     get_encoder_color,
     learner_map,
     load_results,
+    load_run,
     save_figure,
 )
 
@@ -76,10 +75,7 @@ def _add_meta(df, append_default_for=None):
 
 
 def _load_full():
-    df = pd.read_csv(
-        f"{path_configs['compiled_results']}/"
-        "result_REBUTTALS_tfidf_minilm6_xgb_extratrees_contexttab.csv"
-    )
+    df = load_run('full_data')
     df['data_name'] = df['data_name'].str.replace('-FULL', '', regex=False)
     df = _add_meta(df, append_default_for=['extrees', 'xgb', 'ridge'])
     df['Dataset_sampling'] = 'Full_Dataset'
@@ -87,10 +83,7 @@ def _load_full():
 
 
 def _load_full_realmlp(common_datasets):
-    df = pd.read_csv(
-        f"{path_configs['compiled_results']}/"
-        "result_REBUTTALS_realMLP_tfidf_minLMv6_Qwen8_LLaMA8_30pca.csv"
-    )
+    df = load_run('realmlp')
     df = _add_meta(df, append_default_for=None)
     df['Dataset_sampling'] = 'Sampled_Dataset_75k'
     return df[

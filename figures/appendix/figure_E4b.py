@@ -9,29 +9,24 @@ if str(_REPO_ROOT) not in _sys.path:
 del _sys, _Path, _REPO_ROOT
 
 
-from pathlib import Path
-
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from joblib import Parallel, delayed
 
-from configs.path_configs import path_configs
 from figures._main import (
     dtype_map,
     encoder_map,
     learner_map,
     load_results,
+    load_run,
     save_figure,
 )
 
 
-def _load_pca60(score_dir):
-    files = list(Path(score_dir).glob("**/score/*.csv"))
-    dfs = Parallel(n_jobs=-1)(delayed(pd.read_csv)(f) for f in files)
-    df = pd.concat(dfs, axis=0).reset_index(drop=True)
+def _load_pca60():
+    df = load_run('llama_tabpfn_pca60')
     df['score'] = df['r2'].fillna(df['roc_auc'])
     meta = df['method'].str.split('_', expand=True, n=2)
     df['dtype']   = meta[0].replace(dtype_map)
@@ -42,7 +37,7 @@ def _load_pca60(score_dir):
 
 
 def _load_pca120():
-    df = pd.read_csv(f"{path_configs['compiled_results']}/result_REBUTTALS_tabPFN_LLaMA8_120pca.csv")
+    df = load_run('llama_tabpfn_pca120')
     df['score'] = df['r2'].fillna(df['roc_auc'])
     meta = df['method'].str.split('_', expand=True, n=2)
     df['dtype']   = meta[0].replace(dtype_map)
@@ -61,7 +56,7 @@ def _build_runtime_ratios():
     ].copy()
     df_30['PCA_dimensions'] = '30-PCA'
 
-    df_60  = _load_pca60(f"{path_configs['results']}/benchmark_llama3.1_8b_60pca_tabpfn")
+    df_60  = _load_pca60()
     df_120 = _load_pca120()
 
     combined = pd.concat([df_30, df_60, df_120], axis=0)

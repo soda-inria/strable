@@ -14,7 +14,6 @@ import pandas as pd
 import scikit_posthocs as sp
 import seaborn as sns
 
-from configs.path_configs import path_configs
 from figures._main import (
     clean_method_name,
     dtype_map,
@@ -23,13 +22,13 @@ from figures._main import (
     get_learner_color_simple,
     learner_map,
     load_results,
+    load_run,
     save_figure,
     selected_encoders,
 )
 from src.utils_visualization import critical_difference_diagram
 
 
-COMPILED = path_configs['compiled_results']
 DTYPE_PREFIX = 'num-str'
 SCORE_COL = 'score'
 
@@ -49,7 +48,7 @@ def _add_score_and_meta(df):
 
 
 def _load_qwen_nopca_30():
-    df = pd.read_csv(f"{COMPILED}/result_comparison_qwen_nopca_30.csv")
+    df = load_run('nopca_qwen_tabpfn')
     df = _add_score_and_meta(df)
     df['learner'] = df['learner'].str.replace('-no_pca', '')
     df['encoder'] = df['encoder'] + ' (No PCA (30))'
@@ -59,7 +58,7 @@ def _load_qwen_nopca_30():
 
 
 def _load_pca30_standscal_llama_tabpfn():
-    df = pd.read_csv(f"{COMPILED}/result_comparison_standscal_pca_30.csv")
+    df = load_run('standscal_tabpfn')
     df['score']  = df['r2'].fillna(df['roc_auc'])
     df['method'] = df['method'] + '_default'
     meta = df['method'].str.split('_', expand=True, n=2)
@@ -70,8 +69,8 @@ def _load_pca30_standscal_llama_tabpfn():
     return df[df['method'] == 'LM LLaMA-3.1-8B - TabPFN-2.5 (StandScal + PCA (30))']
 
 
-def _load_rebuttal_csv(filename, drop=()):
-    df = pd.read_csv(f"{COMPILED}/{filename}")
+def _load_extra_run(key, drop=()):
+    df = load_run(key)
     df['score'] = df['r2'].fillna(df['roc_auc'])
     meta = df['method'].str.split('_', expand=True, n=2)
     df['dtype']   = meta[0]
@@ -85,7 +84,7 @@ def _load_rebuttal_csv(filename, drop=()):
 
 
 def _load_30_thresh_ridge():
-    df = pd.read_csv(f"{COMPILED}/result_REBUTTALS_30_thresh_ridge.csv")
+    df = load_run('ct30_ohe_llama_qwen_ridge')
     df['score']  = df['r2'].fillna(df['roc_auc'])
     df['method'] = df['method'] + '_default'
     meta = df['method'].str.split('_', expand=True, n=2)
@@ -98,7 +97,7 @@ def _load_30_thresh_ridge():
 
 
 def _load_mambular_only():
-    df = _load_rebuttal_csv("result_REBUTTALS_trompt_transtab_mambular.csv")
+    df = _load_extra_run('mambular')
     return df[df['method'].isin(['Mambular - Mambular'])]
 
 
@@ -219,9 +218,9 @@ def plot_cd_diagrams_per_task():
     extra_pipelines = pd.concat([
         _load_qwen_nopca_30(),
         _load_pca30_standscal_llama_tabpfn(),
-        _load_rebuttal_csv("result_REBUTTALS_tabM_tfidf_minLMv6_Qwen8_LLaMA8_30pca.csv"),
-        _load_rebuttal_csv(
-            "result_REBUTTALS_realMLP_tfidf_minLMv6_Qwen8_LLaMA8_30pca.csv",
+        _load_extra_run('tabm'),
+        _load_extra_run(
+            'realmlp',
             drop=['LM E5-base-v2 - RealMLP', 'LM Jasper-0.6B - RealMLP'],
         ),
         _load_30_thresh_ridge(),

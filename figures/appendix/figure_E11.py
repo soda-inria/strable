@@ -17,13 +17,13 @@ import numpy as np
 import pandas as pd
 from scipy.stats import kendalltau
 
-from configs.path_configs import path_configs
 from figures._main import (
     dtype_map,
     encoder_map,
     get_encoder_color,
     learner_map,
     load_results,
+    load_run,
     save_figure,
 )
 
@@ -35,8 +35,8 @@ COMMON_COLS = [
 ]
 
 
-def _load_csv_with_filter(filename, contains):
-    df = pd.read_csv(f"{path_configs['compiled_results']}/{filename}")
+def _load_run_with_filter(key, contains):
+    df = load_run(key)
     df = df[df['method'].str.contains(contains)].copy()
     df['method'] = df['method'] + '_default'
     return df
@@ -64,8 +64,8 @@ def plot_ct30_nemotron():
     plain_llama_qwen['CT_30'] = '30-PCA'
 
     # 30-PCA: {Ridge, XGBoost} × Nemotron-1B from rebuttal.
-    plain_nemotron = _load_csv_with_filter(
-        "result_nemotron_30pca_without_standscal_ridge_xgboost_extratrees.csv",
+    plain_nemotron = _load_run_with_filter(
+        'nemotron_classic',
         contains='ridge|xgb',
     )
     plain_nemotron['CT_30'] = '30-PCA'
@@ -79,26 +79,26 @@ def plot_ct30_nemotron():
     plain_tabpfn['CT_30'] = '30-PCA'
 
     # 30-PCA + CT=30:
-    ct_ridge_ohe = _load_csv_with_filter(
-        "result_comparison_llama_qwen_nemotron_ct30_ohe_without_standscal_30pca_ridge_extrees_xgb.csv",
+    ct_ridge_ohe = _load_run_with_filter(
+        'ct30_ohe_llama_qwen_nemotron_classic',
         contains='ridge',
     )
     ct_ridge_ohe['CT_30'] = '30-PCA + CT=30'
 
-    ct_xgb_pass = _load_csv_with_filter(
-        "result_comparison_llama_qwen_nemotron_ct30_passthrough_without_standscal_30pca_xgb.csv",
+    ct_xgb_pass = _load_run_with_filter(
+        'ct30_passthrough_llama_qwen_nemotron_xgb',
         contains='xgb',
     )
     ct_xgb_pass['CT_30'] = '30-PCA + CT=30'
 
-    ct_tabpfn_llama_qwen = _load_csv_with_filter(
-        "result_REBUTTALS_30_thresh_xgb_tabpfn.csv",
+    ct_tabpfn_llama_qwen = _load_run_with_filter(
+        'ct30_passthrough_llama_qwen_xgb_tabpfn',
         contains='tabpfn',
     )
     ct_tabpfn_llama_qwen['CT_30'] = '30-PCA + CT=30'
 
-    ct_tabpfn_nemotron = _load_csv_with_filter(
-        "result_comparison_nemotron_30pca_tabpfn_without_standscal_30_thresh_lowcard_passthrough.csv",
+    ct_tabpfn_nemotron = _load_run_with_filter(
+        'ct30_passthrough_nemotron_tabpfn',
         contains='tabpfn',
     )
     ct_tabpfn_nemotron['CT_30'] = '30-PCA + CT=30'
