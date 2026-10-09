@@ -418,6 +418,11 @@ def calculate_rankings(data_frame):
     return ranks_per_dataset.mean(axis=0)
 
 
+def model_ref_1(x, a, b):
+    """Convergence curve of Kendall-tau with N datasets: 1 - (a / sqrt(N)) * exp(-b N)."""
+    return 1 - (a / np.sqrt(x)) * np.exp(-b * x)
+
+
 def median_iqr(x):
     """``Median [Q1, Q3]`` formatted string."""
     med = x.median()
