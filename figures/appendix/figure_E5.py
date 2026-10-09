@@ -98,7 +98,7 @@ def _load_30_thresh_ridge():
 
 
 def _load_mambular_only():
-    df = _load_rebuttal_csv("result_REBUTTALS_mambular.csv")
+    df = _load_rebuttal_csv("result_REBUTTALS_trompt_transtab_mambular.csv")
     return df[df['method'].isin(['Mambular - Mambular'])]
 
 
