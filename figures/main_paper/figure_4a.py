@@ -1,5 +1,6 @@
-"""Figure 4(a) — Pareto-frontier plot: pipeline performance (avg score across 108 datasets)
-vs total run time per 1K samples.
+"""Figure 4(a) — Pareto-frontier plot: pipeline performance (median score over
+all dataset x fold rows) vs total run time per 1K samples. Also writes the
+Pareto-front table (Table E.10).
 """
 
 import sys as _sys
@@ -34,6 +35,7 @@ from figures._main import (
     load_dataset_summary,
     load_results,
     save_figure,
+    save_latex,
     selected_encoders,
 )
 
@@ -114,12 +116,14 @@ def _load_rebuttal_csv(filename, dataset_summary, learner_filter_drop=None):
 
 
 def _load_mambular_only(dataset_summary):
-    df = _load_rebuttal_csv("result_REBUTTALS_mambular.csv", dataset_summary)
+    df = _load_rebuttal_csv("result_REBUTTALS_trompt_transtab_mambular.csv", dataset_summary)
     return df[df['encoder'] == 'Mambular']
 
 
 def _load_tabicl(dataset_summary):
-    """TabICLv2 with three post-processing variants tagged on the encoder."""
+    """TabICLv2 with three post-processing variants. The variant tag only goes
+    into ``encoder_learner`` (one point per variant); ``encoder`` keeps the
+    plain name so the points share their encoder's colour and legend entry."""
     df = pd.read_csv(f"{COMPILED}/result_comparison_tabicl_all.csv")
     df['score'] = df['r2'].fillna(df['roc_auc'])
     meta = df['method'].str.split('_', expand=True, n=2)
@@ -138,12 +142,11 @@ def _load_tabicl(dataset_summary):
     for method_str, encoder_str, suffix in rules:
         mask = (df['method'] == method_str) & (df['encoder'] == encoder_str)
         df.loc[mask, 'encoder_polished'] = df.loc[mask, 'encoder'] + suffix
-    df['encoder'] = df['encoder_polished']
 
     df['learner'] = df['method'].str.split('_', expand=True, n=2)[2]
     df['learner'] = df['learner'].str.replace('_nopca|_standscal', '', regex=True)
     df['learner'] = df['learner'].replace(learner_map)
-    df['encoder_learner'] = df['encoder'] + ' - ' + df['learner']
+    df['encoder_learner'] = df['encoder_polished'] + ' - ' + df['learner']
     return _attach_dataset_meta(df, dataset_summary)
 
 
@@ -253,7 +256,7 @@ def _draw_panel(ax, df_agg, factor, x_metric, learner_pal, encoder_pal,
     ax.set_xlabel('')
     ax.set_ylim(bottom=y_bottom)
     ax.set_ylabel(
-        f'Avg {Y_METRIC_LABELS[Y_METRIC]} ($R^2$ & AUC)' if factor == 'encoder' else '',
+        f'Med {Y_METRIC_LABELS[Y_METRIC]} ($R^2$ & AUC)' if factor == 'encoder' else '',
         fontsize=10,
     )
     for spine in ['right', 'top']:
@@ -463,6 +466,7 @@ def plot_pareto_frontier():
 
     # Pareto frontier on the chosen x metric.
     pareto_df = get_pareto_front(df_agg, X_METRIC, Y_METRIC, maximize_y=True)
+    save_latex(pareto_df.to_latex(index=False), f"pareto_frontier_{Y_METRIC}_vs_{X_METRIC}")
     y_min, y_max = df_agg[Y_METRIC].min(), df_agg[Y_METRIC].max()
     y_padding = (y_max - y_min) * 0.05
     y_bottom  = y_min - y_padding
@@ -497,7 +501,7 @@ def plot_pareto_frontier():
 
     save_figure(
         fig,
-        "comparative_pareto_optimality_plot_1Ksample_scale_progr_transparency_False_score_run_time_per_1k",
+        "comparative_pareto_optimality_plot_1Ksample_scale_Med_progr_transparency_False_score_run_time_per_1k",
     )
     plt.close(fig)
 
