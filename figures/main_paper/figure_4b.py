@@ -24,6 +24,11 @@ from figures._main import (
 )
 
 
+# Seed of the random dataset splits and of the bootstrap resampling, so the
+# figure and the printed taus are the same on every run.
+SEED = 0
+
+
 # ---------------------------------------------------------------------------
 # 1. Bootstrapping helpers
 # ---------------------------------------------------------------------------
@@ -45,7 +50,7 @@ def _build_pivot(results):
     return pivot
 
 
-def _stability_scores(df, sample_sizes, n_iterations, seed=0):
+def _stability_scores(df, sample_sizes, n_iterations, seed=SEED):
     """For each ``N`` in ``sample_sizes``, repeat: shuffle the dataset list,
     split into two halves, draw a random subset of ``N`` from each half,
     compute Kendall-τ between their rankings.
@@ -80,16 +85,19 @@ def _stability_scores(df, sample_sizes, n_iterations, seed=0):
     return pd.DataFrame(scores)
 
 
-def _bootstrap_fit(df_stability, n_bootstraps, target_y, x_range):
+def _bootstrap_fit(df_stability, n_bootstraps, target_y, x_range, seed=SEED):
     """Bootstrap-fit ``model_ref_1`` to the (N, mean Kendall-τ) curve.
     Returns ``(all_popt, curves_at_x_range)`` where ``all_popt`` is shape
     ``(n_successful_fits, 2)`` (parameters ``a`` and ``b``). As in the paper,
     every successful fit enters ``all_popt``; only fits whose curve reaches
     ``target_y`` before N = 10000 enter ``curves``."""
+    rng = np.random.default_rng(seed)
     all_popt = []
     curves = []
     for _ in range(n_bootstraps):
-        boot = df_stability.groupby('N_datasets').sample(frac=1.0, replace=True)
+        boot = df_stability.groupby('N_datasets').sample(
+            frac=1.0, replace=True, random_state=rng,
+        )
         agg = boot.groupby('N_datasets', as_index=False)['Kendalltau_Correlation'].mean()
         try:
             p_r1, _ = curve_fit(
@@ -117,21 +125,22 @@ FS_ANNOT   = 11
 FS_STRABLE = 12
 
 
-def plot_kendalltau_convergence(n_iterations=2000, n_bootstraps=2000, target_y=0.95):
+def plot_kendalltau_convergence(n_iterations=2000, n_bootstraps=2000, target_y=0.95,
+                                seed=SEED):
     results = load_results()
     df = _build_pivot(results)
     n_datasets = len(df)
     print(f"Total valid datasets for analysis: {n_datasets}")
 
     sample_sizes = range(10, n_datasets // 2 + 1)
-    df_stability = _stability_scores(df, sample_sizes, n_iterations)
+    df_stability = _stability_scores(df, sample_sizes, n_iterations, seed=seed)
 
     max_plot_x = 3000
     x_range_smooth = np.linspace(25, max_plot_x, 300)
 
     print(f"Starting {n_bootstraps} bootstrap iterations...")
     all_popt, curves = _bootstrap_fit(
-        df_stability, n_bootstraps, target_y, x_range_smooth,
+        df_stability, n_bootstraps, target_y, x_range_smooth, seed=seed,
     )
 
     # Generate the dotted segment in [3, 25] (the band where we don't have
