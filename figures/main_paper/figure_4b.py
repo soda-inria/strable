@@ -83,7 +83,9 @@ def _stability_scores(df, sample_sizes, n_iterations, seed=0):
 def _bootstrap_fit(df_stability, n_bootstraps, target_y, x_range):
     """Bootstrap-fit ``model_ref_1`` to the (N, mean Kendall-τ) curve.
     Returns ``(all_popt, curves_at_x_range)`` where ``all_popt`` is shape
-    ``(n_successful_fits, 2)`` (parameters ``a`` and ``b``)."""
+    ``(n_successful_fits, 2)`` (parameters ``a`` and ``b``). As in the paper,
+    every successful fit enters ``all_popt``; only fits whose curve reaches
+    ``target_y`` before N = 10000 enter ``curves``."""
     all_popt = []
     curves = []
     for _ in range(n_bootstraps):
@@ -94,13 +96,21 @@ def _bootstrap_fit(df_stability, n_bootstraps, target_y, x_range):
                 model_ref_1, agg['N_datasets'], agg['Kendalltau_Correlation'],
                 p0=[0.5, 0.05], bounds=([0, 0], [10, np.inf]),
             )
+            all_popt.append(p_r1)
             req_n = fsolve(lambda n: model_ref_1(n, *p_r1) - target_y, x0=50)[0]
             if 0 < req_n < 10000:
-                all_popt.append(p_r1)
                 curves.append(model_ref_1(x_range, *p_r1))
         except Exception:
             continue
     return np.array(all_popt), np.array(curves)
+
+
+def _oracle(x, a, b, factor):
+    """Agreement of an ``x``-dataset benchmark with the oracle ranking: the
+    two-benchmark disagreement ``a / sqrt(x) * exp(-b x)`` divided by
+    ``factor`` (1 = no correction, sqrt(2) = finite-N value used in the
+    paper, 2 = asymptotic value)."""
+    return 1 - (a / (factor * np.sqrt(x))) * np.exp(-b * x)
 
 
 # ---------------------------------------------------------------------------
@@ -149,6 +159,16 @@ def plot_kendalltau_convergence(n_iterations=2000, n_bootstraps=2000, target_y=0
     tau_strable = 1 - (mean_params[0] / np.sqrt(n_datasets)) * np.exp(-mean_params[1] * n_datasets)
     disagreement_pct_strable = ((1 - tau_strable) / 2) * 100
 
+    a, b = mean_params
+    tau_oracle_boot = [_oracle(n_datasets, *p, np.sqrt(2)) for p in all_popt]
+    print(f"tau two-benchmark @N={n_datasets}: {tau_strable:.4f}")
+    print(f"tau oracle (factor sqrt2) @N={n_datasets}: "
+          f"{_oracle(n_datasets, a, b, np.sqrt(2)):.4f}, 95% CI "
+          f"[{np.percentile(tau_oracle_boot, 2.5):.4f}, "
+          f"{np.percentile(tau_oracle_boot, 97.5):.4f}]")
+    print(f"oracle bounds (factor 1..2) @N={n_datasets}: "
+          f"[{_oracle(n_datasets, a, b, 1):.4f}, {_oracle(n_datasets, a, b, 2):.4f}]")
+
     # --- Figure ---
     plt.rcParams.update({'font.size': 8})
     # ``figsize=(5, 5)`` ported from salts (paper figure is roughly square).
@@ -171,47 +191,44 @@ def plot_kendalltau_convergence(n_iterations=2000, n_bootstraps=2000, target_y=0
                 color='green', linewidth=1.5, linestyle=':')
         ax.plot(x_range_smooth, med_line,
                 color='green', linewidth=1.5,
-                label=r'$1 - \frac{a}{\sqrt{N}} * e^{-bN}$')
+                label=r'$1 - \frac{a}{\sqrt{N}}e^{-bN}$')
 
-        # Oracle correction (theoretical halving of the bias).
+        # Agreement to the oracle ranking: finite-N factor sqrt(2), with the
+        # band between no correction (factor 1) and the asymptotic factor 2.
         x_oracle = np.linspace(3, max_plot_x, 300)
-        oracle_curve = (
-            1 - (mean_params[0] / (2 * np.sqrt(x_oracle)))
-            * np.exp(-mean_params[1] * x_oracle)
-        )
         ax.plot(
-            x_oracle, oracle_curve,
-            color="#A900D3", linestyle='--', linewidth=2,
-            label=r'Oracle Correlation: $1 - \frac{a}{2\sqrt{N}} e^{-bN}$',
+            x_oracle, _oracle(x_oracle, a, b, np.sqrt(2)),
+            color='#A900D3', linestyle='--', linewidth=2,
+            label=r'Agreement to oracle: $1-\frac{a}{\sqrt{2N}}e^{-bN}$',
+        )
+        ax.fill_between(
+            x_oracle, _oracle(x_oracle, a, b, 1), _oracle(x_oracle, a, b, 2),
+            color='grey', alpha=0.12, label='Oracle bounds (factor $\\in[1,2]$)',
         )
 
     ax.axvline(x=n_datasets, color='red', linestyle='--', linewidth=1, alpha=0.7)
     ax.axhline(y=tau_strable, color='black', linestyle=':', linewidth=1)
 
     ax.text(
-        n_datasets - 37, 0.83,
+        n_datasets - 4, 0.87,
         f"STRABLE\nsize: {n_datasets}",
         color='red', fontweight='bold', fontsize=FS_STRABLE,
+        ha='right', va='top',
     )
-    ax.annotate(
+    ax.text(
+        n_datasets + 4, tau_strable - 0.008,
         f"$\\tau={tau_strable:.1f}$\nDisagreement:\n{disagreement_pct_strable:.1f}%",
-        xy=(n_datasets, tau_strable),
-        xytext=(111, 0.85),
-        fontsize=FS_ANNOT,
+        fontsize=FS_ANNOT, va='top',
     )
     ax.text(
-        10, 0.92,
-        "asymptotic agreement to oracle\n(theoretical correction)",
-        color='#A900D3',
-        fontsize=FS_ANNOT, fontweight='bold',
+        60, 0.92, "agreement to oracle",
+        color='#A900D3', fontsize=FS_ANNOT, fontweight='bold',
         rotation=10, ha='left', va='bottom',
     )
     ax.text(
-        45, 0.88,
-        "asymptotic agreement of\ntwo independent benchmarks",
-        color='green',
-        fontsize=FS_ANNOT, fontweight='bold',
-        rotation=10, ha='left', va='bottom',
+        56, 0.94, "agreement of two\ndisjoint benchmarks",
+        color='green', fontsize=FS_ANNOT, fontweight='bold',
+        rotation=16, ha='left', va='top',
     )
 
     ax.set_xlabel('Number of Datasets (N)', fontsize=FS_AXIS)
@@ -220,7 +237,7 @@ def plot_kendalltau_convergence(n_iterations=2000, n_bootstraps=2000, target_y=0
         fontsize=FS_AXIS,
     )
     ax.tick_params(axis='both', labelsize=FS_TICK)
-    ax.legend(loc='lower right', fontsize=FS_LEGEND, frameon=True)
+    ax.legend(loc='lower right', fontsize=FS_LEGEND - 1, frameon=True)
     ax.grid(True, alpha=0.2)
     ax.set_ylim(0.69, 1.0)
     ax.set_xlim(-5, 170)
