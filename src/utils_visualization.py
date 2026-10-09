@@ -347,9 +347,7 @@ def critical_difference_diagram(
     )
 
     ranks = Series(ranks).sort_values()  # Standardize if ranks is dict
-    # Split with pandas .iloc, not np.array_split: recent NumPy/pandas return
-    # bare ndarrays there (index lost), which breaks the .items()/.iloc calls
-    # below. The left half gets the ceil, as np.array_split(..., 2) did.
+    # .iloc split keeps the index (np.array_split returns bare ndarrays); left half gets the ceil.
     half = (len(ranks) + 1) // 2
     points_left, points_right = ranks.iloc[:half], ranks.iloc[half:]
 
