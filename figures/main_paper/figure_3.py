@@ -76,9 +76,10 @@ def _load_qwen_nopca_30():
     df = pd.read_csv(f"{COMPILED}/result_comparison_qwen_nopca_30.csv")
     df = _add_score_and_meta(df)
     df['learner'] = df['learner'].str.replace('-no_pca', '')
-    df['encoder'] = df['encoder'] + ' (No PCA (30))'
     df['learner'] = df['learner'].replace(learner_map)
-    df['method']  = df['encoder'] + ' - ' + df['learner']
+    # Post-processing tag goes after the learner, as for the other variants
+    # (e.g. 'LM Qwen-3-8B - TabPFN-2.5 (No PCA (30))').
+    df['method']  = df['encoder'] + ' - ' + df['learner'] + ' (No PCA (30))'
     return df
 
 
@@ -90,9 +91,8 @@ def _load_pca30_standscal_llama_tabpfn():
     meta = df['method'].str.split('_', expand=True, n=2)
     df['dtype']   = meta[0].replace(dtype_map)
     df['encoder'] = meta[1].replace(encoder_map)
-    df['encoder'] = df['encoder'] + ' (StandScal + PCA (30))'
     df['learner'] = meta[2].replace(learner_map)
-    df['method']  = df['encoder'] + ' - ' + df['learner']
+    df['method']  = df['encoder'] + ' - ' + df['learner'] + ' (StandScal + PCA (30))'
     return df[df['method'].isin(['LM LLaMA-3.1-8B - TabPFN-2.5 (StandScal + PCA (30))'])]
 
 
@@ -137,7 +137,7 @@ def _load_30_thresh_ridge():
 
 
 def _load_mambular():
-    df = pd.read_csv(f"{COMPILED}/result_REBUTTALS_mambular.csv")
+    df = pd.read_csv(f"{COMPILED}/result_REBUTTALS_trompt_transtab_mambular.csv")
     df['score']  = df['r2'].fillna(df['roc_auc'])
     meta = df['method'].str.split('_', expand=True, n=2)
     df['dtype']   = meta[0].replace(dtype_map)
