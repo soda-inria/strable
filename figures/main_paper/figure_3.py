@@ -15,7 +15,6 @@ import pandas as pd
 import scikit_posthocs as sp
 import seaborn as sns
 
-from configs.path_configs import path_configs
 from figures._main import (
     clean_method_name,
     dtype_map,
@@ -24,13 +23,13 @@ from figures._main import (
     get_learner_color_simple,
     learner_map,
     load_results,
+    load_run,
     save_figure,
     selected_encoders,
 )
 from src.utils_visualization import critical_difference_diagram
 
 
-COMPILED = path_configs['compiled_results']
 DTYPE_PREFIX = 'num-str'
 SCORE_COL = 'score'
 
@@ -47,6 +46,13 @@ POSTPROC_SHORT = {
 
 # E2E learners — used by classify_pipeline.
 E2E_NAMES = {'TabSTAR', 'ContextTab', 'TabM', 'Mambular', 'CatBoost'}
+
+# TabICLv2 runs, one per post-processing variant (tag added to the learner).
+TABICL_RUNS = {
+    'tabicl':                 '',
+    'standscal_llama_tabicl': ' (StandScal + PCA (30))',
+    'nopca_qwen_tabicl':      ' (No PCA (30))',
+}
 
 # Line-style per pipeline family.
 LINE_STYLES = {
@@ -73,7 +79,7 @@ def _add_score_and_meta(df, methods_replaced=()):
 
 
 def _load_qwen_nopca_30():
-    df = pd.read_csv(f"{COMPILED}/result_comparison_qwen_nopca_30.csv")
+    df = load_run('nopca_qwen_tabpfn')
     df = _add_score_and_meta(df)
     df['learner'] = df['learner'].str.replace('-no_pca', '')
     df['learner'] = df['learner'].replace(learner_map)
@@ -85,7 +91,7 @@ def _load_qwen_nopca_30():
 
 def _load_pca30_standscal_llama_tabpfn():
     """LLaMA-3.1-8B + TabPFN-2.5 with standard-scaling-before-PCA."""
-    df = pd.read_csv(f"{COMPILED}/result_comparison_standscal_pca_30.csv")
+    df = load_run('standscal_tabpfn')
     df['score']  = df['r2'].fillna(df['roc_auc'])
     df['method'] = df['method'] + '_default'
     meta = df['method'].str.split('_', expand=True, n=2)
@@ -97,7 +103,7 @@ def _load_pca30_standscal_llama_tabpfn():
 
 
 def _load_tabm_30_pca():
-    df = pd.read_csv(f"{COMPILED}/result_REBUTTALS_tabM_tfidf_minLMv6_Qwen8_LLaMA8_30pca.csv")
+    df = load_run('tabm')
     df['score']  = df['r2'].fillna(df['roc_auc'])
     meta = df['method'].str.split('_', expand=True, n=2)
     df['dtype']   = meta[0]
@@ -109,7 +115,7 @@ def _load_tabm_30_pca():
 
 
 def _load_realmlp_30_pca():
-    df = pd.read_csv(f"{COMPILED}/result_REBUTTALS_realMLP_tfidf_minLMv6_Qwen8_LLaMA8_30pca.csv")
+    df = load_run('realmlp')
     df['score']  = df['r2'].fillna(df['roc_auc'])
     meta = df['method'].str.split('_', expand=True, n=2)
     df['dtype']   = meta[0]
@@ -124,7 +130,7 @@ def _load_realmlp_30_pca():
 
 def _load_30_thresh_ridge():
     """{Ridge, XGBoost, TabPFN-2.5} × {LLaMA, Qwen} with cardinality-threshold-30 + OHE."""
-    df = pd.read_csv(f"{COMPILED}/result_REBUTTALS_30_thresh_ridge.csv")
+    df = load_run('ct30_ohe_llama_qwen_ridge')
     df['score']  = df['r2'].fillna(df['roc_auc'])
     df['method'] = df['method'] + '_default'
     meta = df['method'].str.split('_', expand=True, n=2)
@@ -137,7 +143,7 @@ def _load_30_thresh_ridge():
 
 
 def _load_mambular():
-    df = pd.read_csv(f"{COMPILED}/result_REBUTTALS_trompt_transtab_mambular.csv")
+    df = load_run('mambular')
     df['score']  = df['r2'].fillna(df['roc_auc'])
     meta = df['method'].str.split('_', expand=True, n=2)
     df['dtype']   = meta[0].replace(dtype_map)
@@ -150,22 +156,19 @@ def _load_mambular():
 
 def _load_tabicl():
     """All TabICLv2 results with explicit post-processing tags on learner."""
-    df = pd.read_csv(f"{COMPILED}/result_comparison_tabicl_all.csv")
+    df = pd.concat(
+        [load_run(key).assign(variant=tag) for key, tag in TABICL_RUNS.items()],
+        ignore_index=True,
+    )
+    # Older compiled files also tag the variant in the method name.
+    df['method'] = df['method'].str.replace('_nopca|_standscal', '', regex=True)
     df['score'] = df['r2'].fillna(df['roc_auc'])
     meta = df['method'].str.split('_', expand=True, n=2)
     df['dtype']   = meta[0].replace(dtype_map)
     df['encoder'] = meta[1].replace(encoder_map)
-    df['learner'] = meta[2].replace(learner_map)
-    df.loc[
-        df['method'] == 'num-str_llm-llama-3.1-8b_tabicl_standscal',
-        'learner',
-    ] = 'TabICLv2 (StandScal + PCA (30))'
-    df.loc[
-        df['method'] == 'num-str_llm-qwen3-8b_tabicl_nopca',
-        'learner',
-    ] = 'TabICLv2 (No PCA (30))'
+    df['learner'] = meta[2].replace(learner_map) + df['variant']
     df['method'] = df['encoder'] + ' - ' + df['learner']
-    return df
+    return df.drop(columns='variant')
 
 
 # ---------------------------------------------------------------------------

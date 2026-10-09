@@ -19,7 +19,6 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 
-from configs.path_configs import path_configs
 from figures._main import (
     Y_METRIC_LABELS,
     clean_method_name,
@@ -34,13 +33,13 @@ from figures._main import (
     learner_shapes,
     load_dataset_summary,
     load_results,
+    load_run,
     save_figure,
     save_latex,
     selected_encoders,
 )
 
 
-COMPILED = path_configs['compiled_results']
 DTYPE_PREFIX = 'num-str'
 Y_METRIC = 'score'
 X_METRIC = 'run_time_per_1k'   # paper figure uses run_time_per_1k
@@ -65,6 +64,14 @@ TARGET_HATCHES = [
 ]
 
 
+# TabICLv2 runs, one per post-processing variant (tag added to the encoder).
+TABICL_RUNS = {
+    'tabicl':                 ' (30-PCA)',
+    'standscal_llama_tabicl': ' (StandScal + PCA (30))',
+    'nopca_qwen_tabicl':      ' (No PCA (30))',
+}
+
+
 # ---------------------------------------------------------------------------
 # 1. Data loading — duplicates with figure_3 / figure_E2 by design
 # ---------------------------------------------------------------------------
@@ -77,7 +84,7 @@ def _attach_dataset_meta(df, dataset_summary):
 
 
 def _load_qwen_nopca_30(dataset_summary):
-    df = pd.read_csv(f"{COMPILED}/result_comparison_qwen_nopca_30.csv")
+    df = load_run('nopca_qwen_tabpfn')
     df['score'] = df['r2'].fillna(df['roc_auc'])
     meta = df['method'].str.split('_', expand=True, n=2)
     df['dtype']   = meta[0].replace(dtype_map)
@@ -90,7 +97,7 @@ def _load_qwen_nopca_30(dataset_summary):
 
 def _load_pca30_standscal_llama_tabpfn(dataset_summary):
     """LLaMA-3.1-8B + TabPFN-2.5 with standard scaling before PCA."""
-    df = pd.read_csv(f"{COMPILED}/result_comparison_standscal_pca_30.csv")
+    df = load_run('standscal_tabpfn')
     df['score']  = df['r2'].fillna(df['roc_auc'])
     df['method'] = df['method'] + '_default'
     meta = df['method'].str.split('_', expand=True, n=2)
@@ -102,8 +109,8 @@ def _load_pca30_standscal_llama_tabpfn(dataset_summary):
     return _attach_dataset_meta(df, dataset_summary)
 
 
-def _load_rebuttal_csv(filename, dataset_summary, learner_filter_drop=None):
-    df = pd.read_csv(f"{COMPILED}/{filename}")
+def _load_extra_run(key, dataset_summary, learner_filter_drop=None):
+    df = load_run(key)
     df['score'] = df['r2'].fillna(df['roc_auc'])
     meta = df['method'].str.split('_', expand=True, n=2)
     df['dtype']   = meta[0]
@@ -118,7 +125,7 @@ def _load_rebuttal_csv(filename, dataset_summary, learner_filter_drop=None):
 
 
 def _load_mambular_only(dataset_summary):
-    df = _load_rebuttal_csv("result_REBUTTALS_trompt_transtab_mambular.csv", dataset_summary)
+    df = _load_extra_run('mambular', dataset_summary)
     return df[df['encoder'] == 'Mambular']
 
 
@@ -126,30 +133,20 @@ def _load_tabicl(dataset_summary):
     """TabICLv2 with three post-processing variants. The variant tag only goes
     into ``encoder_learner`` (one point per variant); ``encoder`` keeps the
     plain name so the points share their encoder's colour and legend entry."""
-    df = pd.read_csv(f"{COMPILED}/result_comparison_tabicl_all.csv")
+    df = pd.concat(
+        [load_run(key).assign(variant=tag) for key, tag in TABICL_RUNS.items()],
+        ignore_index=True,
+    )
+    # Older compiled files also tag the variant in the method name.
+    df['method'] = df['method'].str.replace('_nopca|_standscal', '', regex=True)
     df['score'] = df['r2'].fillna(df['roc_auc'])
     meta = df['method'].str.split('_', expand=True, n=2)
     df['dtype']   = meta[0].replace(dtype_map)
     df['encoder'] = meta[1].replace(encoder_map)
-
-    df['encoder_polished'] = ''
-    rules = [
-        ('num-str_llm-qwen3-8b_tabicl',           'LM Qwen-3-8B',     ' (30-PCA)'),
-        ('num-str_tabvec_tabicl',                 'Tf-Idf',            ''),
-        ('num-str_llm-llama-3.1-8b_tabicl',       'LM LLaMA-3.1-8B',  ' (30-PCA)'),
-        ('num-str_llm-qwen3-8b_tabicl_nopca',     'LM Qwen-3-8B',     ' (No PCA (30))'),
-        ('num-str_llm-llama-3.1-8b_tabicl_standscal',
-                                                   'LM LLaMA-3.1-8B', ' (StandScal + PCA (30))'),
-    ]
-    for method_str, encoder_str, suffix in rules:
-        mask = (df['method'] == method_str) & (df['encoder'] == encoder_str)
-        df.loc[mask, 'encoder_polished'] = df.loc[mask, 'encoder'] + suffix
-
-    df['learner'] = df['method'].str.split('_', expand=True, n=2)[2]
-    df['learner'] = df['learner'].str.replace('_nopca|_standscal', '', regex=True)
-    df['learner'] = df['learner'].replace(learner_map)
+    df['encoder_polished'] = df['encoder'] + df['variant'].where(df['encoder'] != 'Tf-Idf', '')
+    df['learner'] = meta[2].replace(learner_map)
     df['encoder_learner'] = df['encoder_polished'] + ' - ' + df['learner']
-    return _attach_dataset_meta(df, dataset_summary)
+    return _attach_dataset_meta(df.drop(columns='variant'), dataset_summary)
 
 
 # ---------------------------------------------------------------------------
@@ -411,12 +408,12 @@ def plot_pareto_frontier():
     extra_pipelines = pd.concat([
         _load_qwen_nopca_30(dataset_summary),
         _load_pca30_standscal_llama_tabpfn(dataset_summary),
-        _load_rebuttal_csv(
-            "result_REBUTTALS_tabM_tfidf_minLMv6_Qwen8_LLaMA8_30pca.csv",
+        _load_extra_run(
+            'tabm',
             dataset_summary,
         ),
-        _load_rebuttal_csv(
-            "result_REBUTTALS_realMLP_tfidf_minLMv6_Qwen8_LLaMA8_30pca.csv",
+        _load_extra_run(
+            'realmlp',
             dataset_summary,
             learner_filter_drop=['LM E5-base-v2 - RealMLP', 'LM Jasper-0.6B - RealMLP'],
         ),
