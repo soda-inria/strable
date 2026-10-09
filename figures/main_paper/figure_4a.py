@@ -54,7 +54,9 @@ E2E_MAP = {
 }
 
 # Pipelines drawn with a hatched marker (post-processing variants the paper
-# wants visually distinguished from default-PCA versions).
+# wants visually distinguished from default-PCA versions). Matched on
+# ``encoder``, so the TabICLv2 variants (plain encoder name) stay unhatched,
+# as in the paper figure.
 TARGET_HATCHES = [
     "LM LLaMA-3.1-8B (StandScal + PCA (30))",
     "LM Qwen-3-8B (No PCA (30))",
@@ -466,7 +468,15 @@ def plot_pareto_frontier():
 
     # Pareto frontier on the chosen x metric.
     pareto_df = get_pareto_front(df_agg, X_METRIC, Y_METRIC, maximize_y=True)
-    save_latex(pareto_df.to_latex(index=False), f"pareto_frontier_{Y_METRIC}_vs_{X_METRIC}")
+    # Table E.10 layout: Encoder | Learner | Score | Runtime (s/1k), 4 decimals.
+    table = pareto_df[['encoder', 'learner', Y_METRIC, X_METRIC]].rename(columns={
+        'encoder': 'Encoder', 'learner': 'Learner',
+        Y_METRIC: 'Score', X_METRIC: 'Runtime (s/1k)',
+    })
+    save_latex(
+        table.to_latex(index=False, float_format="%.4f"),
+        f"pareto_frontier_{Y_METRIC}_vs_{X_METRIC}",
+    )
     y_min, y_max = df_agg[Y_METRIC].min(), df_agg[Y_METRIC].max()
     y_padding = (y_max - y_min) * 0.05
     y_bottom  = y_min - y_padding
