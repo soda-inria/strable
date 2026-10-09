@@ -13,7 +13,7 @@ _REPO_ROOT = Path(__file__).resolve().parent.parent
 if str(_REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT))
 
-from configs.path_configs import path_configs  # noqa: E402
+from configs.path_configs import compiled_results_path, path_configs  # noqa: E402
 
 
 def main() -> None:
@@ -52,10 +52,7 @@ def main() -> None:
     rows = Parallel(n_jobs=-1)(delayed(pd.read_csv)(p) for p in score_files)
     df = pd.concat(rows, axis=0).reset_index(drop=True)
 
-    flat_name = args.run_name.replace("/", "_")
-    out = args.out or (
-        Path(path_configs["compiled_results"]) / f"result_{flat_name}.csv"
-    )
+    out = args.out or compiled_results_path(args.run_name)
     out.parent.mkdir(parents=True, exist_ok=True)
     df.to_csv(out, index=False)
     print(f"Wrote {len(df)} rows to {out}")
