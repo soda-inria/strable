@@ -98,11 +98,7 @@ def _load_raw_labels():
     meta = df['method'].str.split('_', expand=True, n=2)
     df['dtype']   = meta[0].replace(dtype_map)
     df['encoder'] = meta[1].replace(encoder_map)
-    learner = meta[2]
-    df['learner'] = (learner + '_default').where(
-        learner.isin(['ridge', 'xgb', 'extrees', 'tabpfn']),
-        learner,
-    ).replace(learner_map)
+    df['learner'] = meta[2].replace(learner_map)
     df['encoder_learner'] = df['encoder'] + ' - ' + df['learner']
     df['Label_treatment'] = 'Raw Label'
     return df
