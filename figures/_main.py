@@ -320,8 +320,8 @@ def load_run(key):
     path = compiled_results_path(spec['run'])
     if not path.exists():
         raise FileNotFoundError(
-            f"{path} not found. Run {spec['script']} with --save_dir "
-            f"{spec['run'].split('/', 1)[1]} {spec['flags']}, then "
+            f"{path} not found. Run {spec['script']} with "
+            f"{' '.join(['--save_dir', spec['run'].split('/', 1)[1], spec['flags']]).strip()}, then "
             f"`python scripts/compile_results.py {spec['run']}` "
             f"(commands: `python configs/paper_runs.py`)."
         )
