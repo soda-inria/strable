@@ -31,6 +31,7 @@ strable/
 ├── configs/
 │   ├── exp_configs.py
 │   ├── model_parameters.py
+│   ├── paper_runs.py                   # Runs (<ABLATION>/<save_dir>) each paper figure reads
 │   └── path_configs.py
 ├── data/
 │   └── download_datasets.py
@@ -65,7 +66,7 @@ strable/
 └── LICENSE
 ```
 
-`results/`, `results_pics/`, `results_compiled/`, and `data/data_processed*` are runtime-generated and gitignored.
+`results/`, `results_pics/`, `results_tables/`, `results_compiled/`, and `data/data_processed*` are runtime-generated and gitignored. The repository ships no results CSV: every figure input is produced by the pipeline below.
 
 ---
 
@@ -172,12 +173,13 @@ Required only to reproduce the cross-benchmark appendix Figure E.1.
    python scripts/compile_results.py default/benchmark_main
    # → results/compiled_results/result_default_benchmark_main.csv
    ```
-5. **Figures**: one script per figure, runnable independently:
+   The output name is always `result_<run name with "/" → "_">.csv` (`compiled_results_path()` in [`configs/path_configs.py`](configs/path_configs.py)).
+5. **Figures**: one script per figure, runnable independently. Scripts read benchmark results only from compiled runs; the runs they need (run name, script, flags, methods) are listed once in [`configs/paper_runs.py`](configs/paper_runs.py). `python configs/paper_runs.py` prints the evaluate + compile commands for all of them.
    ```bash
    python figures/main_paper/figure_3.py
    python figures/appendix/figure_E10.py
    ```
-   Outputs land in `results_pics/<YYYY-MM-DD>/`.
+   Outputs land in `results_pics/<YYYY-MM-DD>/` (tables in `results_tables/<YYYY-MM-DD>/`).
 
 ---
 
@@ -331,7 +333,7 @@ python scripts/evaluate_scripts/script_evaluate.py --dry-run \
 
 Method strings have the form `<dtype>_<encoder>_<learner>`. The full enumeration of valid combinations lives in [`scripts/evaluate_scripts/METHOD_NAMES.md`](scripts/evaluate_scripts/METHOD_NAMES.md); display-name maps live in [`figures/_main.py`](figures/_main.py) (`dtype_map`, `encoder_map`, `learner_map`).
 
-The `_default` / `_tune` suffix is appended automatically based on `-ti / --tune_indicator`; do **not** put it in `-m`.
+The `_default` / `_tune` suffix is appended automatically based on `-ti / --tune_indicator`; do **not** put it in `-m`. `scripts/compile_results.py` adds it to the compiled `method` column (e.g. `num-str_tabvec_xgb_tune`) for learners listed in `estim_configs` ([`configs/exp_configs.py`](configs/exp_configs.py)); the other learners keep the bare name (`num-str_contexttab_contexttab`).
 
 ---
 

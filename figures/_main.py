@@ -19,7 +19,8 @@ import matplotlib.colors as mcolors
 import numpy as np
 import pandas as pd
 
-from configs.path_configs import path_configs
+from configs.paper_runs import PAPER_RUNS
+from configs.path_configs import compiled_results_path, path_configs
 
 
 # ---------------------------------------------------------------------------
@@ -93,6 +94,7 @@ learner_map = {
     'tabpfn_default': 'TabPFN-2.5',
     'extrees_tune': 'ExtraTrees-tuned',
     'catboost_tune': 'CatBoost-tuned',
+    'realtabpfn_default': 'RealTabPFN-2.5',
     'contexttab': 'ContextTab',
     'tabstar': 'TabSTAR',
     'tabicl': 'TabICLv2',
@@ -311,9 +313,24 @@ def load_dataset_summary():
     return pd.read_parquet(f"{path_configs['dataset_summary_wide']}")
 
 
+def load_run(key):
+    """Compiled CSV of the evaluation run ``PAPER_RUNS[key]``
+    (see ``configs/paper_runs.py``)."""
+    spec = PAPER_RUNS[key]
+    path = compiled_results_path(spec['run'])
+    if not path.exists():
+        raise FileNotFoundError(
+            f"{path} not found. Run {spec['script']} with "
+            f"{' '.join(['--save_dir', spec['run'].split('/', 1)[1], spec['flags']]).strip()}, then "
+            f"`python scripts/compile_results.py {spec['run']}` "
+            f"(commands: `python configs/paper_runs.py`)."
+        )
+    return pd.read_csv(path)
+
+
 def load_results(min_results_per_method=303, drop_realtabpfn=True):
-    """Load and prepare ``result_comparison.csv`` exactly as the original
-    monolith did. Returns one row per (data_name, method, fold) plus per-row
+    """Load and prepare the main benchmark run (``PAPER_RUNS['main']``)
+    exactly as the original monolith did. Returns one row per (data_name, method, fold) plus per-row
     normalized scores and dataset metadata.
 
     Parameters
@@ -325,7 +342,7 @@ def load_results(min_results_per_method=303, drop_realtabpfn=True):
     drop_realtabpfn : bool, default True
         Drop ``RealTabPFN-2.5`` rows. The paper reports ``TabPFN-2.5`` only.
     """
-    results = pd.read_csv(f"{path_configs['compiled_results']}/result_comparison.csv")
+    results = load_run('main')
     results['score'] = results['r2'].fillna(results['roc_auc'])
 
     meta = results['method'].str.split('_', expand=True, n=2)
@@ -417,6 +434,11 @@ def calculate_rankings(data_frame):
     return ranks_per_dataset.mean(axis=0)
 
 
+def model_ref_1(x, a, b):
+    """Convergence curve of Kendall-tau with N datasets: 1 - (a / sqrt(N)) * exp(-b N)."""
+    return 1 - (a / np.sqrt(x)) * np.exp(-b * x)
+
+
 def median_iqr(x):
     """``Median [Q1, Q3]`` formatted string."""
     med = x.median()
@@ -448,6 +470,7 @@ learner_colors = {
     'TabPFN':     '#CC79A7',  # Reddish Purple
     'ContextTab': '#56B4E9',  # Sky Blue
     'CatBoost':   '#F0E442',  # Yellow
+    'Tarte':      '#882255',  # Wine
     'RealMLP':    '#FF00FF',  # Magenta
     'TabM':       '#0E9594',  # Cyan/teal
     'TabICLv2':   '#A0522D',  # Sienna

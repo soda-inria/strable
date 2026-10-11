@@ -63,3 +63,13 @@ path_configs["huggingface_cache_folder"] = os.environ.get(
     "HF_HOME",
     str(Path.home() / ".cache" / "huggingface"),
 )
+
+
+def compiled_results_path(run_name):
+    """CSV written by ``scripts/compile_results.py <run_name>``.
+
+    ``run_name`` is ``<ABLATION>/<save_dir>`` (the folder under ``results/``);
+    the file is ``result_<run_name with "/" -> "_">.csv``.
+    """
+    flat_name = run_name.strip("/").replace("/", "_")
+    return Path(path_configs["compiled_results"]) / f"result_{flat_name}.csv"

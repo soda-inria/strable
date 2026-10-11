@@ -18,13 +18,13 @@ import numpy as np
 import pandas as pd
 from scipy.stats import kendalltau
 
-from configs.path_configs import path_configs
 from figures._main import (
     dtype_map,
     encoder_map,
     get_encoder_color,
     learner_map,
     load_results,
+    load_run,
     save_figure,
 )
 
@@ -33,15 +33,12 @@ SCORE_COL = 'score'
 
 
 def _load_uniform_impute():
-    df = pd.read_csv(
-        f"{path_configs['compiled_results']}/"
-        "REBUTTAL_missing_values_run_uniform_impute.csv"
-    )
+    df = load_run('imputed')
     df['score'] = df['r2'].fillna(df['roc_auc'])
     meta = df['method'].str.split('_', expand=True, n=2)
     df['dtype']   = meta[0].replace(dtype_map)
     df['encoder'] = meta[1].replace(encoder_map)
-    df['learner'] = (meta[2] + '_default').replace(learner_map)
+    df['learner'] = meta[2].replace(learner_map)
     df['encoder_learner'] = df['encoder'] + ' - ' + df['learner']
     df['Missing_value_treatment'] = 'uniform_impute'
     return df
@@ -59,7 +56,7 @@ def plot_missing_values_handling():
     results = load_results()
     df_impute = _load_uniform_impute()
 
-    methods_to_retrieve = [m + '_default' for m in df_impute['method'].unique()]
+    methods_to_retrieve = df_impute['method'].unique()
     datasets = df_impute['data_name'].unique().tolist()
 
     df_none = results[

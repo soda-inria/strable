@@ -16,7 +16,6 @@ import numpy as np
 import pandas as pd
 from scipy.stats import kendalltau
 
-from configs.path_configs import path_configs
 from figures._main import (
     Y_METRIC_LABELS,
     dtype_map,
@@ -24,6 +23,7 @@ from figures._main import (
     get_learner_color_simple,
     learner_map,
     load_results,
+    load_run,
     minmax_no_clip,
     save_figure,
 )
@@ -93,19 +93,12 @@ def _load_raw_labels():
     """Load the raw-label rebuttal CSV (pipelines re-trained without the
     default skewness transform) and re-derive score / dtype / encoder /
     learner so it merges cleanly with ``results``."""
-    df = pd.read_csv(
-        f"{path_configs['compiled_results']}/"
-        "result_skewness_tfidf_miniLMv6_llama8_ridge_xgb_tabpfn_contexttab.csv"
-    )
+    df = load_run('raw_targets')
     df['score'] = df['r2']
     meta = df['method'].str.split('_', expand=True, n=2)
     df['dtype']   = meta[0].replace(dtype_map)
     df['encoder'] = meta[1].replace(encoder_map)
-    learner = meta[2]
-    df['learner'] = (learner + '_default').where(
-        learner.isin(['ridge', 'xgb', 'extrees', 'tabpfn']),
-        learner,
-    ).replace(learner_map)
+    df['learner'] = meta[2].replace(learner_map)
     df['encoder_learner'] = df['encoder'] + ' - ' + df['learner']
     df['Label_treatment'] = 'Raw Label'
     return df

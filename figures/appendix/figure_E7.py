@@ -16,13 +16,13 @@ import numpy as np
 import pandas as pd
 from scipy.stats import kendalltau
 
-from configs.path_configs import path_configs
 from figures._main import (
     Y_METRIC_LABELS,
     dtype_map,
     encoder_map,
     learner_map,
     load_results,
+    load_run,
     save_figure,
 )
 
@@ -54,22 +54,12 @@ def _load_feature_engineered():
     """Load the feature-engineered ablation results CSV and re-derive
     score / dtype / encoder / learner columns so it matches the schema of
     ``results``."""
-    df = pd.read_csv(
-        f"{path_configs['compiled_results']}/"
-        "result_feature_engineering_tdidf_minilm6_extrees_xgb_contexttab.csv"
-    )
+    df = load_run('feature_eng')
     df['score'] = df['r2'].fillna(df['roc_auc'])
     meta = df['method'].str.split('_', expand=True, n=2)
     df['dtype']   = meta[0].replace(dtype_map)
     df['encoder'] = meta[1].replace(encoder_map)
-    df['learner'] = (
-        df['method'].str.split('_', expand=True, n=2)[2]
-    )
-    df['learner'] = (df['learner'] + '_default').where(
-        df['learner'].isin(['ridge', 'xgb', 'extrees', 'tabpfn']),
-        df['learner'],
-    )
-    df['learner'] = df['learner'].replace(learner_map)
+    df['learner'] = meta[2].replace(learner_map)
 
     df['encoder_learner'] = df['encoder'] + ' - ' + df['learner']
     df['Feature_engineering'] = 'Engineered Features'
