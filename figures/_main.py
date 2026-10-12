@@ -602,6 +602,14 @@ def tables_dir():
     return p
 
 
+def add_tau_below_legend(legend, text, **kwargs):
+    """Write ``text`` (the Kendall-τ label) just under ``legend``, outside the axes."""
+    return legend.axes.annotate(
+        text, xy=(0, 0), xycoords=legend, xytext=(0, -6), textcoords='offset points',
+        ha='left', va='top', annotation_clip=False, **kwargs,
+    )
+
+
 def save_figure(fig, name, ext='pdf'):
     """Save ``fig`` as ``<name>_<today>.<ext>`` under ``pics_dir()``."""
     out = pics_dir() / f"{name}_{today_folder()}.{ext}"

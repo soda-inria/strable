@@ -1,8 +1,9 @@
-"""Figure E.10 — Two side-by-side bar charts comparing pipeline rankings between:
-* ``Full Dataset`` — re-ran on the un-subsampled tables (run
-  ``PAPER_RUNS['full_data']``; for RealMLP, ``PAPER_RUNS['realmlp']``).
-* ``Sampled Dataset (75k)`` — pulled from the main results, using the
-  default 75k cap."""
+"""Figure E.10 — Two side-by-side bar charts comparing the rankings of 17 pipelines between:
+* ``Full Dataset`` — the pipelines run on the full-size tables (run
+  ``PAPER_RUNS['full_data']``).
+* ``Sampled Dataset (75k)`` — the main results, with tables capped at 75,000
+  rows (for RealMLP, ``PAPER_RUNS['realmlp']``).
+Both panels use the tables where all 17 pipelines have full-size results."""
 
 import sys as _sys
 from pathlib import Path as _Path
@@ -19,6 +20,7 @@ import pandas as pd
 from scipy.stats import kendalltau
 
 from figures._main import (
+    add_tau_below_legend,
     dtype_map,
     encoder_map,
     get_encoder_color,
@@ -98,14 +100,12 @@ def _color_for(enc, lrn):
 def plot_full_vs_sampled():
     results = load_results()
     df_full = _load_full()
+    df_full = df_full[df_full['method'].isin(METHODS_FROM_RESULTS)]
 
-    # Datasets with full coverage of every full-run method.
-    methods_full = df_full['method'].unique().tolist()
-    common_datasets = set(df_full[df_full['method'] == methods_full[0]]['data_name'].unique())
-    for method in methods_full[1:]:
-        common_datasets &= set(
-            df_full[df_full['method'] == method]['data_name'].unique()
-        )
+    # Tables where all 17 pipelines have full-size results.
+    n_methods = df_full.groupby('data_name')['method'].nunique()
+    common_datasets = set(n_methods[n_methods == len(METHODS_FROM_RESULTS)].index)
+    df_full = df_full[df_full['data_name'].isin(common_datasets)]
 
     df_sampled = results[
         results['method'].isin(METHODS_FROM_RESULTS)
@@ -144,8 +144,8 @@ def plot_full_vs_sampled():
     merged['rank_sampled'] = merged['Sampled_Dataset_75k'].rank(ascending=False)
     tau, _ = kendalltau(merged['rank_full'], merged['rank_sampled'])
 
-    fig, axes = plt.subplots(1, 2, figsize=(6, 10), sharey=False)
-    fig.subplots_adjust(wspace=1.4, bottom=0.05, top=0.82)
+    fig, axes = plt.subplots(1, 2, figsize=(6, 12), sharey=False)
+    fig.subplots_adjust(wspace=2.0)
 
     panels = [df_full_sorted, df_sampled_sorted]
     cols   = ['Full_Dataset', 'Sampled_Dataset_75k']
@@ -160,16 +160,13 @@ def plot_full_vs_sampled():
                 color=colors, edgecolor='white', linewidth=0.4)
         ax.set_yticks(y)
         ax.set_yticklabels(data['label'].values, fontsize=14)
-        ax.set_title(title, fontsize=14, fontweight='bold', pad=40)
+        ax.set_title(title, fontsize=14, fontweight='bold', pad=10)
         ax.tick_params(axis='x', labelsize=9)
         ax.grid(axis='x', linestyle='--', alpha=0.35)
         ax.spines[['top', 'right']].set_visible(False)
         ax.set_xlim(0, 1)
 
-    fig.supxlabel('Avg Score ($R^2$ & AUC)', fontsize=16, y=-0.01)
-    fig.text(0.88, 0.82,
-             f"Kendall's $\\tau$ = {tau:.2f}",
-             ha='center', fontsize=13, style='italic', zorder=10)
+    fig.supxlabel('Avg Score ($R^2$ & AUC)', fontsize=16, y=0.0)
 
     seen = {}
     for _, r in df_pivot.iterrows():
@@ -177,12 +174,12 @@ def plot_full_vs_sampled():
         if enc not in seen:
             seen[enc] = _color_for(r['encoder'], r['learner'])
     legend_handles = [mpatches.Patch(facecolor=c, label=e) for e, c in seen.items()]
-    fig.legend(
-        handles=legend_handles,
-        title='', title_fontsize=13, fontsize=14,
-        bbox_to_anchor=(0.96, 0.88),
-        frameon=True, edgecolor='lightgray', ncol=3,
+    legend = axes[1].legend(
+        handles=legend_handles, fontsize=14,
+        loc='upper left', bbox_to_anchor=(1.08, 1.0),
+        frameon=True, edgecolor='lightgray', ncol=1,
     )
+    add_tau_below_legend(legend, f"Kendall's $\\tau$ = {tau:.2f}", fontsize=13, style='italic')
 
     save_figure(fig, "full_vs_sampled_pipeline_rankings")
     plt.close(fig)

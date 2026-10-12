@@ -58,10 +58,10 @@ PAPER_RUNS = {
     'tabm': _run(
         'default/tabm', _grid(('tabvec', MINILM, QWEN, LLAMA), ('tabm',)), _EXTRA),
     'realmlp': _run(
-        'default/realmlp', _grid(('tabvec', MINILM, QWEN, LLAMA), ('realmlp',)),
+        'default/realmlp', _grid(('tabvec', MINILM, E5_BASE, JASPER, QWEN, LLAMA), ('realmlp',)),
         _EXTRA + ('figure_E10',)),
     'mambular': _run(
-        'default/mambular', ('num-str_mambular_mambular',), _EXTRA),
+        'default/mambular', ('num-str_mambular_mambular',), _EXTRA + ('figure_E9',)),
     'llama_tabpfn_pca60': _run(
         'default/llama_tabpfn_pca60', _grid((LLAMA,), ('tabpfn',)),
         ('figure_E4a', 'figure_E4b'), flags='-ndim 60'),
