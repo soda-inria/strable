@@ -18,6 +18,7 @@ from scipy.stats import kendalltau
 
 from figures._main import (
     Y_METRIC_LABELS,
+    add_tau_below_legend,
     dtype_map,
     encoder_map,
     get_learner_color_simple,
@@ -48,10 +49,28 @@ METHODS_TO_RETRIEVE = [
     'num-str_llm-qwen3-8b_ridge_default',
     'num-str_llm-qwen3-8b_tabpfn_default',
     'num-str_llm-qwen3-8b_xgb_default',
+    'num-str_llm-e5-small-v2_extrees_default',
+    'num-str_llm-e5-small-v2_ridge_default',
+    'num-str_llm-e5-small-v2_tabpfn_default',
+    'num-str_llm-e5-small-v2_xgb_default',
+    'num-str_llm-fasttext_extrees_default',
+    'num-str_llm-fasttext_ridge_default',
+    'num-str_llm-fasttext_tabpfn_default',
+    'num-str_llm-fasttext_xgb_default',
+    'num-str_llm-jasper-token-comp-0.6b_extrees_default',
+    'num-str_llm-jasper-token-comp-0.6b_ridge_default',
+    'num-str_llm-jasper-token-comp-0.6b_tabpfn_default',
+    'num-str_llm-jasper-token-comp-0.6b_xgb_default',
+    'num-str_catboost_catboost_default',
+    'num-str_tabstar_tabstar',
     'num-str_contexttab_contexttab',
 ]
 
-# 60 datasets where we re-ran with raw (untransformed) labels.
+# End-to-end models get their own rows above the Tf-Idf group: centre offsets
+# from it, in y units (encoder groups are ``encoder_gap`` = 0.65 apart).
+E2E_OFFSETS = {'CatBoost': 0.3245, 'TabSTAR': 0.449, 'ContextTab': 0.8735}
+
+# The 61 regression tables evaluated with raw (untransformed) labels.
 DATASETS_TO_RETRIEVE = [
     "aijob_ai-ml-ds-salaries", "california-houses",
     "college-creditcard-marketing", "college-deposit-product-marketing",
@@ -176,19 +195,17 @@ def plot_raw_vs_transformed_label():
         for li, learner in enumerate(all_learners):
             positions[(enc, learner)] = group_center + offsets[li]
 
-    # Single-learner encoders (e.g. ContextTab) get anchored just above
-    # the Tf-Idf block instead of stretching the y-grid.
-    tfidf_ys = [y for (e, _), y in positions.items() if e == 'Tf-Idf']
-    top_tfidf = max(tfidf_ys) + bar_h / 2
-    for enc in encoder_order:
-        learners_present = df_plot[df_plot['encoder'] == enc]['learner'].unique()
-        if len(learners_present) == 1:
-            positions[(enc, learners_present[0])] = top_tfidf + bar_h * 0.8
+    # Move each end-to-end group to its row above Tf-Idf.
+    tfidf_center = encoder_order.index('Tf-Idf') * encoder_gap
+    for enc, offset in E2E_OFFSETS.items():
+        shift = tfidf_center + offset - encoder_order.index(enc) * encoder_gap
+        for learner in all_learners:
+            positions[(enc, learner)] += shift
 
-    fig, axes = plt.subplots(1, 2, figsize=(6, 5), sharey=False)
-    fig.subplots_adjust(wspace=1.5)
+    fig, axes = plt.subplots(1, 2, figsize=(6, 6), sharey=False)
+    fig.subplots_adjust(wspace=1.9)
 
-    xlims = [(0.0, 1.0), (0.0, 1.0)]
+    xlims = [(0.5, 0.8), (0.5, 1.0)]
     treatments = ['Raw Label', 'Transformed Label']
     subtitles = [
         '(no transformation)',
@@ -249,26 +266,20 @@ def plot_raw_vs_transformed_label():
         for i in range(n_encoders - 1):
             ax.axhline((i + 0.5) * encoder_gap, color='lightgray',
                        linewidth=0.6, zorder=1)
-        ax.set_ylim(-encoder_gap * 0.55, (n_encoders - 0.92) * encoder_gap)
-
-        if treatment == 'Transformed Label':
-            fig.text(
-                0.9, 0.28,
-                f"Kendall's $\\tau$ = {avg_tau:.2f}\n(vs. raw)",
-                va='center', ha='left', fontsize=11, color='#333333',
-                fontstyle='italic', transform=fig.transFigure,
-            )
+        ax.set_ylim(-encoder_gap * 0.55, tfidf_center + 1.298)
 
     legend_handles = [
         mpatches.Patch(facecolor=get_learner_color_simple(l), label=l)
         for l in all_learners
     ]
-    fig.legend(
+    legend = axes[1].legend(
         handles=legend_handles, title='Learner',
         title_fontsize=13, fontsize=12,
-        loc='center left', bbox_to_anchor=(0.9, 0.5),
+        loc='upper left', bbox_to_anchor=(1.08, 1.0),
         frameon=True, edgecolor='lightgray', ncol=1,
     )
+    add_tau_below_legend(legend, f"Kendall's $\\tau$ = {avg_tau:.2f}\n(vs. raw)",
+                         fontsize=11, color='#333333', fontstyle='italic')
     fig.supxlabel(f'Avg {Y_METRIC_LABELS[SCORE_COL]}  ($R^2$)',
                   fontsize=14, y=-0.02)
 

@@ -19,6 +19,7 @@ import pandas as pd
 from scipy.stats import kendalltau
 
 from figures._main import (
+    add_tau_below_legend,
     dtype_map,
     encoder_map,
     get_encoder_color,
@@ -32,14 +33,18 @@ from figures._main import (
 SCORE_COL = 'score'
 
 
-def _load_uniform_impute():
-    df = load_run('imputed')
+def _add_meta(df):
     df['score'] = df['r2'].fillna(df['roc_auc'])
     meta = df['method'].str.split('_', expand=True, n=2)
     df['dtype']   = meta[0].replace(dtype_map)
     df['encoder'] = meta[1].replace(encoder_map)
     df['learner'] = meta[2].replace(learner_map)
     df['encoder_learner'] = df['encoder'] + ' - ' + df['learner']
+    return df
+
+
+def _load_uniform_impute():
+    df = _add_meta(load_run('imputed'))
     df['Missing_value_treatment'] = 'uniform_impute'
     return df
 
@@ -59,9 +64,11 @@ def plot_missing_values_handling():
     methods_to_retrieve = df_impute['method'].unique()
     datasets = df_impute['data_name'].unique().tolist()
 
-    df_none = results[
-        results['method'].isin(methods_to_retrieve)
-        & results['data_name'].isin(datasets)
+    # Mambular is not in the main run: its native-handling scores come from its own run.
+    native = pd.concat([results, _add_meta(load_run('mambular'))], ignore_index=True)
+    df_none = native[
+        native['method'].isin(methods_to_retrieve)
+        & native['data_name'].isin(datasets)
     ].copy()
     df_none['Missing_value_treatment'] = 'none'
 
@@ -92,8 +99,8 @@ def plot_missing_values_handling():
     merged['rank_impute'] = merged['uniform_impute'].rank(ascending=False)
     tau_impute, _ = kendalltau(merged['rank_none'], merged['rank_impute'])
 
-    fig, axes = plt.subplots(1, 2, figsize=(14, 10), sharey=False)
-    fig.subplots_adjust(wspace=0.4)
+    fig, axes = plt.subplots(1, 2, figsize=(12, 22), sharey=False)
+    fig.subplots_adjust(wspace=0.75)
 
     datasets_panels = [df_none_sorted, df_impute_sorted]
     score_cols      = ['none', 'uniform_impute']
@@ -101,10 +108,10 @@ def plot_missing_values_handling():
         'Current policy: native handling\n+ mean imputation for Ridge',
         'Imputation: mean(numeric)\n+ mode(non-numeric)',
     ]
-    xlim = (0.55, 0.77)
+    xlims = [(0.2, 0.8), (0.5, 0.8)]   # left starts at 0.2 so Mambular shows
     bar_h = 0.6
 
-    for ax, data, col, title in zip(axes, datasets_panels, score_cols, titles):
+    for ax, data, col, title, xlim in zip(axes, datasets_panels, score_cols, titles, xlims):
         colors = [_color_for(r['encoder'], r['learner'])
                   for _, r in data.iterrows()]
         y = np.arange(len(data))
@@ -119,12 +126,6 @@ def plot_missing_values_handling():
         ax.set_xlim(*xlim)
 
     fig.supxlabel('Avg Score ($R^2$ & AUC)', fontsize=16, y=0.03)
-    axes[1].text(
-        1.0, 0.08,
-        f"Kendall's $\\tau$ = {tau_impute:.2f}\n(vs. native)",
-        ha='right', va='bottom', fontsize=14, style='italic',
-        transform=axes[1].transAxes,
-    )
 
     seen = {}
     for _, r in df_pivot.iterrows():
@@ -132,13 +133,15 @@ def plot_missing_values_handling():
         if enc not in seen:
             seen[enc] = _color_for(r['encoder'], r['learner'])
     legend_handles = [mpatches.Patch(facecolor=c, label=e) for e, c in seen.items()]
-    fig.legend(
+    legend = axes[1].legend(
         handles=legend_handles,
-        title='Encoder', title_fontsize=16, fontsize=11,
-        loc='center left', bbox_to_anchor=(0.72, 0.4),
+        title='Encoder', title_fontsize=20, fontsize=16,
+        loc='upper left', bbox_to_anchor=(1.015, 0.55),
+        handlelength=2.2, handleheight=1.3, labelspacing=0.5,
         frameon=True, edgecolor='lightgray', ncol=1,
     )
-    plt.tight_layout(rect=[0.5, 0.9, 0.91, 1])
+    add_tau_below_legend(legend, f"Kendall's $\\tau$ = {tau_impute:.2f}\n(vs. native)",
+                         fontsize=17, style='italic')
 
     save_figure(fig, "missing_values_handling_none_all_imputation")
     plt.close(fig)

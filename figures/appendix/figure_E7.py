@@ -1,6 +1,7 @@
 """Figure E.7 — Side-by-side bars per pipeline of average score under raw vs manually
-feature-engineered tables (44/108 datasets had ablation runs with parsed
-dates / ordinal encoding / range extraction etc.).
+feature-engineered tables (parsed dates / ordinal encoding / range extraction
+etc.), for 17 pipelines, on the tables where all of them have both raw and
+engineered results.
 """
 
 import sys as _sys
@@ -18,6 +19,7 @@ from scipy.stats import kendalltau
 
 from figures._main import (
     Y_METRIC_LABELS,
+    add_tau_below_legend,
     dtype_map,
     encoder_map,
     learner_map,
@@ -79,23 +81,19 @@ def _format_label(name):
 def plot_raw_vs_engineered():
     results = load_results()
     df_eng = _load_feature_engineered()
-
-    # Datasets that have ≥10 distinct methods in the engineered run — the
-    # script uses 10 as the heuristic for "complete" coverage.
-    dataset_counts = df_eng.groupby('data_name', as_index=False)['method'].nunique()
-    valid_datasets = dataset_counts[dataset_counts['method'] >= 10]['data_name'].tolist()
-
-    df_raw = results[
-        results['method'].isin(METHODS_TO_RETRIEVE)
-        & results['data_name'].isin(valid_datasets)
-    ].copy()
+    df_eng = df_eng[df_eng['method'].isin(METHODS_TO_RETRIEVE)]
+    df_raw = results[results['method'].isin(METHODS_TO_RETRIEVE)].copy()
     df_raw['Feature_engineering'] = 'Raw Features'
 
-    combined = pd.concat([df_eng, df_raw], axis=0, ignore_index=True)
+    # Compare only the tables where all the pipelines have both raw and
+    # engineered results.
+    def tables_with_all(df):
+        n_methods = df.groupby('data_name')['method'].nunique()
+        return set(n_methods[n_methods == len(METHODS_TO_RETRIEVE)].index)
 
-    # Restrict to the (encoder, learner) pairs present in BOTH treatments.
-    common_pairs = set(df_eng['encoder_learner']) & set(df_raw['encoder_learner'])
-    combined = combined[combined['encoder_learner'].isin(common_pairs)]
+    tables = tables_with_all(df_eng) & tables_with_all(df_raw)
+    combined = pd.concat([df_eng, df_raw], axis=0, ignore_index=True)
+    combined = combined[combined['data_name'].isin(tables)]
 
     df_plot = (
         combined
@@ -113,7 +111,7 @@ def plot_raw_vs_engineered():
     rank_eng = df_pivot['Engineered Features'].rank()
     tau, _ = kendalltau(rank_raw, rank_eng)
 
-    fig, ax = plt.subplots(figsize=(3, 6))
+    fig, ax = plt.subplots(figsize=(3, 9))
     n = len(df_pivot)
     y = np.arange(n)
     bar_height = 0.35
@@ -138,13 +136,8 @@ def plot_raw_vs_engineered():
     ax.spines[['top', 'right']].set_visible(False)
     ax.tick_params(axis='x', labelsize=8)
 
-    ax.legend(fontsize=10, frameon=False, bbox_to_anchor=(1.05, 0.2))
-    ax.annotate(
-        f"Kendall's τ = {tau:.1f}",
-        xy=(1.03, 0.19), xycoords='axes fraction',
-        ha='right', va='bottom',
-        fontsize=11, style='italic',
-    )
+    legend = ax.legend(fontsize=10, frameon=False, loc='upper left', bbox_to_anchor=(1.02, 1.0))
+    add_tau_below_legend(legend, f"Kendall's τ = {tau:.1f}", fontsize=11, style='italic')
 
     save_figure(fig, f"raw_vs_engineered_features_rankings_v1_hue_{SCORE_COL}")
     plt.close(fig)
