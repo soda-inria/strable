@@ -2,6 +2,7 @@
 ![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)
 [![Hugging Face Benchmark](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Benchmark-FFD21E.svg)](https://huggingface.co/datasets/inria-soda/STRABLE-benchmark)
 [![arXiv](https://img.shields.io/badge/arXiv-2605.12292-b31b1b.svg)](https://arxiv.org/abs/2605.12292)
+[![Leaderboard](https://img.shields.io/badge/%F0%9F%8F%86-Leaderboard-2E7D32.svg)](https://gblayer.github.io/strable-leaderboard/)
 [![Agent-friendly](https://img.shields.io/badge/Agent--friendly-AGENTS.md-7B61FF.svg)](AGENTS.md)
 
 # STRABLE: Benchmarking Tabular Machine Learning with Strings
