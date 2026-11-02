@@ -3,7 +3,7 @@
 [![Hugging Face Benchmark](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Benchmark-FFD21E.svg)](https://huggingface.co/datasets/inria-soda/STRABLE-benchmark)
 [![arXiv](https://img.shields.io/badge/arXiv-2605.12292-b31b1b.svg)](https://arxiv.org/abs/2605.12292)
 [![Leaderboard](https://img.shields.io/badge/%F0%9F%8F%86-Leaderboard-2E7D32.svg)](https://gblayer.github.io/strable-leaderboard/)
-[![Agent-friendly](https://img.shields.io/badge/Agent--friendly-AGENTS.md-7B61FF.svg)](AGENTS.md)
+[![Agent-friendly](https://img.shields.io/badge/Agent--friendly-AGENTS.md-7B61FF.svg)](https://github.com/soda-inria/strable/blob/main/AGENTS.md)
 
 # STRABLE: Benchmarking Tabular Machine Learning with Strings
 
@@ -117,7 +117,7 @@ export HF_TOKEN=hf_<your-token>
 
 ## 💾 Step 2 – Get the data
 
-Paths are wired automatically through [`configs/path_configs.py`](configs/path_configs.py).
+Paths are wired automatically through [`configs/path_configs.py`](https://github.com/soda-inria/strable/blob/main/configs/path_configs.py).
 
 ### 2a. Default variant (Hugging Face) — 🤗
 
@@ -154,10 +154,10 @@ The Drive bundle does not include upstream raw files. To regenerate:
 1. Get raw sources from the URLs in **Appendix C.4** of the paper.
 2. Drop them under `<STRABLE_ROOT>/data/data_raw/`, at the path each script's `data_path = …` names (most scripts read `data/data_raw/<file>`).
 3. Run:
-   - [`scripts/script_preprocess_data/`](scripts/script_preprocess_data/) — for the default 108 tables.
-   - [`scripts/script_data_modification/script_preprocess_subsample_75k/`](scripts/script_data_modification/script_preprocess_subsample_75k/) — for the tables subsampled to 75,000.
-   - [`scripts/script_data_modification/script_preprocess_feature_eng/feature_engineering_performed/`](scripts/script_data_modification/script_preprocess_feature_eng/) — `feature-eng` variant for 43 datasets. Runs **on top of** `data/data_processed/` (i.e. after the default preprocessing), not on the raw sources.
-   - [`scripts/script_data_modification/apply_inverse_label_transformation.py`](scripts/script_data_modification/apply_inverse_label_transformation.py) — `raw-targets` variant: undoes the default skewness transform on regression labels.
+   - [`scripts/script_preprocess_data/`](https://github.com/soda-inria/strable/tree/main/scripts/script_preprocess_data) — for the default 108 tables.
+   - [`scripts/script_data_modification/script_preprocess_subsample_75k/`](https://github.com/soda-inria/strable/tree/main/scripts/script_data_modification/script_preprocess_subsample_75k) — for the tables subsampled to 75,000.
+   - [`scripts/script_data_modification/script_preprocess_feature_eng/feature_engineering_performed/`](https://github.com/soda-inria/strable/tree/main/scripts/script_data_modification/script_preprocess_feature_eng) — `feature-eng` variant for 43 datasets. Runs **on top of** `data/data_processed/` (i.e. after the default preprocessing), not on the raw sources.
+   - [`scripts/script_data_modification/apply_inverse_label_transformation.py`](https://github.com/soda-inria/strable/blob/main/scripts/script_data_modification/apply_inverse_label_transformation.py) — `raw-targets` variant: undoes the default skewness transform on regression labels.
 
 ### 2d. Benchmarks comparison (CARTE / TTB / VSE)
 
@@ -201,8 +201,8 @@ Required only to reproduce the cross-benchmark appendix Figure E.1.
    python scripts/compile_results.py default/benchmark_main
    # → results/compiled_results/result_default_benchmark_main.csv
    ```
-   The output name is always `result_<run name with "/" → "_">.csv` (`compiled_results_path()` in [`configs/path_configs.py`](configs/path_configs.py)).
-5. **Figures**: one script per figure, runnable independently. Scripts read benchmark results only from compiled runs; the runs they need (run name, script, flags, methods) are listed once in [`configs/paper_runs.py`](configs/paper_runs.py). `python configs/paper_runs.py` prints the evaluate + compile commands for all of them.
+   The output name is always `result_<run name with "/" → "_">.csv` (`compiled_results_path()` in [`configs/path_configs.py`](https://github.com/soda-inria/strable/blob/main/configs/path_configs.py)).
+5. **Figures**: one script per figure, runnable independently. Scripts read benchmark results only from compiled runs; the runs they need (run name, script, flags, methods) are listed once in [`configs/paper_runs.py`](https://github.com/soda-inria/strable/blob/main/configs/paper_runs.py). `python configs/paper_runs.py` prints the evaluate + compile commands for all of them.
    ```bash
    python figures/main_paper/figure_3.py
    python figures/appendix/figure_E10.py
@@ -359,9 +359,9 @@ python scripts/evaluate_scripts/script_evaluate.py --dry-run \
 
 ## 🏷️ Method tokens (`-m / --method`)
 
-Method strings have the form `<dtype>_<encoder>_<learner>`. The full enumeration of valid combinations lives in [`scripts/evaluate_scripts/METHOD_NAMES.md`](scripts/evaluate_scripts/METHOD_NAMES.md); display-name maps live in [`figures/_main.py`](figures/_main.py) (`dtype_map`, `encoder_map`, `learner_map`).
+Method strings have the form `<dtype>_<encoder>_<learner>`. The full enumeration of valid combinations lives in [`scripts/evaluate_scripts/METHOD_NAMES.md`](https://github.com/soda-inria/strable/blob/main/scripts/evaluate_scripts/METHOD_NAMES.md); display-name maps live in [`figures/_main.py`](https://github.com/soda-inria/strable/blob/main/figures/_main.py) (`dtype_map`, `encoder_map`, `learner_map`).
 
-The `_default` / `_tune` suffix is appended automatically based on `-ti / --tune_indicator`; do **not** put it in `-m`. `scripts/compile_results.py` adds it to the compiled `method` column (e.g. `num-str_tabvec_xgb_tune`) for learners listed in `estim_configs` ([`configs/exp_configs.py`](configs/exp_configs.py)); the other learners keep the bare name (`num-str_contexttab_contexttab`).
+The `_default` / `_tune` suffix is appended automatically based on `-ti / --tune_indicator`; do **not** put it in `-m`. `scripts/compile_results.py` adds it to the compiled `method` column (e.g. `num-str_tabvec_xgb_tune`) for learners listed in `estim_configs` ([`configs/exp_configs.py`](https://github.com/soda-inria/strable/blob/main/configs/exp_configs.py)); the other learners keep the bare name (`num-str_contexttab_contexttab`).
 
 ---
 
@@ -383,4 +383,4 @@ If you use STRABLE in your work, please cite:
 
 ## ⚖️ License
 
-This project is released under the [BSD 3-Clause License](LICENSE).
+This project is released under the [BSD 3-Clause License](https://github.com/soda-inria/strable/blob/main/LICENSE).
