@@ -24,7 +24,7 @@ This file is the entry point for coding agents (Claude Code, Codex, Cursor, Gemi
 3. **Never hardcode absolute paths.** All paths flow through [`configs/path_configs.py`](configs/path_configs.py), which derives from `$STRABLE_ROOT` (env var) or the repo root. To override, export `STRABLE_ROOT=/your/path` — do not edit `path_configs.py`.
 4. **Don't append `_default` / `_tune` to method names.** The suffix is added automatically from `--tune_indicator`. Pass `-m num-str_tabvec_xgb -ti tune`, not `-m num-str_tabvec_xgb_tune`.
 5. **Don't skip the embedding-extraction step for LLM pipelines.** `script_evaluate*.py` will fail (or silently fall back) if `data/llm_embeding/<model>/…` is missing for the requested LLM encoder. See [The two-stage rule](#the-two-stage-rule-llm-pipelines).
-6. **Don't introduce a new ablation folder.** The eight scripts in `scripts/evaluate_scripts/` already cover every ablation in the paper (each has a hard-coded `ABLATION` tag that determines `results/<ABLATION>/…`).
+6. **Don't introduce a new ablation folder.** The seven scripts in `scripts/evaluate_scripts/` already cover every ablation in the paper (`script_evaluate.py` writes to `results/default/…`, or `results/no-pca/…` with `--no_pca True`; each other script has a hard-coded `ABLATION` tag that determines `results/<ABLATION>/…`).
 
 ---
 
@@ -34,7 +34,7 @@ This file is the entry point for coding agents (Claude Code, Codex, Cursor, Gemi
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 export STRABLE_ROOT=$(pwd)
-export HF_TOKEN=hf_<user-token>           # required for HuggingFace download + gated LLMs
+export HF_TOKEN=hf_<user-token>           # only for gated LLMs (Llama, Gemma); the dataset is public
 export HF_HOME=${HF_HOME:-~/.cache/huggingface}
 python data/download_datasets.py          # downloads the 108-table default variant
 ```
@@ -70,7 +70,7 @@ If Stage A is missing the cache, Stage B will recompute it on-the-fly — fine f
 
 ## CLI flag grammar (`scripts/evaluate_scripts/script_evaluate*.py`)
 
-All eight `script_evaluate*.py` share this core signature. Only `script_evaluate_impute_missing_val.py` adds one extra flag (`-mvp`).
+All seven `script_evaluate*.py` share this core signature, except `--dry-run`, which only `script_evaluate.py` takes. `script_evaluate_impute_missing_val.py` adds one extra flag (`-mvp`).
 
 | Flag | Long | Type | Meaning |
 |---|---|---|---|
@@ -87,7 +87,7 @@ All eight `script_evaluate*.py` share this core signature. Only `script_evaluate
 | `-nopca` | `--no_pca` | `bool` | Skip PCA, keep first `--n_dimensions` raw dims. Switches `ABLATION` from `default` to `no-pca` in `script_evaluate.py`. |
 | `-ndim` | `--n_dimensions` | `int` | Number of components / sliced dims. Default `30`. |
 | `-mvp` | `--missing_val_policy` | `str` | **Only `script_evaluate_impute_missing_val.py`.** One of `none`, `drop_all`, `uniform_impute`. |
-|       | `--dry-run` | flag | Limit to the first dataset and fold 0 only. Use for smoke testing. |
+|       | `--dry-run` | flag | **Only `script_evaluate.py`.** Limit to the first dataset and fold 0 only. Use for smoke testing. |
 
 `-dn`, `-ns`, `-m`, `-fi`, `-ti` accept multiple values and the script Cartesian-products them via `sklearn.ParameterGrid`.
 
@@ -110,7 +110,7 @@ Each script writes to a hard-coded `ABLATION` folder. Match the user's intent to
 | Paper figure / claim | Script | `ABLATION` tag | Data folder it reads | Notes |
 |---|---|---|---|---|
 | Main results (Fig. 3, 4a, 6) | `script_evaluate.py` | `default` | `data/data_processed/` | The workhorse. |
-| No-PCA / StandScal+PCA (Fig. 2, E.4) | `script_evaluate.py` with `--no_pca True` or `--normalization True` | `no-pca` (when `--no_pca True`), else `default` | same | Re-uses cached embeddings; only post-processing differs. |
+| No-PCA / StandScal+PCA (Fig. 2, E.2) | `script_evaluate.py` with `--no_pca True` or `--normalization True` | `no-pca` (when `--no_pca True`), else `default` | same | Re-uses cached embeddings; only post-processing differs. |
 | CT=30, OHE branch (Fig. E.11) | `script_evaluate_30_thres_OHE.py` | `ct30-ohe` | same | Low-card columns → OHE, high-card → LLM. Ridge family. |
 | CT=30, passthrough branch (Fig. E.11) | `script_evaluate_30_thres_lowcard_passthrough.py` | `ct30-passthrough` | same | XGBoost / TabPFN family. |
 | Full-data ablation (Fig. E.10) | `script_evaluate_FULL.py` | `full-data` | `data/data_processed_FULL/` | Needs FULL-variant embeddings via `script_extract_llm_embeddings_FULL.py`. |
@@ -188,17 +188,22 @@ The full set of method-encoder combinations evaluated in the paper is enumerated
 
 ## Use STRABLE as a dataset only
 
-If the user just wants the 108 tables for their own evaluation (no STRABLE pipelines):
+If the user just wants the 108 tables for their own evaluation (no STRABLE pipelines), use the `strable` package:
 
 ```bash
-python data/download_datasets.py
-# tables land in data/data_processed/<dataset>/
-# each dataset has: data.parquet, info.json, and CV split indices
+pip install strable
 ```
 
-Then they can read them directly with pandas / pyarrow. Don't pull in `src/encoding.py` or the evaluate scripts unless they want to compare against STRABLE's published pipeline numbers — in which case follow [The two-stage rule](#the-two-stage-rule-llm-pipelines).
+```python
+import strable
+X, y, task = strable.load_table("beer-ratings")  # from Hugging Face at a pinned revision, cached
+folds = strable.get_folds("beer-ratings")        # the benchmark's 3 (train_idx, test_idx) outer folds
+scores = strable.evaluate(pipeline, tables=strable.list_tables("regression"))  # one row per fold
+```
 
-For a fair comparison with published numbers, match: 3-fold CV (`-ns 3`), the per-dataset score (R² for regression on the skewness-transformed target, AUROC for classification), and the same train/test indices stored in `info.json`.
+To get the files instead: `python data/download_datasets.py` puts each table in `data/data_processed/<dataset>/`, as `data.parquet` and `config.json` (`target_name`, `task`). It downloads the latest revision of the Hugging Face dataset, while the package reads the revision its folds were computed on. Then they can read them directly with pandas / pyarrow. Don't pull in `src/encoding.py` or the evaluate scripts unless they want to compare against STRABLE's published pipeline numbers — in which case follow [The two-stage rule](#the-two-stage-rule-llm-pipelines).
+
+For a fair comparison with published numbers, match: the 3 outer folds of `strable.get_folds` (the paper's and the leaderboard's folds), and the per-fold score (R² for regression, on the skewness-transformed target the tables hold; ROC-AUC for classification), as `strable.evaluate` computes it.
 
 ---
 

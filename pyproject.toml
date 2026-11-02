@@ -1,15 +1,16 @@
 [build-system]
-requires = ["setuptools>=61.0", "wheel"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "strable"
-version = "0.0.1"
+dynamic = ["version"]
 description = "STRABLE: Benchmarking Tabular Machine Learning with Strings"
 readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.10"
-keywords = ["strable", "tabular", "benchmark"]
-license = { text = "BSD-3-Clause" }
+keywords = ["strable", "tabular", "benchmark", "strings"]
+license = "BSD-3-Clause"
+license-files = ["LICENSE"]
 authors = [
     { name = "Gioia Blayer", email = "gioia.blayer@inria.fr" },
     { name = "Myung Jun Kim" },
@@ -38,51 +39,75 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
 ]
+# The package `strable`: tables, folds, evaluation, Tf-Idf encoder and string taxonomy.
 dependencies = [
     "numpy",
     "pandas",
     "pyarrow",
-    "scipy",
-    "joblib",
-    "scikit-learn>=1.0",
-    "skrub",
-    "matplotlib",
-    "seaborn",
-    "statsmodels",
-    "scikit-posthocs",
-    "xgboost",
-    "catboost",
-    "tabpfn",
-    "tabstar",
-    "tarte-ai",
-    "sap-rpt-1-oss @ git+https://github.com/SAP-samples/sap-rpt-1-oss.git",
-    "fasttext",
+    "scikit-learn>=1.6",
+    "skrub>=0.6",
     "huggingface_hub",
-    "fastparquet",
-    "submitit",
-    "torch",
-    "transformers",
-    "sentence-transformers",
-    "pytabkit",
-    "networkx"
+    "nltk>=3.8",
 ]
 
 [project.urls]
 Homepage = "https://github.com/soda-inria/strable"
-
+Leaderboard = "https://gblayer.github.io/strable-leaderboard/"
+Dataset = "https://huggingface.co/datasets/inria-soda/STRABLE-benchmark"
+Paper = "https://arxiv.org/abs/2605.12292"
 
 [project.optional-dependencies]
 test = [
     "pytest",
     "coverage",
 ]
+# The paper's experiments (scripts/, src/, figures/ of the repository): the packages of
+# requirements.txt beyond the core ones, with the same versions. The README's setup,
+# `pip install -r requirements.txt`, also installs ContextTab (sap_rpt_oss), which is not on PyPI
+# and so cannot be listed here: install it from https://github.com/SAP-samples/sap-rpt-1-oss.
+paper = [
+    "skrub==0.6.2",  # src/llm_encoder.py needs skrub<0.8; 0.6.2 is the paper's version
+    "scipy>=1.11",
+    "matplotlib>=3.7",
+    "seaborn>=0.13",
+    "fastparquet>=2024.11",
+    "joblib>=1.3,<1.6",  # skrub 0.6.2 does not import with joblib 1.6
+    "tqdm>=4.65",
+    "statsmodels>=0.14",
+    "scikit-posthocs>=0.10",
+    "xgboost==3.1.1",
+    "catboost==1.2.8",
+    "pytabkit==1.7.1",
+    "tabpfn==6.0.6",
+    "tabicl==2.0.3",
+    "tabstar==1.1.15",
+    "tarte_ai==0.0.6",
+    "deeptab==1.6.1",
+    "fasttext>=0.9.3",
+    "sentence-transformers==5.2.3",
+    "transformers==4.57.3",
+    "huggingface_hub==0.36.0",
+    "openml>=0.14",
+    "xmltodict>=0.13",
+    "gdown>=5.0",
+]
 extra = [
     "openml",
     "xmltodict",
 ]
 
-[tool.setuptools]
-include-package-data = true
-
+# Only `strable/` is installed: strable, and its fold files in strable/data/folds.
 [tool.setuptools.packages.find]
 include = ["strable", "strable.*"]
+
+[tool.setuptools.package-data]
+"strable.data.folds" = ["*.parquet", "manifest.json"]
+
+[tool.setuptools.dynamic]
+version = { attr = "strable.__version__" }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+markers = ["network: downloads from Hugging Face (run with `pytest -m network`)"]
+addopts = "-m 'not network'"

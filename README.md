@@ -3,7 +3,7 @@
 [![Hugging Face Benchmark](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Benchmark-FFD21E.svg)](https://huggingface.co/datasets/inria-soda/STRABLE-benchmark)
 [![arXiv](https://img.shields.io/badge/arXiv-2605.12292-b31b1b.svg)](https://arxiv.org/abs/2605.12292)
 [![Leaderboard](https://img.shields.io/badge/%F0%9F%8F%86-Leaderboard-2E7D32.svg)](https://gblayer.github.io/strable-leaderboard/)
-[![Agent-friendly](https://img.shields.io/badge/Agent--friendly-AGENTS.md-7B61FF.svg)](AGENTS.md)
+[![Agent-friendly](https://img.shields.io/badge/Agent--friendly-AGENTS.md-7B61FF.svg)](https://github.com/soda-inria/strable/blob/main/AGENTS.md)
 
 # STRABLE: Benchmarking Tabular Machine Learning with Strings
 
@@ -13,15 +13,40 @@
 
 - **Decoder-only LLM embeddings need the right post-processing — i.e. dimensionality reduction.** Default PCA hurts them; standard-scaling-then-PCA, or no-PCA (slicing the first N raw embedding dimensions), recovers their performance.
 
-![Post-processing affects LLM embeddings](figures/post_processing.png)
+![Post-processing affects LLM embeddings](https://raw.githubusercontent.com/soda-inria/strable/main/figures/post_processing.png)
 
 - **Modular pipelines outperform today's end-to-end string-tabular architectures**.
 
-![Critical-difference diagram of encoder–learner pipelines](figures/CD_diagram.png)
+![Critical-difference diagram of encoder–learner pipelines](https://raw.githubusercontent.com/soda-inria/strable/main/figures/CD_diagram.png)
 
 - **Lightweight encoders paired with advanced learners dominate the Pareto frontier (the best performance-vs-runtime trade-off)** — a consequence of STRABLE's string taxonomy: Categoricals 49%, Names 23%, Structured Codes 17%, Datetimes 2%, Identifiers 0.5% and only **8%** Free Text.
 
-![Pareto optimality of tabular learners and string encoders](figures/pareto_plot.png)
+![Pareto optimality of tabular learners and string encoders](https://raw.githubusercontent.com/soda-inria/strable/main/figures/pareto_plot.png)
+
+---
+
+## 📦 Install and use
+
+```bash
+pip install strable
+```
+
+```python
+import strable
+from sklearn.ensemble import HistGradientBoostingRegressor
+from sklearn.pipeline import make_pipeline
+
+X, y, task = strable.load_table("beer-ratings")    # downloaded from Hugging Face once, then cached
+folds = strable.get_folds("beer-ratings")          # the benchmark's 3 (train_idx, test_idx) folds
+
+pipeline = make_pipeline(strable.encoders.tfidf(), HistGradientBoostingRegressor())
+scores = strable.evaluate(pipeline, tables=["beer-ratings"])   # one row per fold: R² or ROC-AUC
+print(scores[["table", "fold", "score"]])
+
+columns, mix = strable.profile(X)                  # type of each string column, and the table's mix
+```
+
+`strable.list_tables()` names the 108 tables (`list_tables("regression")`, `"classification"`, …). `evaluate` uses the [leaderboard](https://gblayer.github.io/strable-leaderboard/)'s folds, metrics and checks; with no `tables`, it runs every regression table for a regressor and every classification table for a classifier. Scores can move slightly with other library versions: SciPy 1.17 and later shift the Tf-Idf features by about 1e-7, and learners change across scikit-learn versions. The leaderboard's environment has scikit-learn 1.7.2, SciPy 1.16.3 and skrub 0.7.0. The tables are public, so no Hugging Face token is needed. On its first call, `profile` downloads NLTK's `words` and `stopwords` corpora (about 800 KB) if they are missing. The package does not include the paper's experiments: for those, set up the full environment of Step 1 below.
 
 ---
 
@@ -62,6 +87,8 @@ strable/
 │   ├── utils_evaluation.py
 │   ├── utils_preprocess.py
 │   └── utils_visualization.py
+├── strable/                            # the pip package: tables, folds, evaluate, Tf-Idf, profile
+├── tests/                              # tests of the package (pytest)
 ├── requirements.txt
 ├── pyproject.toml
 └── LICENSE
@@ -84,13 +111,13 @@ export HF_TOKEN=hf_<your-token>
 
 `HF_HOME` controls the Hugging Face cache (default `~/.cache/huggingface`).
 
-> **ContextTab** — to use the ContextTab learner, follow the install instructions at <https://github.com/SAP-samples/sap-rpt-1-oss>.
+> **ContextTab** is not on PyPI: `requirements.txt` installs it (`sap_rpt_oss`) from <https://github.com/SAP-samples/sap-rpt-1-oss> at the commit the paper used, so `pip` needs `git`.
 
 ---
 
 ## 💾 Step 2 – Get the data
 
-Paths are wired automatically through [`configs/path_configs.py`](configs/path_configs.py).
+Paths are wired automatically through [`configs/path_configs.py`](https://github.com/soda-inria/strable/blob/main/configs/path_configs.py).
 
 ### 2a. Default variant (Hugging Face) — 🤗
 
@@ -125,12 +152,12 @@ python scripts/download_datasets.py --variants default,full,feature-eng,raw-targ
 The Drive bundle does not include upstream raw files. To regenerate:
 
 1. Get raw sources from the URLs in **Appendix C.4** of the paper.
-2. Drop them under `<STRABLE_ROOT>/data/data_raw/<source>/<file>` to match each script's `data_path = …`.
+2. Drop them under `<STRABLE_ROOT>/data/data_raw/`, at the path each script's `data_path = …` names (most scripts read `data/data_raw/<file>`).
 3. Run:
-   - [`scripts/script_preprocess_data/`](scripts/script_preprocess_data/) — for the default 108 tables.
-   - [`scripts/script_data_modification/script_preprocess_subsample_75k/`](scripts/script_data_modification/script_preprocess_subsample_75k/) — for the tables subsampled to 75,000.
-   - [`scripts/script_data_modification/script_preprocess_feature_eng/feature_engineering_performed/`](scripts/script_data_modification/script_preprocess_feature_eng/) — `feature-eng` variant for 43 datasets. Runs **on top of** `data/data_processed/` (i.e. after the default preprocessing), not on the raw sources.
-   - [`scripts/script_data_modification/apply_inverse_label_transformation.py`](scripts/script_data_modification/apply_inverse_label_transformation.py) — `raw-targets` variant: undoes the default skewness transform on regression labels.
+   - [`scripts/script_preprocess_data/`](https://github.com/soda-inria/strable/tree/main/scripts/script_preprocess_data) — for the default 108 tables.
+   - [`scripts/script_data_modification/script_preprocess_subsample_75k/`](https://github.com/soda-inria/strable/tree/main/scripts/script_data_modification/script_preprocess_subsample_75k) — for the tables subsampled to 75,000.
+   - [`scripts/script_data_modification/script_preprocess_feature_eng/feature_engineering_performed/`](https://github.com/soda-inria/strable/tree/main/scripts/script_data_modification/script_preprocess_feature_eng) — `feature-eng` variant for 43 datasets. Runs **on top of** `data/data_processed/` (i.e. after the default preprocessing), not on the raw sources.
+   - [`scripts/script_data_modification/apply_inverse_label_transformation.py`](https://github.com/soda-inria/strable/blob/main/scripts/script_data_modification/apply_inverse_label_transformation.py) — `raw-targets` variant: undoes the default skewness transform on regression labels.
 
 ### 2d. Benchmarks comparison (CARTE / TTB / VSE)
 
@@ -152,9 +179,9 @@ Required only to reproduce the cross-benchmark appendix Figure E.1.
    python scripts/embedding_extraction_scripts/script_extract_llm_embeddings.py \
        -m llm-qwen3-8b -dn all-wide -ns 3 -fi all -dv cuda -cf False -oc False
    ```
-3. **Run the experiment.** Each `scripts/evaluate_scripts/script_evaluate*.py` carries an `ABLATION` tag (`default`, `no-pca`, `ct30-ohe`, `ct30-passthrough`, `feature-eng`, `full-data`, `imputed`, `no-target-transform`).
+3. **Run the experiment.** Each `scripts/evaluate_scripts/script_evaluate*.py` writes under an ablation folder: `script_evaluate.py` under `default`, or `no-pca` with `--no_pca True`; each other script under its hard-coded `ABLATION` tag (`ct30-ohe`, `ct30-passthrough`, `feature-eng`, `full-data`, `imputed`, `no-target-transform`).
 
-   ![STRABLE cross-validation protocol](figures/strable_cv_protocol.png)
+   ![STRABLE cross-validation protocol](https://raw.githubusercontent.com/soda-inria/strable/main/figures/strable_cv_protocol.png)
 
    Output lands at:
 
@@ -162,7 +189,7 @@ Required only to reproduce the cross-benchmark appendix Figure E.1.
    results/<ABLATION>/<save_dir>/<dataset>/<method_marker>/score/<marker>.csv
    ```
 
-   Each variant takes the same core flags (`-dn -ns -m -fi -dv -cf -oc -ti -sd -norm -nopca -ndim --dry-run`); only `script_evaluate_impute_missing_val.py` adds `-mvp/--missing_val_policy`.
+   Each variant takes the same core flags (`-dn -ns -m -fi -dv -cf -oc -ti -sd -norm -nopca -ndim`); `script_evaluate.py` also takes `--dry-run`, and `script_evaluate_impute_missing_val.py` adds `-mvp/--missing_val_policy`.
 
    ```bash
    python scripts/evaluate_scripts/script_evaluate.py \
@@ -174,8 +201,8 @@ Required only to reproduce the cross-benchmark appendix Figure E.1.
    python scripts/compile_results.py default/benchmark_main
    # → results/compiled_results/result_default_benchmark_main.csv
    ```
-   The output name is always `result_<run name with "/" → "_">.csv` (`compiled_results_path()` in [`configs/path_configs.py`](configs/path_configs.py)).
-5. **Figures**: one script per figure, runnable independently. Scripts read benchmark results only from compiled runs; the runs they need (run name, script, flags, methods) are listed once in [`configs/paper_runs.py`](configs/paper_runs.py). `python configs/paper_runs.py` prints the evaluate + compile commands for all of them.
+   The output name is always `result_<run name with "/" → "_">.csv` (`compiled_results_path()` in [`configs/path_configs.py`](https://github.com/soda-inria/strable/blob/main/configs/path_configs.py)).
+5. **Figures**: one script per figure, runnable independently. Scripts read benchmark results only from compiled runs; the runs they need (run name, script, flags, methods) are listed once in [`configs/paper_runs.py`](https://github.com/soda-inria/strable/blob/main/configs/paper_runs.py). `python configs/paper_runs.py` prints the evaluate + compile commands for all of them.
    ```bash
    python figures/main_paper/figure_3.py
    python figures/appendix/figure_E10.py
@@ -237,7 +264,7 @@ python scripts/evaluate_scripts/script_evaluate.py \
 python scripts/compile_results.py default/benchmark_main
 ```
 
-### 6. No-PCA ablation (Fig. E.4)
+### 6. No-PCA ablation (Fig. 2, E.2)
 
 The no-PCA path is a flag on the main script; `--no_pca True` keeps the first `--n_dimensions` raw embedding dimensions instead of running PCA. Re-uses the same embeddings as the default run; only the dimensionality-reduction step differs. Results land under `results/no-pca/...`.
 
@@ -332,9 +359,9 @@ python scripts/evaluate_scripts/script_evaluate.py --dry-run \
 
 ## 🏷️ Method tokens (`-m / --method`)
 
-Method strings have the form `<dtype>_<encoder>_<learner>`. The full enumeration of valid combinations lives in [`scripts/evaluate_scripts/METHOD_NAMES.md`](scripts/evaluate_scripts/METHOD_NAMES.md); display-name maps live in [`figures/_main.py`](figures/_main.py) (`dtype_map`, `encoder_map`, `learner_map`).
+Method strings have the form `<dtype>_<encoder>_<learner>`. The full enumeration of valid combinations lives in [`scripts/evaluate_scripts/METHOD_NAMES.md`](https://github.com/soda-inria/strable/blob/main/scripts/evaluate_scripts/METHOD_NAMES.md); display-name maps live in [`figures/_main.py`](https://github.com/soda-inria/strable/blob/main/figures/_main.py) (`dtype_map`, `encoder_map`, `learner_map`).
 
-The `_default` / `_tune` suffix is appended automatically based on `-ti / --tune_indicator`; do **not** put it in `-m`. `scripts/compile_results.py` adds it to the compiled `method` column (e.g. `num-str_tabvec_xgb_tune`) for learners listed in `estim_configs` ([`configs/exp_configs.py`](configs/exp_configs.py)); the other learners keep the bare name (`num-str_contexttab_contexttab`).
+The `_default` / `_tune` suffix is appended automatically based on `-ti / --tune_indicator`; do **not** put it in `-m`. `scripts/compile_results.py` adds it to the compiled `method` column (e.g. `num-str_tabvec_xgb_tune`) for learners listed in `estim_configs` ([`configs/exp_configs.py`](https://github.com/soda-inria/strable/blob/main/configs/exp_configs.py)); the other learners keep the bare name (`num-str_contexttab_contexttab`).
 
 ---
 
@@ -356,4 +383,4 @@ If you use STRABLE in your work, please cite:
 
 ## ⚖️ License
 
-This project is released under the [BSD 3-Clause License](LICENSE).
+This project is released under the [BSD 3-Clause License](https://github.com/soda-inria/strable/blob/main/LICENSE).
