@@ -25,6 +25,31 @@
 
 ---
 
+## 📦 Install and use
+
+```bash
+pip install strable
+```
+
+```python
+import strable
+from sklearn.ensemble import HistGradientBoostingRegressor
+from sklearn.pipeline import make_pipeline
+
+X, y, task = strable.load_table("beer-ratings")    # downloaded from Hugging Face once, then cached
+folds = strable.get_folds("beer-ratings")          # the benchmark's 3 (train_idx, test_idx) folds
+
+pipeline = make_pipeline(strable.encoders.tfidf(), HistGradientBoostingRegressor())
+scores = strable.evaluate(pipeline, tables=["beer-ratings"])   # one row per fold: R² or ROC-AUC
+print(scores[["table", "fold", "score"]])
+
+columns, mix = strable.profile(X)                  # type of each string column, and the table's mix
+```
+
+`strable.list_tables()` names the 108 tables (`list_tables("regression")`, `"classification"`, …). `evaluate` uses the [leaderboard](https://gblayer.github.io/strable-leaderboard/)'s folds, metrics and checks; with no `tables`, it runs every regression table for a regressor and every classification table for a classifier. Scores can move slightly with other versions of scikit-learn and skrub; the leaderboard's environment has scikit-learn 1.7.2 and skrub 0.7.0. The package does not include the paper's experiments: for those, set up the full environment of Step 1 below.
+
+---
+
 ## 🗂️ Repository layout
 
 ```text
@@ -62,6 +87,8 @@ strable/
 │   ├── utils_evaluation.py
 │   ├── utils_preprocess.py
 │   └── utils_visualization.py
+├── strable/                            # the pip package: tables, folds, evaluate, Tf-Idf, profile
+├── tests/                              # tests of the package (pytest)
 ├── requirements.txt
 ├── pyproject.toml
 └── LICENSE

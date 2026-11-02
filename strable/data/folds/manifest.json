@@ -1,0 +1,1090 @@
+{
+ "dataset": "inria-soda/STRABLE-benchmark",
+ "revision": "335c0a77595d4a9ddd86f46dc9c3b414f63a09a8",
+ "seed": 1234,
+ "outer_folds": 3,
+ "inner_folds": 8,
+ "scikit_learn": "1.7.2",
+ "tables": {
+  "aca-federal-upper-limits-wide": {
+   "task": "regression",
+   "n_rows": 1976,
+   "test_rows_per_outer_fold": [
+    659,
+    659,
+    658
+   ],
+   "data_parquet_sha256": "dead03fc6097cb0417096cea444627ab439c84e4e133da8b81afaf0db9ff603e"
+  },
+  "aijob_ai-ml-ds-salaries": {
+   "task": "regression",
+   "n_rows": 5672,
+   "test_rows_per_outer_fold": [
+    1891,
+    1891,
+    1890
+   ],
+   "data_parquet_sha256": "3e43807107cf0aa6c276e36e59abd8841591aaa5416573e16ef708ea9caad4d3"
+  },
+  "animalandveterinary-event": {
+   "task": "binary",
+   "n_rows": 1345,
+   "test_rows_per_outer_fold": [
+    449,
+    448,
+    448
+   ],
+   "data_parquet_sha256": "0c916b50ddf61014aea5f9e0aaada45d3c08fb912470e42780bc8ff9e03badab"
+  },
+  "antenna-structure-registration": {
+   "task": "regression",
+   "n_rows": 17633,
+   "test_rows_per_outer_fold": [
+    5878,
+    5878,
+    5877
+   ],
+   "data_parquet_sha256": "f186728428777032eda8ea824f9d442097e05fb3feaed903b2c9a4289c98f419"
+  },
+  "awarded-grants": {
+   "task": "regression",
+   "n_rows": 63815,
+   "test_rows_per_outer_fold": [
+    21272,
+    21272,
+    21271
+   ],
+   "data_parquet_sha256": "d83fb6bee23cec28a5bc3ab217c2822ce43a3f801b34c7e12547b2fbabba42be"
+  },
+  "beer-ratings": {
+   "task": "regression",
+   "n_rows": 3197,
+   "test_rows_per_outer_fold": [
+    1066,
+    1066,
+    1065
+   ],
+   "data_parquet_sha256": "81d02d1e497188a5e61aca779a7e3a67d01320347b8ee55c3343b16fb63fb2ca"
+  },
+  "broadband-availability": {
+   "task": "regression",
+   "n_rows": 3219,
+   "test_rows_per_outer_fold": [
+    1073,
+    1073,
+    1073
+   ],
+   "data_parquet_sha256": "89727485cb485ce4e35c64a28ce9e9fd060dedb807d5e79181253270a8cd4ffa"
+  },
+  "california-houses": {
+   "task": "regression",
+   "n_rows": 44913,
+   "test_rows_per_outer_fold": [
+    14971,
+    14971,
+    14971
+   ],
+   "data_parquet_sha256": "5108c4451ee4f1894ab9036f9eec61b9fb7640ebffdef8a7e08668720a4f123a"
+  },
+  "child-adult-healthcare-quality": {
+   "task": "regression",
+   "n_rows": 29367,
+   "test_rows_per_outer_fold": [
+    9789,
+    9789,
+    9789
+   ],
+   "data_parquet_sha256": "6f623f743d6b4c84bc4de3ac058226af251317ce1cc1c4f6f3fc6b3a44fba0ae"
+  },
+  "china-overseas-finance-inventory": {
+   "task": "regression",
+   "n_rows": 550,
+   "test_rows_per_outer_fold": [
+    184,
+    183,
+    183
+   ],
+   "data_parquet_sha256": "b0b7803556e9e5414277093d2bf36e432ce75f18f13cfa13b45ca77fc22971c5"
+  },
+  "chocolate-bar-ratings": {
+   "task": "multiclass",
+   "n_rows": 2789,
+   "test_rows_per_outer_fold": [
+    930,
+    930,
+    929
+   ],
+   "data_parquet_sha256": "c92595077ce6b5e37549d37113c23e088ce70073026364c42cf245ad7033c6dd"
+  },
+  "clear-corpus": {
+   "task": "regression",
+   "n_rows": 4724,
+   "test_rows_per_outer_fold": [
+    1575,
+    1575,
+    1574
+   ],
+   "data_parquet_sha256": "f9907f5f72e8aa3349245ceec0af2631ce9600ef4634661f8394aa4e80595b47"
+  },
+  "cohort-default-rate": {
+   "task": "binary",
+   "n_rows": 4700,
+   "test_rows_per_outer_fold": [
+    1567,
+    1567,
+    1566
+   ],
+   "data_parquet_sha256": "101a2896275eb64619b2be2d8c750aea58b19a1569676328103507ac1f213cfe"
+  },
+  "college-creditcard-marketing": {
+   "task": "regression",
+   "n_rows": 6283,
+   "test_rows_per_outer_fold": [
+    2095,
+    2094,
+    2094
+   ],
+   "data_parquet_sha256": "d4a15042dcb43dbc26c59b0b160e03894e838c80270b1b4471cd521523a89043"
+  },
+  "college-deposit-product-marketing": {
+   "task": "regression",
+   "n_rows": 1359,
+   "test_rows_per_outer_fold": [
+    453,
+    453,
+    453
+   ],
+   "data_parquet_sha256": "64a9e95c0bb51fea1420a7cdc85645b5ffb838a0f188f4f92d32567a1db39a98"
+  },
+  "colleges-and-universities": {
+   "task": "regression",
+   "n_rows": 6128,
+   "test_rows_per_outer_fold": [
+    2043,
+    2043,
+    2042
+   ],
+   "data_parquet_sha256": "5667104b84cd9b8a7f8e1e2b7ef8cb94aa7193cc511a23141b62ebceabc8bdf5"
+  },
+  "commitments-in-trust-funds": {
+   "task": "regression",
+   "n_rows": 41243,
+   "test_rows_per_outer_fold": [
+    13748,
+    13748,
+    13747
+   ],
+   "data_parquet_sha256": "d4806e83b3c4c9b6ad9ddb551ea32afdd272b0adf2fb6cb7164d6d79b1eb3333"
+  },
+  "community-banking_wide": {
+   "task": "regression",
+   "n_rows": 5253,
+   "test_rows_per_outer_fold": [
+    1751,
+    1751,
+    1751
+   ],
+   "data_parquet_sha256": "fe0e09925655e2bfab638d966300c5ef4678bfce4b6d2b9b23bf140cde195c3f"
+  },
+  "conflict-events_wide": {
+   "task": "regression",
+   "n_rows": 1520,
+   "test_rows_per_outer_fold": [
+    507,
+    507,
+    506
+   ],
+   "data_parquet_sha256": "f087b8b85b8e1e2898f0a4a0e6c4a9ba35c6d513a443818c6d1cab87464cd6d2"
+  },
+  "contract-awards-investment-project-financing": {
+   "task": "regression",
+   "n_rows": 75000,
+   "test_rows_per_outer_fold": [
+    25000,
+    25000,
+    25000
+   ],
+   "data_parquet_sha256": "57e2ebe1107ff65aed178775561ae418cbb9c3596b7b6fa3290ff09d1ee75dbb"
+  },
+  "contributions-to-financial-intermediary-funds": {
+   "task": "regression",
+   "n_rows": 2990,
+   "test_rows_per_outer_fold": [
+    997,
+    997,
+    996
+   ],
+   "data_parquet_sha256": "3d5ab1641563d3b996b7cc4dd8cde2cd05db5fae84c50386c655237af47d2b4f"
+  },
+  "corporate-procurement-contract-awards": {
+   "task": "regression",
+   "n_rows": 3295,
+   "test_rows_per_outer_fold": [
+    1099,
+    1098,
+    1098
+   ],
+   "data_parquet_sha256": "b0395abcb9fae27d450aa5592a702c875745a71bd620a3e97cb5110c698afa58"
+  },
+  "cosmetic-event": {
+   "task": "multiclass",
+   "n_rows": 75000,
+   "test_rows_per_outer_fold": [
+    25000,
+    25000,
+    25000
+   ],
+   "data_parquet_sha256": "f644344eb006bc7aa696b07d47cd7946b65fa9289785d689abdeee619fe8a879"
+  },
+  "covid-clinical-trials": {
+   "task": "regression",
+   "n_rows": 4227,
+   "test_rows_per_outer_fold": [
+    1409,
+    1409,
+    1409
+   ],
+   "data_parquet_sha256": "d8c55ab3db68324a17ae6637b3da97feae193d51c65a8b7b43118155a05fa0f0"
+  },
+  "device-classification": {
+   "task": "multiclass",
+   "n_rows": 6522,
+   "test_rows_per_outer_fold": [
+    2174,
+    2174,
+    2174
+   ],
+   "data_parquet_sha256": "de6cf6e9d558c7c6ec713cfd4ee279908bd0754cfb5d04c59cdfcee9a71c7039"
+  },
+  "device-covid19serology": {
+   "task": "binary",
+   "n_rows": 13420,
+   "test_rows_per_outer_fold": [
+    4474,
+    4473,
+    4473
+   ],
+   "data_parquet_sha256": "f1abbce119058ec6ef7638585aaaa6b316ee0a7dd3f4fccd332f7b75ce046b4d"
+  },
+  "device-pma": {
+   "task": "binary",
+   "n_rows": 54636,
+   "test_rows_per_outer_fold": [
+    18212,
+    18212,
+    18212
+   ],
+   "data_parquet_sha256": "ee12e9b636e687845e99f2c9904c382176eb005060e0b10c36af891cf0147d0a"
+  },
+  "disbursements-in-trust-funds": {
+   "task": "regression",
+   "n_rows": 75000,
+   "test_rows_per_outer_fold": [
+    25000,
+    25000,
+    25000
+   ],
+   "data_parquet_sha256": "d204e00981883e108c1ac709592e6b560c3c92e0d3d37e2307084f4dd7781a3b"
+  },
+  "discretionary-grant": {
+   "task": "regression",
+   "n_rows": 13218,
+   "test_rows_per_outer_fold": [
+    4406,
+    4406,
+    4406
+   ],
+   "data_parquet_sha256": "e58c29e33ad24795984b52baf19f6eede7ff6e0d62ee5fa06247603081e8b8a5"
+  },
+  "drug-drugsfda": {
+   "task": "binary",
+   "n_rows": 27075,
+   "test_rows_per_outer_fold": [
+    9025,
+    9025,
+    9025
+   ],
+   "data_parquet_sha256": "fc24404e815908923df561c585290cf06429148a2f4b0c62fbfb1638efe8c5f0"
+  },
+  "drug-enforcement": {
+   "task": "multiclass",
+   "n_rows": 4504,
+   "test_rows_per_outer_fold": [
+    1502,
+    1501,
+    1501
+   ],
+   "data_parquet_sha256": "4fa38d8097fb029da147aed305f5f485acc0a82b11d125d3919d98e10b8197cc"
+  },
+  "drug-ndc": {
+   "task": "multiclass",
+   "n_rows": 583,
+   "test_rows_per_outer_fold": [
+    195,
+    194,
+    194
+   ],
+   "data_parquet_sha256": "2fd38ba8fe80905ff4212f1f10967cf0797895779aa32a43f8fc2f0eacc04df8"
+  },
+  "drug-shortages": {
+   "task": "multiclass",
+   "n_rows": 1180,
+   "test_rows_per_outer_fold": [
+    394,
+    393,
+    393
+   ],
+   "data_parquet_sha256": "a3e9cffbd7b3b2b241f0a79e7338cc3e342da1ef7ce7d60bf744212f4e08074a"
+  },
+  "electric-generating-plants": {
+   "task": "regression",
+   "n_rows": 8849,
+   "test_rows_per_outer_fold": [
+    2950,
+    2950,
+    2949
+   ],
+   "data_parquet_sha256": "b2e6ef29c7dc751704d130182ea2ff00b6c73c7d3f9b43be60d02f72d1f1e620"
+  },
+  "electric-retail-service-territories": {
+   "task": "regression",
+   "n_rows": 2909,
+   "test_rows_per_outer_fold": [
+    970,
+    970,
+    969
+   ],
+   "data_parquet_sha256": "b5c3f3021511b2f08ccaf58fd1cedf716499e86a548e0d638250101966f08bf7"
+  },
+  "external-clinician-dashboard": {
+   "task": "regression",
+   "n_rows": 28399,
+   "test_rows_per_outer_fold": [
+    9467,
+    9466,
+    9466
+   ],
+   "data_parquet_sha256": "be4aea8c5866e477e7afec5a886be8c99ecd7a4d340d873a6a5dfd0b5c3e77e2"
+  },
+  "financial-intermediary-funds-cash-transfers": {
+   "task": "regression",
+   "n_rows": 16630,
+   "test_rows_per_outer_fold": [
+    5544,
+    5543,
+    5543
+   ],
+   "data_parquet_sha256": "8c98029f8675ddb2fd996a274689bac13b35537e426cab550d5f186966cd8203"
+  },
+  "financial-intermediary-funds-commitments": {
+   "task": "regression",
+   "n_rows": 12875,
+   "test_rows_per_outer_fold": [
+    4292,
+    4292,
+    4291
+   ],
+   "data_parquet_sha256": "3c11a6b0b542b580450db11ffe91f1b013643da0a042d2aeae35eee5d48ef4f6"
+  },
+  "financial-intermediary-funds-funding-decisions": {
+   "task": "regression",
+   "n_rows": 14750,
+   "test_rows_per_outer_fold": [
+    4917,
+    4917,
+    4916
+   ],
+   "data_parquet_sha256": "d7c884fc2c1cf4e7cb078cef63dbede86dc69745194a0739411bc29a0269ba6c"
+  },
+  "financial-management": {
+   "task": "regression",
+   "n_rows": 15511,
+   "test_rows_per_outer_fold": [
+    5171,
+    5170,
+    5170
+   ],
+   "data_parquet_sha256": "0efca559a5fbe5172c58effafbffabc5dd0ca44ad72fb30cacdf48ac220e9d89"
+  },
+  "financial-product-complaint": {
+   "task": "multiclass",
+   "n_rows": 75000,
+   "test_rows_per_outer_fold": [
+    25000,
+    25000,
+    25000
+   ],
+   "data_parquet_sha256": "d789aa4ff0d5284173fc056425ed3f06b665ea60f91a4632faa135588827805b"
+  },
+  "first-time-nadac-rates": {
+   "task": "regression",
+   "n_rows": 1130,
+   "test_rows_per_outer_fold": [
+    377,
+    377,
+    376
+   ],
+   "data_parquet_sha256": "cfea67e74161813e77d303f05054649fafbe8759d43f14504e5517a0c584efa8"
+  },
+  "food-enforcement": {
+   "task": "multiclass",
+   "n_rows": 7654,
+   "test_rows_per_outer_fold": [
+    2552,
+    2551,
+    2551
+   ],
+   "data_parquet_sha256": "f549c945710837090643c15a4a0f4299653d1b9808f8b3108abb8e7fe674b9de"
+  },
+  "food-event": {
+   "task": "multiclass",
+   "n_rows": 23713,
+   "test_rows_per_outer_fold": [
+    7905,
+    7904,
+    7904
+   ],
+   "data_parquet_sha256": "b2bee118ff9cf967a4076e712d82d082e6c0ae41b9ce0d4a9e63892cbf953bd1"
+  },
+  "food-prices_wide": {
+   "task": "regression",
+   "n_rows": 50443,
+   "test_rows_per_outer_fold": [
+    16815,
+    16814,
+    16814
+   ],
+   "data_parquet_sha256": "958262c929f70ee85f920473ad17b81ae0a7b9622b95ec092e3b53f80a2dbbe4"
+  },
+  "foreign-gift-and-contract": {
+   "task": "regression",
+   "n_rows": 75000,
+   "test_rows_per_outer_fold": [
+    25000,
+    25000,
+    25000
+   ],
+   "data_parquet_sha256": "f74ad2281a6627df3fa160e62879778b25200f6b85720d926242c4aafa80bc8f"
+  },
+  "fts-funding": {
+   "task": "regression",
+   "n_rows": 13153,
+   "test_rows_per_outer_fold": [
+    4385,
+    4384,
+    4384
+   ],
+   "data_parquet_sha256": "5edd04b83976000dce54fddbe0024d1fc5d7c4d785c82eb5bfd746f9affd565c"
+  },
+  "fts-requirement-and-funding": {
+   "task": "regression",
+   "n_rows": 7009,
+   "test_rows_per_outer_fold": [
+    2337,
+    2336,
+    2336
+   ],
+   "data_parquet_sha256": "35933e61b097a70e0647e05e2d758d9587076f2667a5976a363b58fe0986c1a9"
+  },
+  "gainful-employment": {
+   "task": "regression",
+   "n_rows": 8637,
+   "test_rows_per_outer_fold": [
+    2879,
+    2879,
+    2879
+   ],
+   "data_parquet_sha256": "18b2b5e99e2973967f8164f409d107f6caba05cde1d2dd61bb09a0c183726ccb"
+  },
+  "global-dams-database": {
+   "task": "regression",
+   "n_rows": 3978,
+   "test_rows_per_outer_fold": [
+    1326,
+    1326,
+    1326
+   ],
+   "data_parquet_sha256": "f5783360186dfc61d60d08758d1aee3ab24ffb829d6ad845c565554a7b87dad7"
+  },
+  "global-power-plant": {
+   "task": "regression",
+   "n_rows": 34936,
+   "test_rows_per_outer_fold": [
+    11646,
+    11645,
+    11645
+   ],
+   "data_parquet_sha256": "30c0e23f6ab1f501933be73d40c3905ac6b436621cecf0298ea1d1cacc3dc9c5"
+  },
+  "grant": {
+   "task": "regression",
+   "n_rows": 22424,
+   "test_rows_per_outer_fold": [
+    7475,
+    7475,
+    7474
+   ],
+   "data_parquet_sha256": "fe105c2b1056fc6270c0abf02eb4b92757ff4768f555358f3f40125477320d47"
+  },
+  "health-professional-shortage-areas": {
+   "task": "regression",
+   "n_rows": 9691,
+   "test_rows_per_outer_fold": [
+    3231,
+    3230,
+    3230
+   ],
+   "data_parquet_sha256": "c537f13f4c188fa6c67250355f2c5d5ae3059c51485a182cddffb54522f38214"
+  },
+  "historic-perimeters-wildfires": {
+   "task": "regression",
+   "n_rows": 23776,
+   "test_rows_per_outer_fold": [
+    7926,
+    7925,
+    7925
+   ],
+   "data_parquet_sha256": "01ee5f3662ca5a0c13d1d5eb91b7bfd0c2b51bcc67c24732fda1e845c9f26e64"
+  },
+  "historical-earthquake-locations": {
+   "task": "multiclass",
+   "n_rows": 3998,
+   "test_rows_per_outer_fold": [
+    1333,
+    1333,
+    1332
+   ],
+   "data_parquet_sha256": "465b4b00fe7deb94117483c92a93d5ad14f122f8d709ef95e2c92af10e297053"
+  },
+  "historical-volcanic-locations": {
+   "task": "multiclass",
+   "n_rows": 603,
+   "test_rows_per_outer_fold": [
+    201,
+    201,
+    201
+   ],
+   "data_parquet_sha256": "6d5d151c09b2cadac889d823d530a66e031a0920492acb93346a864a82ba930e"
+  },
+  "hospitals": {
+   "task": "regression",
+   "n_rows": 7883,
+   "test_rows_per_outer_fold": [
+    2628,
+    2628,
+    2627
+   ],
+   "data_parquet_sha256": "0af025a785e06a0b5f11bd87f872495af8a2aa6ead4fe8892473cf66c5b174fe"
+  },
+  "hypertension-control-wide": {
+   "task": "binary",
+   "n_rows": 1363,
+   "test_rows_per_outer_fold": [
+    455,
+    454,
+    454
+   ],
+   "data_parquet_sha256": "d4661f53a53be93f15f47694c38967f6eb8e14df0455ad4589994065a39475e0"
+  },
+  "ibrd-statement-loans-guarantees": {
+   "task": "regression",
+   "n_rows": 9331,
+   "test_rows_per_outer_fold": [
+    3111,
+    3110,
+    3110
+   ],
+   "data_parquet_sha256": "36a0317958e55bca0899f42ca21a58c2ee15e86db53f477b4d7cd7a0dfefc5ec"
+  },
+  "ida-statement-credits-grants-guarantees": {
+   "task": "regression",
+   "n_rows": 7766,
+   "test_rows_per_outer_fold": [
+    2589,
+    2589,
+    2588
+   ],
+   "data_parquet_sha256": "48f50ea995114bd43cd6b92c83f53372464741fae5e765d9238f96ff0e5cb428"
+  },
+  "ifc-advisory-services-projects": {
+   "task": "regression",
+   "n_rows": 1885,
+   "test_rows_per_outer_fold": [
+    629,
+    628,
+    628
+   ],
+   "data_parquet_sha256": "185c5c2221c6fa40884ca5f4242afd7035074fd0659ad43708a302e9d0fb5cb6"
+  },
+  "ifc-investment-service-projects": {
+   "task": "regression",
+   "n_rows": 6328,
+   "test_rows_per_outer_fold": [
+    2110,
+    2109,
+    2109
+   ],
+   "data_parquet_sha256": "8de6eef4fbfe19e71c96b839cf6018ecfe74f1803c63770143228cede84fed23"
+  },
+  "industry-payments-entity": {
+   "task": "regression",
+   "n_rows": 31448,
+   "test_rows_per_outer_fold": [
+    10483,
+    10483,
+    10482
+   ],
+   "data_parquet_sha256": "4a3e033d8017727c5af8c6dafc3926670702befba44e8531bc277eb3b58877ed"
+  },
+  "industry-payments-project": {
+   "task": "regression",
+   "n_rows": 32327,
+   "test_rows_per_outer_fold": [
+    10776,
+    10776,
+    10775
+   ],
+   "data_parquet_sha256": "0d8d25ba6c2cc882fc3328d79cefb4c1ffe54b40b4dcc143f897281bd619247f"
+  },
+  "insurance-company-complaints": {
+   "task": "regression",
+   "n_rows": 14509,
+   "test_rows_per_outer_fold": [
+    4837,
+    4836,
+    4836
+   ],
+   "data_parquet_sha256": "0522cd9fc00666f3cbf29fda3ae39f022edd7929e288acedaf49e4d2f7ee623e"
+  },
+  "journal-ranking_wide": {
+   "task": "regression",
+   "n_rows": 31136,
+   "test_rows_per_outer_fold": [
+    10379,
+    10379,
+    10378
+   ],
+   "data_parquet_sha256": "34be8baf34f803193baa6ed110c84bc205533778914249f407fdc43dabfcef42"
+  },
+  "kickstarter-projects": {
+   "task": "binary",
+   "n_rows": 75000,
+   "test_rows_per_outer_fold": [
+    25000,
+    25000,
+    25000
+   ],
+   "data_parquet_sha256": "bc1f0509696ef82de9b9ca3e8010892d5927aa8dc27138841b582f629b76ba19"
+  },
+  "lending-club-loan": {
+   "task": "binary",
+   "n_rows": 38577,
+   "test_rows_per_outer_fold": [
+    12859,
+    12859,
+    12859
+   ],
+   "data_parquet_sha256": "19e46e3ae52edbb69ea31358212045fa9d1209b379d11856bac5ef09b8d10399"
+  },
+  "local-government-renewable-action": {
+   "task": "regression",
+   "n_rows": 1333,
+   "test_rows_per_outer_fold": [
+    445,
+    444,
+    444
+   ],
+   "data_parquet_sha256": "df58a0c96f99889293cda04fc2c9b75b7bca8a88b3fbed44550b4ecc8b28e131"
+  },
+  "local-law-enforcements": {
+   "task": "regression",
+   "n_rows": 16159,
+   "test_rows_per_outer_fold": [
+    5387,
+    5386,
+    5386
+   ],
+   "data_parquet_sha256": "b92e8b64e21692e35157d642b3184aad08f672804082acc41823104c2bdf9b7c"
+  },
+  "managed-care-enrollment": {
+   "task": "regression",
+   "n_rows": 2726,
+   "test_rows_per_outer_fold": [
+    909,
+    909,
+    908
+   ],
+   "data_parquet_sha256": "d46bc2e1b7089caf151aa9cd4fed5b4982dc07021ae0ec627727949b08183c83"
+  },
+  "media-ranking_wide": {
+   "task": "regression",
+   "n_rows": 6009,
+   "test_rows_per_outer_fold": [
+    2003,
+    2003,
+    2003
+   ],
+   "data_parquet_sha256": "53d21f782417d2514c6237d9cfc23fd9560917ff8bb88beb42ef2a005096d6a0"
+  },
+  "medically-underserved-areas-populations": {
+   "task": "regression",
+   "n_rows": 3882,
+   "test_rows_per_outer_fold": [
+    1294,
+    1294,
+    1294
+   ],
+   "data_parquet_sha256": "47bf6399e023f9e87e39c43962a9b381ef8b19e545ff9a42d8392dece8399b72"
+  },
+  "medicines": {
+   "task": "binary",
+   "n_rows": 2559,
+   "test_rows_per_outer_fold": [
+    853,
+    853,
+    853
+   ],
+   "data_parquet_sha256": "60b16da9398ffc03d8b17a729702e2951b458744b8e775f11e481a0f561a52b0"
+  },
+  "mercari": {
+   "task": "regression",
+   "n_rows": 75000,
+   "test_rows_per_outer_fold": [
+    25000,
+    25000,
+    25000
+   ],
+   "data_parquet_sha256": "c812ef1768aa9087c12d573bfff8b1183a8ee9c23fd6a14f5f8bb53a5f6ca42a"
+  },
+  "meta-critic_whisky": {
+   "task": "regression",
+   "n_rows": 1812,
+   "test_rows_per_outer_fold": [
+    604,
+    604,
+    604
+   ],
+   "data_parquet_sha256": "32b634314852b1431fe2f76c5e95b8573fbd5a8e4dab4826b449c54959bb031f"
+  },
+  "michelin-ratings": {
+   "task": "multiclass",
+   "n_rows": 18839,
+   "test_rows_per_outer_fold": [
+    6280,
+    6280,
+    6279
+   ],
+   "data_parquet_sha256": "7881efdd70fa720c62e84376bc0ba98e691e880245c3a6dad40e2c46cc332155"
+  },
+  "miga-issued-projects": {
+   "task": "regression",
+   "n_rows": 619,
+   "test_rows_per_outer_fold": [
+    207,
+    206,
+    206
+   ],
+   "data_parquet_sha256": "a74f42ffeb7bc0b657d2ed19e1d45fdb99ce4a432727e0df530c62074c8b714f"
+  },
+  "mlr-summary-reports": {
+   "task": "regression",
+   "n_rows": 1665,
+   "test_rows_per_outer_fold": [
+    555,
+    555,
+    555
+   ],
+   "data_parquet_sha256": "0f74e325763d0723eb4fd520fa17a75a3877e5968424d3342aff189cec8ecbf1"
+  },
+  "mobile-home-parks": {
+   "task": "multiclass",
+   "n_rows": 56094,
+   "test_rows_per_outer_fold": [
+    18698,
+    18698,
+    18698
+   ],
+   "data_parquet_sha256": "4612b71f0ede902640eacebfdfefa2cc304676240d333231ecd9e3e9c2abb0f6"
+  },
+  "museums": {
+   "task": "regression",
+   "n_rows": 20351,
+   "test_rows_per_outer_fold": [
+    6784,
+    6784,
+    6783
+   ],
+   "data_parquet_sha256": "00dcad704cd4ed06cb3b2aeb405b411f043f093d4af028c5ccea402a9c080b02"
+  },
+  "national-average-drug-acquisition-cost": {
+   "task": "regression",
+   "n_rows": 8947,
+   "test_rows_per_outer_fold": [
+    2983,
+    2982,
+    2982
+   ],
+   "data_parquet_sha256": "eedfca672ef581a62098646d634d165298d35924b993ee7f6f40aeaf7598f671"
+  },
+  "oil-natural-gas-platform": {
+   "task": "regression",
+   "n_rows": 7137,
+   "test_rows_per_outer_fold": [
+    2379,
+    2379,
+    2379
+   ],
+   "data_parquet_sha256": "51be3aee5579df4b16cbac7c4d8c30d74b2fdf34db73089a0b7d868b4b1ab76b"
+  },
+  "orphan-designations": {
+   "task": "binary",
+   "n_rows": 3083,
+   "test_rows_per_outer_fold": [
+    1028,
+    1028,
+    1027
+   ],
+   "data_parquet_sha256": "eb7fb2411866ac96a086d5999ba1849215161259e4e839f257b0048d3493c9f3"
+  },
+  "osha-accidents": {
+   "task": "binary",
+   "n_rows": 4847,
+   "test_rows_per_outer_fold": [
+    1616,
+    1616,
+    1615
+   ],
+   "data_parquet_sha256": "6cc10bad1284f4c572faced044a4feadf85f94b3ed48693549fd1abe07267083"
+  },
+  "paediatric-investigation-plan": {
+   "task": "multiclass",
+   "n_rows": 3056,
+   "test_rows_per_outer_fold": [
+    1019,
+    1019,
+    1018
+   ],
+   "data_parquet_sha256": "a015ee74812ad23cf9bc4ec8497f565cb7ebba426b70128b17c0b2737dc27362"
+  },
+  "pol-terminal": {
+   "task": "regression",
+   "n_rows": 2091,
+   "test_rows_per_outer_fold": [
+    697,
+    697,
+    697
+   ],
+   "data_parquet_sha256": "c39080d29866c9b46d8b73d4246d5fd8030bcc4d083a3e94eca3d601485b75ad"
+  },
+  "power-plants": {
+   "task": "regression",
+   "n_rows": 23093,
+   "test_rows_per_outer_fold": [
+    7698,
+    7698,
+    7697
+   ],
+   "data_parquet_sha256": "2db6faa5b8a25ba62bab58714dd01baff5972480f7e1ee7e9593140af3a6712c"
+  },
+  "prepaid-financial-product": {
+   "task": "binary",
+   "n_rows": 3336,
+   "test_rows_per_outer_fold": [
+    1112,
+    1112,
+    1112
+   ],
+   "data_parquet_sha256": "fdc6a94d28bca579338010d639c744f4d6ab63c27e31accbac06924ee5af50a9"
+  },
+  "prison-boundaries": {
+   "task": "regression",
+   "n_rows": 3755,
+   "test_rows_per_outer_fold": [
+    1252,
+    1252,
+    1251
+   ],
+   "data_parquet_sha256": "377eb056525f6b629a08e29dd88b06b537fa29be27985dee814cb8947d64535b"
+  },
+  "ramen-ratings": {
+   "task": "multiclass",
+   "n_rows": 5006,
+   "test_rows_per_outer_fold": [
+    1669,
+    1669,
+    1668
+   ],
+   "data_parquet_sha256": "b4c1ef63ef82ad7322f9a4ce761896f54b9c45a9864b837e665ffb7aa5bd33b3"
+  },
+  "rasff_window": {
+   "task": "multiclass",
+   "n_rows": 25702,
+   "test_rows_per_outer_fold": [
+    8568,
+    8567,
+    8567
+   ],
+   "data_parquet_sha256": "12417564df8e79e97281fec663b7921382d5dbc345412c4dda78db26fbba78ce"
+  },
+  "rasnf_notification_list": {
+   "task": "binary",
+   "n_rows": 42186,
+   "test_rows_per_outer_fold": [
+    14062,
+    14062,
+    14062
+   ],
+   "data_parquet_sha256": "f8fedb4d1962928831e9eb3053162563be5485d46ed0f4b87a9bdbbd26a86304"
+  },
+  "recipient-executed-grants-commitments-disbursements": {
+   "task": "regression",
+   "n_rows": 7390,
+   "test_rows_per_outer_fold": [
+    2464,
+    2463,
+    2463
+   ],
+   "data_parquet_sha256": "d555f537e42959ca468124b0006e5389cddca2f2eea19b23a54735aca15dc32c"
+  },
+  "schools": {
+   "task": "regression",
+   "n_rows": 75000,
+   "test_rows_per_outer_fold": [
+    25000,
+    25000,
+    25000
+   ],
+   "data_parquet_sha256": "569841a1c4e16550c82af7709ef92b26496ffca90a5056e6cfee68f72f3724b8"
+  },
+  "sf-building-permits": {
+   "task": "regression",
+   "n_rows": 75000,
+   "test_rows_per_outer_fold": [
+    25000,
+    25000,
+    25000
+   ],
+   "data_parquet_sha256": "1fa62f59158ab35a3eddc6992549424c6a32d3e8143f41ceb602230c2f3ca8c0"
+  },
+  "summary-of-deposit_wide": {
+   "task": "regression",
+   "n_rows": 4546,
+   "test_rows_per_outer_fold": [
+    1516,
+    1515,
+    1515
+   ],
+   "data_parquet_sha256": "4c18d4dad38dc739a7ab70db4cafe04c0c1b26ea63297d6a60ab417914d05b5d"
+  },
+  "tax-incentives": {
+   "task": "regression",
+   "n_rows": 908,
+   "test_rows_per_outer_fold": [
+    303,
+    303,
+    302
+   ],
+   "data_parquet_sha256": "be38034eecd808328cde79dd3d36275269e971e9cc15a3084c85f20296a765c2"
+  },
+  "terms-cc-plans": {
+   "task": "regression",
+   "n_rows": 9486,
+   "test_rows_per_outer_fold": [
+    3162,
+    3162,
+    3162
+   ],
+   "data_parquet_sha256": "a8d940fdfc4d222f8cf9ab49e3f4a6baae6351e03896583973318b5cf3d6ec8d"
+  },
+  "tobacco-problem": {
+   "task": "multiclass",
+   "n_rows": 1314,
+   "test_rows_per_outer_fold": [
+    438,
+    438,
+    438
+   ],
+   "data_parquet_sha256": "fe5a919131f4b20b4105fbb35b3f30351e402941d2181995f32fcbf3e4878575"
+  },
+  "total-contributions-ibrd-ida-ifc": {
+   "task": "regression",
+   "n_rows": 7826,
+   "test_rows_per_outer_fold": [
+    2609,
+    2609,
+    2608
+   ],
+   "data_parquet_sha256": "5044a44570371382601a776bd52ae68c8376e4dba86ca169bf10c578a3b6b73e"
+  },
+  "transmission-lines": {
+   "task": "multiclass",
+   "n_rows": 75000,
+   "test_rows_per_outer_fold": [
+    25000,
+    25000,
+    25000
+   ],
+   "data_parquet_sha256": "aa3158e5c40d0641039df3b1c522d58e2c5153c7d2cdbf7f327a266f6e32b51e"
+  },
+  "transmission-towers": {
+   "task": "regression",
+   "n_rows": 75000,
+   "test_rows_per_outer_fold": [
+    25000,
+    25000,
+    25000
+   ],
+   "data_parquet_sha256": "289500f3469ef4f90fb115f2721a27cb8cc9df54aa0bb0fdb68770c39d77c717"
+  },
+  "us-school-bus-fleet": {
+   "task": "regression",
+   "n_rows": 17011,
+   "test_rows_per_outer_fold": [
+    5671,
+    5670,
+    5670
+   ],
+   "data_parquet_sha256": "bff452eba4ddb15fe6bd3217a9f4beafb2c46050d40b1e7259acba56d715ea2f"
+  },
+  "vehicles": {
+   "task": "regression",
+   "n_rows": 1238,
+   "test_rows_per_outer_fold": [
+    413,
+    413,
+    412
+   ],
+   "data_parquet_sha256": "6456c215925bd9283ed95db6ade11484f8694eed62d1ea1b4dc78d01baa58eaa"
+  },
+  "wine-dataset": {
+   "task": "regression",
+   "n_rows": 1290,
+   "test_rows_per_outer_fold": [
+    430,
+    430,
+    430
+   ],
+   "data_parquet_sha256": "87c381fa5b2bdcd2d2d0f47ed2d8caec7d8fdd877848e2c3ba68205b18589c4a"
+  },
+  "workforce-demographics-wide": {
+   "task": "regression",
+   "n_rows": 1588,
+   "test_rows_per_outer_fold": [
+    530,
+    529,
+    529
+   ],
+   "data_parquet_sha256": "52a1a4ec428877105362b00747681b5d29aa71bdbb94ff85cad798dd1f6ad972"
+  },
+  "yelp_business": {
+   "task": "multiclass",
+   "n_rows": 75000,
+   "test_rows_per_outer_fold": [
+    25000,
+    25000,
+    25000
+   ],
+   "data_parquet_sha256": "25bc0574ca5f875d1f02e0c1b77ce2245d251e811fc644a9958adf925b4ef772"
+  }
+ }
+}
