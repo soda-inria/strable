@@ -13,15 +13,15 @@
 
 - **Decoder-only LLM embeddings need the right post-processing — i.e. dimensionality reduction.** Default PCA hurts them; standard-scaling-then-PCA, or no-PCA (slicing the first N raw embedding dimensions), recovers their performance.
 
-![Post-processing affects LLM embeddings](figures/post_processing.png)
+![Post-processing affects LLM embeddings](https://raw.githubusercontent.com/soda-inria/strable/main/figures/post_processing.png)
 
 - **Modular pipelines outperform today's end-to-end string-tabular architectures**.
 
-![Critical-difference diagram of encoder–learner pipelines](figures/CD_diagram.png)
+![Critical-difference diagram of encoder–learner pipelines](https://raw.githubusercontent.com/soda-inria/strable/main/figures/CD_diagram.png)
 
 - **Lightweight encoders paired with advanced learners dominate the Pareto frontier (the best performance-vs-runtime trade-off)** — a consequence of STRABLE's string taxonomy: Categoricals 49%, Names 23%, Structured Codes 17%, Datetimes 2%, Identifiers 0.5% and only **8%** Free Text.
 
-![Pareto optimality of tabular learners and string encoders](figures/pareto_plot.png)
+![Pareto optimality of tabular learners and string encoders](https://raw.githubusercontent.com/soda-inria/strable/main/figures/pareto_plot.png)
 
 ---
 
@@ -46,7 +46,7 @@ print(scores[["table", "fold", "score"]])
 columns, mix = strable.profile(X)                  # type of each string column, and the table's mix
 ```
 
-`strable.list_tables()` names the 108 tables (`list_tables("regression")`, `"classification"`, …). `evaluate` uses the [leaderboard](https://gblayer.github.io/strable-leaderboard/)'s folds, metrics and checks; with no `tables`, it runs every regression table for a regressor and every classification table for a classifier. Scores can move slightly with other versions of scikit-learn and skrub; the leaderboard's environment has scikit-learn 1.7.2 and skrub 0.7.0. The tables are public, so no Hugging Face token is needed. On its first call, `profile` downloads NLTK's `words` and `stopwords` corpora (about 800 KB) if they are missing. The package does not include the paper's experiments: for those, set up the full environment of Step 1 below.
+`strable.list_tables()` names the 108 tables (`list_tables("regression")`, `"classification"`, …). `evaluate` uses the [leaderboard](https://gblayer.github.io/strable-leaderboard/)'s folds, metrics and checks; with no `tables`, it runs every regression table for a regressor and every classification table for a classifier. Scores can move slightly with other library versions: SciPy 1.17 and later shift the Tf-Idf features by about 1e-7, and learners change across scikit-learn versions. The leaderboard's environment has scikit-learn 1.7.2, SciPy 1.16.3 and skrub 0.7.0. The tables are public, so no Hugging Face token is needed. On its first call, `profile` downloads NLTK's `words` and `stopwords` corpora (about 800 KB) if they are missing. The package does not include the paper's experiments: for those, set up the full environment of Step 1 below.
 
 ---
 
@@ -181,7 +181,7 @@ Required only to reproduce the cross-benchmark appendix Figure E.1.
    ```
 3. **Run the experiment.** Each `scripts/evaluate_scripts/script_evaluate*.py` writes under an ablation folder: `script_evaluate.py` under `default`, or `no-pca` with `--no_pca True`; each other script under its hard-coded `ABLATION` tag (`ct30-ohe`, `ct30-passthrough`, `feature-eng`, `full-data`, `imputed`, `no-target-transform`).
 
-   ![STRABLE cross-validation protocol](figures/strable_cv_protocol.png)
+   ![STRABLE cross-validation protocol](https://raw.githubusercontent.com/soda-inria/strable/main/figures/strable_cv_protocol.png)
 
    Output lands at:
 
