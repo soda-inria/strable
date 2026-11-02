@@ -29,9 +29,9 @@ VARIANT_TO_FOLDER = {
 # Which evaluate script reads each variant — informational, surfaced in `--help`.
 VARIANT_USED_BY = {
     "default": "script_evaluate.py and most ablations",
-    "full": "script_evaluate_FULL.py (Fig E.9)",
-    "feature-eng": "script_evaluate_feature_eng.py (Fig E.6)",
-    "raw-targets": "script_evaluate_skewness.py (Fig E.7)",
+    "full": "script_evaluate_FULL.py (Fig E.10)",
+    "feature-eng": "script_evaluate_feature_eng.py (Fig E.7)",
+    "raw-targets": "script_evaluate_skewness.py (Fig E.8)",
 }
 
 
