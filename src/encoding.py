@@ -87,7 +87,7 @@ def embed_table(data_name, n_split, fold_index, embed_method, normalization, no_
             duration_embed += duration_llm
     elif encode_method == "catboost":
         X_train, X_test, cat_features = prepare_catboost(X_train, X_test)
-        elif encode_method == "tabstar":
+    elif encode_method == "tabstar":
         X_train, X_test = prepare_tabstar(X_train, X_test, y_train)
         # convert y_train to pandas Series if not already
         if not isinstance(y_train, pd.Series):
