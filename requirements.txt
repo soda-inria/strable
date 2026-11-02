@@ -5,6 +5,7 @@ scikit-learn>=1.6
 matplotlib>=3.7
 seaborn>=0.13
 pyarrow>=14.0            
+fastparquet>=2024.11
 joblib>=1.3
 tqdm>=4.65
 statsmodels>=0.14        
@@ -15,10 +16,14 @@ pytabkit==1.7.1
 tabpfn==6.0.6            
 tabicl==2.0.3            
 tabstar==1.1.15
-sap_rpt_oss==1.0.1       
+# ContextTab is not on PyPI: its GitHub repository at tag v1.1.2, the commit of the paper's environment
+# (it installs as version 1.0.1). Needs git.
+sap_rpt_oss @ git+https://github.com/SAP-samples/sap-rpt-1-oss.git@4310453f3bbb9c9c403b029e966565e7fe652d97
 tarte_ai==0.0.6          
 deeptab==1.6.1           
-skrub>=0.6               
+# skrub 0.6.2, the paper's version: src/llm_encoder.py imports skrub._apply_to_cols.SingleColumnTransformer,
+# which skrub 0.8 moved, and column typing changes between skrub versions.
+skrub==0.6.2
 fasttext>=0.9.3          
 sentence-transformers>=3.0
 transformers>=4.40

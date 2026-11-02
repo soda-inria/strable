@@ -47,6 +47,7 @@ dependencies = [
     "scikit-learn>=1.6",
     "skrub>=0.6",
     "huggingface_hub",
+    "nltk>=3.8",
 ]
 
 [project.urls]
@@ -60,41 +61,45 @@ test = [
     "pytest",
     "coverage",
 ]
-# The paper's experiments (scripts/, src/, figures/ of the repository). The README's setup,
-# `pip install -r requirements.txt`, gives the pinned environment. ContextTab (sap-rpt-1-oss) is
-# not on PyPI: install it from https://github.com/SAP-samples/sap-rpt-1-oss.
+# The paper's experiments (scripts/, src/, figures/ of the repository): the packages of
+# requirements.txt beyond the core ones, with the same versions. The README's setup,
+# `pip install -r requirements.txt`, also installs ContextTab (sap_rpt_oss), which is not on PyPI
+# and so cannot be listed here: install it from https://github.com/SAP-samples/sap-rpt-1-oss.
 paper = [
-    "scipy",
-    "joblib",
-    "matplotlib",
-    "seaborn",
-    "statsmodels",
-    "scikit-posthocs",
-    "xgboost",
-    "catboost",
-    "tabpfn",
-    "tabstar",
-    "tarte-ai",
-    "fasttext",
-    "fastparquet",
-    "submitit",
-    "torch",
-    "transformers",
-    "sentence-transformers",
-    "pytabkit",
-    "networkx",
+    "skrub==0.6.2",  # src/llm_encoder.py needs skrub<0.8; 0.6.2 is the paper's version
+    "scipy>=1.11",
+    "matplotlib>=3.7",
+    "seaborn>=0.13",
+    "fastparquet>=2024.11",
+    "joblib>=1.3",
+    "tqdm>=4.65",
+    "statsmodels>=0.14",
+    "scikit-posthocs>=0.10",
+    "xgboost==3.1.1",
+    "catboost==1.2.8",
+    "pytabkit==1.7.1",
+    "tabpfn==6.0.6",
+    "tabicl==2.0.3",
+    "tabstar==1.1.15",
+    "tarte_ai==0.0.6",
+    "deeptab==1.6.1",
+    "fasttext>=0.9.3",
+    "sentence-transformers>=3.0",
+    "transformers>=4.40",
+    "openml>=0.14",
+    "xmltodict>=0.13",
+    "gdown>=5.0",
 ]
 extra = [
     "openml",
     "xmltodict",
 ]
 
-# Only `strable/` is installed: strable, and its data folders strable/data and strable/data/folds.
+# Only `strable/` is installed: strable, and its fold files in strable/data/folds.
 [tool.setuptools.packages.find]
 include = ["strable", "strable.*"]
 
 [tool.setuptools.package-data]
-"strable.data" = ["*.txt", "*.txt.gz"]
 "strable.data.folds" = ["*.parquet", "manifest.json"]
 
 [tool.setuptools.dynamic]

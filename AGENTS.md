@@ -188,17 +188,22 @@ The full set of method-encoder combinations evaluated in the paper is enumerated
 
 ## Use STRABLE as a dataset only
 
-If the user just wants the 108 tables for their own evaluation (no STRABLE pipelines):
+If the user just wants the 108 tables for their own evaluation (no STRABLE pipelines), use the `strable` package:
 
 ```bash
-python data/download_datasets.py
-# tables land in data/data_processed/<dataset>/
-# each dataset has: data.parquet, info.json, and CV split indices
+pip install strable
 ```
 
-Then they can read them directly with pandas / pyarrow. Don't pull in `src/encoding.py` or the evaluate scripts unless they want to compare against STRABLE's published pipeline numbers — in which case follow [The two-stage rule](#the-two-stage-rule-llm-pipelines).
+```python
+import strable
+X, y, task = strable.load_table("beer-ratings")  # from Hugging Face at a pinned revision, cached
+folds = strable.get_folds("beer-ratings")        # the benchmark's 3 (train_idx, test_idx) outer folds
+scores = strable.evaluate(pipeline, tables=strable.list_tables("regression"))  # one row per fold
+```
 
-For a fair comparison with published numbers, match: 3-fold CV (`-ns 3`), the per-dataset score (R² for regression on the skewness-transformed target, AUROC for classification), and the same train/test indices stored in `info.json`.
+To get the files instead: `python data/download_datasets.py` puts each table in `data/data_processed/<dataset>/`, as `data.parquet` and `config.json` (`target_name`, `task`). It downloads the latest revision of the Hugging Face dataset, while the package reads the revision its folds were computed on. Then they can read them directly with pandas / pyarrow. Don't pull in `src/encoding.py` or the evaluate scripts unless they want to compare against STRABLE's published pipeline numbers — in which case follow [The two-stage rule](#the-two-stage-rule-llm-pipelines).
+
+For a fair comparison with published numbers, match: the 3 outer folds of `strable.get_folds` (the paper's and the leaderboard's folds), and the per-fold score (R² for regression, on the skewness-transformed target the tables hold; ROC-AUC for classification), as `strable.evaluate` computes it.
 
 ---
 

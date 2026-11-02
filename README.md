@@ -46,7 +46,7 @@ print(scores[["table", "fold", "score"]])
 columns, mix = strable.profile(X)                  # type of each string column, and the table's mix
 ```
 
-`strable.list_tables()` names the 108 tables (`list_tables("regression")`, `"classification"`, …). `evaluate` uses the [leaderboard](https://gblayer.github.io/strable-leaderboard/)'s folds, metrics and checks; with no `tables`, it runs every regression table for a regressor and every classification table for a classifier. Scores can move slightly with other versions of scikit-learn and skrub; the leaderboard's environment has scikit-learn 1.7.2 and skrub 0.7.0. The package does not include the paper's experiments: for those, set up the full environment of Step 1 below.
+`strable.list_tables()` names the 108 tables (`list_tables("regression")`, `"classification"`, …). `evaluate` uses the [leaderboard](https://gblayer.github.io/strable-leaderboard/)'s folds, metrics and checks; with no `tables`, it runs every regression table for a regressor and every classification table for a classifier. Scores can move slightly with other versions of scikit-learn and skrub; the leaderboard's environment has scikit-learn 1.7.2 and skrub 0.7.0. The tables are public, so no Hugging Face token is needed. On its first call, `profile` downloads NLTK's `words` and `stopwords` corpora (about 800 KB) if they are missing. The package does not include the paper's experiments: for those, set up the full environment of Step 1 below.
 
 ---
 
@@ -111,7 +111,7 @@ export HF_TOKEN=hf_<your-token>
 
 `HF_HOME` controls the Hugging Face cache (default `~/.cache/huggingface`).
 
-> **ContextTab** — to use the ContextTab learner, follow the install instructions at <https://github.com/SAP-samples/sap-rpt-1-oss>.
+> **ContextTab** is not on PyPI: `requirements.txt` installs it (`sap_rpt_oss`) from <https://github.com/SAP-samples/sap-rpt-1-oss> at the commit the paper used, so `pip` needs `git`.
 
 ---
 
@@ -152,7 +152,7 @@ python scripts/download_datasets.py --variants default,full,feature-eng,raw-targ
 The Drive bundle does not include upstream raw files. To regenerate:
 
 1. Get raw sources from the URLs in **Appendix C.4** of the paper.
-2. Drop them under `<STRABLE_ROOT>/data/data_raw/<source>/<file>` to match each script's `data_path = …`.
+2. Drop them under `<STRABLE_ROOT>/data/data_raw/`, at the path each script's `data_path = …` names (most scripts read `data/data_raw/<file>`).
 3. Run:
    - [`scripts/script_preprocess_data/`](scripts/script_preprocess_data/) — for the default 108 tables.
    - [`scripts/script_data_modification/script_preprocess_subsample_75k/`](scripts/script_data_modification/script_preprocess_subsample_75k/) — for the tables subsampled to 75,000.
@@ -179,7 +179,7 @@ Required only to reproduce the cross-benchmark appendix Figure E.1.
    python scripts/embedding_extraction_scripts/script_extract_llm_embeddings.py \
        -m llm-qwen3-8b -dn all-wide -ns 3 -fi all -dv cuda -cf False -oc False
    ```
-3. **Run the experiment.** Each `scripts/evaluate_scripts/script_evaluate*.py` carries an `ABLATION` tag (`default`, `no-pca`, `ct30-ohe`, `ct30-passthrough`, `feature-eng`, `full-data`, `imputed`, `no-target-transform`).
+3. **Run the experiment.** Each `scripts/evaluate_scripts/script_evaluate*.py` writes under an ablation folder: `script_evaluate.py` under `default`, or `no-pca` with `--no_pca True`; each other script under its hard-coded `ABLATION` tag (`ct30-ohe`, `ct30-passthrough`, `feature-eng`, `full-data`, `imputed`, `no-target-transform`).
 
    ![STRABLE cross-validation protocol](figures/strable_cv_protocol.png)
 
@@ -189,7 +189,7 @@ Required only to reproduce the cross-benchmark appendix Figure E.1.
    results/<ABLATION>/<save_dir>/<dataset>/<method_marker>/score/<marker>.csv
    ```
 
-   Each variant takes the same core flags (`-dn -ns -m -fi -dv -cf -oc -ti -sd -norm -nopca -ndim --dry-run`); only `script_evaluate_impute_missing_val.py` adds `-mvp/--missing_val_policy`.
+   Each variant takes the same core flags (`-dn -ns -m -fi -dv -cf -oc -ti -sd -norm -nopca -ndim`); `script_evaluate.py` also takes `--dry-run`, and `script_evaluate_impute_missing_val.py` adds `-mvp/--missing_val_policy`.
 
    ```bash
    python scripts/evaluate_scripts/script_evaluate.py \
@@ -264,7 +264,7 @@ python scripts/evaluate_scripts/script_evaluate.py \
 python scripts/compile_results.py default/benchmark_main
 ```
 
-### 6. No-PCA ablation (Fig. E.4)
+### 6. No-PCA ablation (Fig. 2, E.2)
 
 The no-PCA path is a flag on the main script; `--no_pca True` keeps the first `--n_dimensions` raw embedding dimensions instead of running PCA. Re-uses the same embeddings as the default run; only the dimensionality-reduction step differs. Results land under `results/no-pca/...`.
 

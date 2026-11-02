@@ -6,22 +6,19 @@ use every non-missing cell), and fixed rules on these metrics give its type. The
 are those of ``classify_column_heuristic`` in
 scripts/natural_language_test_VSE_vs_STRABLE_vs_CARTE_vs_TTB.py of the STRABLE repository.
 
-The word lists are NLTK's: ``data/english_words.txt.gz`` is the English words corpus (the Unix
-"words" file, 235,886 words), for the dictionary hit rate; ``data/english_stopwords.txt`` is the
-English stopwords list (198 words).
+The word lists are NLTK's corpora, as in the paper: ``words`` (its English file ``en``, the Unix
+"words" file) for the dictionary hit rate, and ``stopwords`` (English). The first call downloads
+them with ``nltk.download`` when they are missing.
 """
 
 from __future__ import annotations
 
-import gzip
 import re
 from functools import cache
-from pathlib import Path
 from typing import NamedTuple
 
 import pandas as pd
 
-DATA_DIR = Path(__file__).resolve().parent / "data"
 TYPES = ("categorical", "name", "structured_code", "free_text", "identifier", "datetime")
 METRICS = ("n_unique", "uniqueness", "avg_chars_per_cell", "avg_words_per_cell", "dict_hit_rate", "stopword_density",
            "symbol_density", "prop_numeric_chars", "prop_multiword", "prop_has_pattern", "prop_is_datetime")
@@ -53,15 +50,29 @@ class Profile(NamedTuple):
     mix: pd.Series
 
 
+def _nltk_corpus(name: str):
+    """NLTK's corpus ``name``, downloaded quietly the first time it is missing."""
+    import nltk  # imported here: only profile() needs it
+
+    try:
+        nltk.data.find(f"corpora/{name}")
+    except LookupError:
+        if not nltk.download(name, quiet=True):
+            raise RuntimeError(
+                f"strable.profile needs NLTK's {name!r} corpus and could not download it (offline?). "
+                "Download it once while online with `python -m nltk.downloader words stopwords`, "
+                "or set NLTK_DATA to a folder that holds both corpora.") from None
+    return getattr(nltk.corpus, name)
+
+
 @cache
 def _english_words() -> frozenset:
-    with gzip.open(DATA_DIR / "english_words.txt.gz", "rt", encoding="ascii") as f:
-        return frozenset(line for line in f.read().splitlines() if line)
+    return frozenset(_nltk_corpus("words").words("en"))
 
 
 @cache
 def _stopwords() -> frozenset:
-    return frozenset(line for line in (DATA_DIR / "english_stopwords.txt").read_text().splitlines() if line)
+    return frozenset(_nltk_corpus("stopwords").words("english"))
 
 
 def string_columns(df: pd.DataFrame) -> list[str]:
