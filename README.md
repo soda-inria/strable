@@ -186,6 +186,7 @@ Required only to reproduce the cross-benchmark appendix Figure E.1.
    python scripts/embedding_extraction_scripts/script_extract_llm_embeddings.py \
        -m llm-qwen3-8b -dn all-wide -ns 3 -fi all -dv cuda -cf False -oc False
    ```
+   GPU memory: the 8B encoders (Qwen-3-8B, LLaMA-3.1-8B) run in float32, as in the paper, so their weights alone take 30 to 32 GB; use a GPU with at least 40 GB (e.g. A40, A100). When a batch does not fit, the script retries with half the batch.
 3. **Run the experiment.** Each `scripts/evaluate_scripts/script_evaluate*.py` writes under an ablation folder: `script_evaluate.py` under `default`, or `no-pca` with `--no_pca True`; each other script under its hard-coded `ABLATION` tag (`ct30-ohe`, `ct30-passthrough`, `feature-eng`, `full-data`, `imputed`, `no-target-transform`).
 
    ![STRABLE cross-validation protocol](https://raw.githubusercontent.com/soda-inria/strable/main/figures/strable_cv_protocol.png)
