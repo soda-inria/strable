@@ -176,7 +176,7 @@ def run_model(
 
     estimator = run_inference(
         best_estimator,
-        estim_configs[estim_method]["fit_with_val"],
+        estim_configs.get(estim_method, {}).get("fit_with_val", False),  # no entry: fit on all training rows
         X_train,
         y_train,
         tune_indicator,
@@ -249,11 +249,11 @@ def _get_experiment_args_list(
     """Returns the list of arguments to run evaluations."""
 
     from sklearn.model_selection import ParameterGrid
-    from configs.exp_configs import data_list_wide
-
     data_name_list = data_name
     if data_name == ["all-wide"]:
-        data_name_list = data_list_wide
+        # This variant holds a subset of the 108 tables (in FULL, named <table>-FULL): take all of its tables
+        variant_folder = f"{path_configs['path_data_processed']}_feature_eng"
+        data_name_list = sorted(d for d in os.listdir(variant_folder) if os.path.isdir(f"{variant_folder}/{d}"))
     else:
         if isinstance(data_name_list, list) == False:
             data_name_list = [data_name_list]

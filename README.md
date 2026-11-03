@@ -111,6 +111,13 @@ export HF_TOKEN=hf_<your-token>
 
 `HF_HOME` controls the Hugging Face cache (default `~/.cache/huggingface`).
 
+> **TabPFN-2.5** — the `tabpfn` and `realtabpfn` learners load the paper's checkpoints from `data/models/tabpfn_2_5/` (Prior Labs' licence applies):
+> ```bash
+> hf download Prior-Labs/tabpfn_2_5 --revision 6c45f3a6d0d07c6c5f62572e04a0c2929de91b8b --local-dir data/models/tabpfn_2_5 \
+>     tabpfn-v2.5-classifier-v2.5_default.ckpt tabpfn-v2.5-regressor-v2.5_default.ckpt \
+>     tabpfn-v2.5-classifier-v2.5_real.ckpt tabpfn-v2.5-regressor-v2.5_real.ckpt
+> ```
+
 > **ContextTab** is not on PyPI: `requirements.txt` installs it (`sap_rpt_oss`) from <https://github.com/SAP-samples/sap-rpt-1-oss> at the commit the paper used, so `pip` needs `git`.
 
 ---
@@ -179,6 +186,7 @@ Required only to reproduce the cross-benchmark appendix Figure E.1.
    python scripts/embedding_extraction_scripts/script_extract_llm_embeddings.py \
        -m llm-qwen3-8b -dn all-wide -ns 3 -fi all -dv cuda -cf False -oc False
    ```
+   GPU memory: the 8B encoders (Qwen-3-8B, LLaMA-3.1-8B) run in float32, as in the paper, so their weights alone take 30 to 32 GB; use a GPU with at least 40 GB (e.g. A40, A100). When a batch does not fit, the script retries with half the batch.
 3. **Run the experiment.** Each `scripts/evaluate_scripts/script_evaluate*.py` writes under an ablation folder: `script_evaluate.py` under `default`, or `no-pca` with `--no_pca True`; each other script under its hard-coded `ABLATION` tag (`ct30-ohe`, `ct30-passthrough`, `feature-eng`, `full-data`, `imputed`, `no-target-transform`).
 
    ![STRABLE cross-validation protocol](https://raw.githubusercontent.com/soda-inria/strable/main/figures/strable_cv_protocol.png)
@@ -202,8 +210,9 @@ Required only to reproduce the cross-benchmark appendix Figure E.1.
    # → results/compiled_results/result_default_benchmark_main.csv
    ```
    The output name is always `result_<run name with "/" → "_">.csv` (`compiled_results_path()` in [`configs/path_configs.py`](https://github.com/soda-inria/strable/blob/main/configs/path_configs.py)).
-5. **Figures**: one script per figure, runnable independently. Scripts read benchmark results only from compiled runs; the runs they need (run name, script, flags, methods) are listed once in [`configs/paper_runs.py`](https://github.com/soda-inria/strable/blob/main/configs/paper_runs.py). `python configs/paper_runs.py` prints the evaluate + compile commands for all of them.
+5. **Figures**: one script per figure, runnable independently. Scripts read benchmark results only from compiled runs; the runs they need (run name, script, flags, methods) are listed once in [`configs/paper_runs.py`](https://github.com/soda-inria/strable/blob/main/configs/paper_runs.py). `python configs/paper_runs.py` prints the evaluate + compile commands for all of them. A figure needs the compiled results of every run it reads, so the figures come after the full benchmark. They also read per-table statistics (rows, columns, cardinality, string length, missing values) that `scripts/datasets_representation.py` writes once to `dataset_summary_wide.parquet`.
    ```bash
+   python scripts/datasets_representation.py
    python figures/main_paper/figure_3.py
    python figures/appendix/figure_E10.py
    ```
@@ -282,6 +291,10 @@ python scripts/compile_results.py no-pca/benchmark_main
 Routes string columns with cardinality `<30` through one-hot encoding (Ridge) or passthrough (XGBoost / TabPFN); columns with cardinality `≥30` still go through the LLM encoder. Two scripts, one per learner family:
 
 ```bash
+# LLaMA-3.1-8B embeddings, read by both branches (a gated model: accept its licence on Hugging Face, set HF_TOKEN)
+python scripts/embedding_extraction_scripts/script_extract_llm_embeddings.py \
+    -m llm-llama-3.1-8b -dn all-wide -ns 3 -fi all -dv cuda -cf False -oc False
+
 # OHE branch (Ridge)
 python scripts/evaluate_scripts/script_evaluate_30_thres_OHE.py \
     --save_dir benchmark_main -m num-str_llm-llama-3.1-8b_ridge \

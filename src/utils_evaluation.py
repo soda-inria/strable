@@ -1,6 +1,7 @@
 """Common functions used for evaluation."""
 
 import json
+import os
 import pandas as pd
 import numpy as np
 from datetime import datetime
@@ -298,6 +299,15 @@ def calculate_output(X_test, estimator, task):
 
 
 
+def tabpfn_checkpoint(task, variant):
+    """Path of the paper's TabPFN-2.5 checkpoint, ``variant`` "default" (tabpfn) or "real" (realtabpfn)."""
+    kind = "regressor" if task == "regression" else "classifier"
+    path = f"{path_configs['models']}/tabpfn_2_5/tabpfn-v2.5-{kind}-v2.5_{variant}.ckpt"
+    if not os.path.exists(path):
+        raise FileNotFoundError(f"{path} is missing: download the TabPFN-2.5 checkpoints as in README Step 1.")
+    return path
+
+
 def assign_estimator(
     estim_method,
     task,
@@ -319,23 +329,17 @@ def assign_estimator(
         else:
             estimator_ = RidgeClassifierCV(**fixed_params)
 
-    elif estim_method == "tabpfn":
+    elif estim_method in ["tabpfn", "realtabpfn"]:
 
         from tabpfn import TabPFNRegressor, TabPFNClassifier
-        from glob import glob
 
         fixed_params = dict()
         fixed_params["device"] = device
         fixed_params["ignore_pretraining_limits"] = True
+        fixed_params["model_path"] = tabpfn_checkpoint(task, "default" if estim_method == "tabpfn" else "real")
         if task == "regression":
-            fixed_params["model_path"] = glob(
-                f"{path_configs['models']}/tabpfn_2_5/*tabpfn-v2.5-regressor-v2.5_default*"
-            )[0]
             estimator_ = TabPFNRegressor(**fixed_params)
         else:
-            fixed_params["model_path"] = glob(
-                f"{path_configs['models']}/tabpfn_2_5/*tabpfn-v2.5-classifier-v2.5_default*"
-            )[0]
             estimator_ = TabPFNClassifier(**fixed_params)
             
     elif estim_method == "tabicl":

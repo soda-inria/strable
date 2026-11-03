@@ -8,6 +8,7 @@ if str(_REPO_ROOT) not in _sys.path:
 del _sys, _Path, _REPO_ROOT
 
 import json
+import gc
 import time
 import os
 import numpy as np
@@ -96,7 +97,7 @@ def run_model(
         batch_size = 16
 
     # Load data
-    data_folder = f"{path_configs['path_data_processed']}_feat_eng"
+    data_folder = f"{path_configs['path_data_processed']}_feature_eng"
 
     # Dataset
     data_path = f"{data_folder}/{data_name}/data.parquet"
@@ -124,12 +125,25 @@ def run_model(
         llm_embeddings = [lm_model.get_sentence_vector(str(x)) for x in np.array(unique_words['name'])]
         llm_embeddings = np.array(llm_embeddings)
     else:
-        llm_embeddings = lm_model.encode(
-            np.array(unique_words['name'].astype(str)),
-            convert_to_numpy=True,
-            batch_size=batch_size,
-            normalize_embeddings=False,
-        )
+        import torch
+
+        while True:  # the longest strings of a table may not fit on the GPU: retry with half the batch
+            attempt_start = time.perf_counter()
+            try:
+                llm_embeddings = lm_model.encode(
+                    np.array(unique_words['name'].astype(str)),
+                    convert_to_numpy=True,
+                    batch_size=batch_size,
+                    normalize_embeddings=False,
+                )
+                break
+            except torch.OutOfMemoryError:
+                if batch_size == 1:
+                    raise
+                batch_size //= 2
+                torch.cuda.empty_cache()
+                start_time += time.perf_counter() - attempt_start  # the failed attempt is not timed
+                print(f"{model_name} {data_name}: out of GPU memory, batch size {batch_size}")
 
     llm_embeddings = pd.DataFrame(llm_embeddings)
     llm_embeddings.columns = [f"X{x}" for x in range(llm_embeddings.shape[1])]
@@ -141,6 +155,12 @@ def run_model(
     # Save the extracted embeddings
     llm_embeddings.to_parquet(llm_embed_path, index=False)
     np.save(time_path, duration_emb_extraction)
+
+    # Release the model before the next table loads it again: two 8B models in float32 do not fit on a 48 GB GPU
+    del lm_model
+    gc.collect()
+    if model_configs['hf_model_name'] != 'fasttext':
+        torch.cuda.empty_cache()
 
     return None
 
@@ -157,11 +177,13 @@ def _get_experiment_args_list(
     """Returns the list of arguments to run evaluations."""
 
     from sklearn.model_selection import ParameterGrid
-    from configs.exp_configs import data_list_wide, llm_configs
+    from configs.exp_configs import llm_configs
 
     data_name_list = data_name
     if data_name == ["all-wide"]:
-        data_name_list = data_list_wide
+        # This variant holds a subset of the 108 tables (in FULL, named <table>-FULL): take all of its tables
+        variant_folder = f"{path_configs['path_data_processed']}_feature_eng"
+        data_name_list = sorted(d for d in os.listdir(variant_folder) if os.path.isdir(f"{variant_folder}/{d}"))
     else:
         if isinstance(data_name_list, list) == False:
             data_name_list = [data_name_list]

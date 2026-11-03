@@ -57,10 +57,10 @@ def extract_archive(archive_path: Path, extract_to: Path) -> Path:
     with zipfile.ZipFile(archive_path, "r") as zf:
         zf.extractall(extract_to)
 
-    # Some zips wrap the four variant folders in an outer dir
-    # (e.g. ``strable_data/``). Detect that case and dive in.
-    entries = [p for p in extract_to.iterdir() if not p.name.startswith(".")]
-    if len(entries) == 1 and entries[0].is_dir() and entries[0].name not in VARIANT_TO_FOLDER.values():
+    # The zip wraps the four variant folders in an outer dir (``strable_data/``),
+    # next to a ``__MACOSX/`` folder; the zip itself sits in ``extract_to`` too.
+    entries = [p for p in extract_to.iterdir() if p.is_dir() and p.name != "__MACOSX" and not p.name.startswith(".")]
+    if len(entries) == 1 and entries[0].name not in VARIANT_TO_FOLDER.values():
         return entries[0]
     return extract_to
 
@@ -141,6 +141,9 @@ def main() -> None:
 
         download_archive(archive_path)
         extracted_root = extract_archive(archive_path, tmp_path)
+        missing = [v for v in args.variants if not (extracted_root / VARIANT_TO_FOLDER[v]).is_dir()]
+        if missing:
+            raise SystemExit(f"The archive has no folder for {missing}; it holds {sorted(p.name for p in extracted_root.iterdir())}")
 
         n = install(extracted_root, args.target_root, args.variants, args.force)
 

@@ -184,7 +184,7 @@ def run_model(
 
     estimator = run_inference(
         best_estimator,
-        estim_configs[estim_method]["fit_with_val"],
+        estim_configs.get(estim_method, {}).get("fit_with_val", False),  # no entry: fit on all training rows
         X_train,
         y_train,
         tune_indicator,
