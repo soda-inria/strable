@@ -1,4 +1,7 @@
-numpy>=1.24
+# numpy 2.5 makes pandas 2.3 crash (segmentation fault) when skrub encodes dates past 2262 stored in
+# microseconds, as in foreign-gift-and-contract (Contract End Date 9999-12-31); 2.3 works (the paper used
+# 2.3.4), 2.4 is untested.
+numpy>=1.24,<2.4
 pandas>=2.0
 scipy>=1.11
 scikit-learn>=1.6        

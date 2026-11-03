@@ -41,7 +41,7 @@ classifiers = [
 ]
 # The package `strable`: tables, folds, evaluation, Tf-Idf encoder and string taxonomy.
 dependencies = [
-    "numpy",
+    "numpy<2.4",  # numpy 2.5 makes pandas 2.3 crash on dates past 2262 (see requirements.txt)
     "pandas",
     "pyarrow",
     "scikit-learn>=1.6",
