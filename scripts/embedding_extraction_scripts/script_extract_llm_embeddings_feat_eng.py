@@ -97,7 +97,7 @@ def run_model(
         batch_size = 16
 
     # Load data
-    data_folder = f"{path_configs['path_data_processed']}_feat_eng"
+    data_folder = f"{path_configs['path_data_processed']}_feature_eng"
 
     # Dataset
     data_path = f"{data_folder}/{data_name}/data.parquet"
