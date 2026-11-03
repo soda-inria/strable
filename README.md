@@ -111,6 +111,13 @@ export HF_TOKEN=hf_<your-token>
 
 `HF_HOME` controls the Hugging Face cache (default `~/.cache/huggingface`).
 
+> **TabPFN-2.5** — the `tabpfn` and `realtabpfn` learners load the paper's checkpoints from `data/models/tabpfn_2_5/` (Prior Labs' licence applies):
+> ```bash
+> hf download Prior-Labs/tabpfn_2_5 --revision 6c45f3a6d0d07c6c5f62572e04a0c2929de91b8b --local-dir data/models/tabpfn_2_5 \
+>     tabpfn-v2.5-classifier-v2.5_default.ckpt tabpfn-v2.5-regressor-v2.5_default.ckpt \
+>     tabpfn-v2.5-classifier-v2.5_real.ckpt tabpfn-v2.5-regressor-v2.5_real.ckpt
+> ```
+
 > **ContextTab** is not on PyPI: `requirements.txt` installs it (`sap_rpt_oss`) from <https://github.com/SAP-samples/sap-rpt-1-oss> at the commit the paper used, so `pip` needs `git`.
 
 ---
