@@ -178,7 +178,8 @@ python scripts/evaluate_scripts/script_evaluate.py \
 # 4. Compile
 python scripts/compile_results.py default/benchmark_main
 
-# 5. Figure
+# 5. Figure (the per-table statistics it reads are written once by datasets_representation.py)
+python scripts/datasets_representation.py
 python figures/main_paper/figure_3.py
 ```
 

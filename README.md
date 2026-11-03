@@ -210,8 +210,9 @@ Required only to reproduce the cross-benchmark appendix Figure E.1.
    # → results/compiled_results/result_default_benchmark_main.csv
    ```
    The output name is always `result_<run name with "/" → "_">.csv` (`compiled_results_path()` in [`configs/path_configs.py`](https://github.com/soda-inria/strable/blob/main/configs/path_configs.py)).
-5. **Figures**: one script per figure, runnable independently. Scripts read benchmark results only from compiled runs; the runs they need (run name, script, flags, methods) are listed once in [`configs/paper_runs.py`](https://github.com/soda-inria/strable/blob/main/configs/paper_runs.py). `python configs/paper_runs.py` prints the evaluate + compile commands for all of them.
+5. **Figures**: one script per figure, runnable independently. Scripts read benchmark results only from compiled runs; the runs they need (run name, script, flags, methods) are listed once in [`configs/paper_runs.py`](https://github.com/soda-inria/strable/blob/main/configs/paper_runs.py). `python configs/paper_runs.py` prints the evaluate + compile commands for all of them. A figure needs the compiled results of every run it reads, so the figures come after the full benchmark. They also read per-table statistics (rows, columns, cardinality, string length, missing values) that `scripts/datasets_representation.py` writes once to `dataset_summary_wide.parquet`.
    ```bash
+   python scripts/datasets_representation.py
    python figures/main_paper/figure_3.py
    python figures/appendix/figure_E10.py
    ```
@@ -290,6 +291,10 @@ python scripts/compile_results.py no-pca/benchmark_main
 Routes string columns with cardinality `<30` through one-hot encoding (Ridge) or passthrough (XGBoost / TabPFN); columns with cardinality `≥30` still go through the LLM encoder. Two scripts, one per learner family:
 
 ```bash
+# LLaMA-3.1-8B embeddings, read by both branches (a gated model: accept its licence on Hugging Face, set HF_TOKEN)
+python scripts/embedding_extraction_scripts/script_extract_llm_embeddings.py \
+    -m llm-llama-3.1-8b -dn all-wide -ns 3 -fi all -dv cuda -cf False -oc False
+
 # OHE branch (Ridge)
 python scripts/evaluate_scripts/script_evaluate_30_thres_OHE.py \
     --save_dir benchmark_main -m num-str_llm-llama-3.1-8b_ridge \
