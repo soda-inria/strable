@@ -7,8 +7,9 @@ are those of ``classify_column_heuristic`` in
 scripts/natural_language_test_VSE_vs_STRABLE_vs_CARTE_vs_TTB.py of the STRABLE repository.
 
 The word lists are NLTK's corpora, as in the paper: ``words`` (its English file ``en``, the Unix
-"words" file) for the dictionary hit rate, and ``stopwords`` (English). The first call downloads
-them with ``nltk.download`` when they are missing.
+"words" file) for the dictionary hit rate, and ``stopwords`` (English). NLTK is not a dependency of
+the core package: ``pip install "strable[taxonomy]"`` installs it. The first call downloads the
+corpora with ``nltk.download`` when they are missing.
 """
 
 from __future__ import annotations
@@ -52,7 +53,11 @@ class Profile(NamedTuple):
 
 def _nltk_corpus(name: str):
     """NLTK's corpus ``name``, downloaded quietly the first time it is missing."""
-    import nltk  # imported here: only profile() needs it
+    try:
+        import nltk  # imported here: only profile() needs it
+    except ImportError:
+        raise ImportError('strable.profile needs NLTK, which the core package does not install: '
+                          'pip install "strable[taxonomy]"') from None
 
     try:
         nltk.data.find(f"corpora/{name}")
