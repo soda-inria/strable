@@ -25,7 +25,7 @@
 
 ---
 
-## 📦 Install and use
+## 📦 Quick use: the `strable` package
 
 ```bash
 pip install strable              # tables, folds, evaluate, Tf-Idf
@@ -47,7 +47,7 @@ print(scores[["table", "fold", "score"]])
 columns, mix = strable.profile(X)                  # type of each string column, and the table's mix
 ```
 
-`strable.list_tables()` names the 108 tables (`list_tables("regression")`, `"classification"`, …). `evaluate` uses the [leaderboard](https://gblayer.github.io/strable-leaderboard/)'s folds, metrics and checks; with no `tables`, it runs every regression table for a regressor and every classification table for a classifier. Scores can move slightly with other library versions: SciPy 1.17 and later shift the Tf-Idf features by about 1e-7, and learners change across scikit-learn versions. The leaderboard's environment has scikit-learn 1.7.2, SciPy 1.16.3 and skrub 0.7.0. The tables are public, so no Hugging Face token is needed. `profile` needs the `taxonomy` extra; on its first call, it downloads NLTK's `words` and `stopwords` corpora (about 800 KB) if they are missing. The package does not include the paper's experiments: for those, set up the full environment of Step 1 below.
+`strable.list_tables()` names the 108 tables (`list_tables("regression")`, `"classification"`, …). `evaluate` uses the [leaderboard](https://gblayer.github.io/strable-leaderboard/)'s folds, metrics and checks; with no `tables`, it runs every regression table for a regressor and every classification table for a classifier. Scores can move slightly with other library versions: SciPy 1.17 and later shift the Tf-Idf features by about 1e-7, and learners change across scikit-learn versions. The leaderboard's environment has scikit-learn 1.7.2, SciPy 1.16.3 and skrub 0.7.0. The tables are public, so no Hugging Face token is needed. `profile` needs the `taxonomy` extra; on its first call, it downloads NLTK's `words` and `stopwords` corpora (about 800 KB) if they are missing. The package does not include the paper's experiments: for those, set up the paper's environment of Step 1 below.
 
 ---
 
@@ -99,7 +99,9 @@ strable/
 
 ---
 
-## 🛠️ Step 1 – Install
+## 🛠️ Step 1 – Set up the paper's environment
+
+To run the paper's experiments (`scripts/`, `src/`), from a clone of this repository. To only load the tables, get the folds and score a model, `pip install strable` (Quick use, above) is enough.
 
 Python **3.12**.
 
