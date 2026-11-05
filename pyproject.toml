@@ -100,12 +100,14 @@ extra = [
     "xmltodict",
 ]
 
-# Only `strable/` is installed: strable, and its fold files in strable/data/folds.
+# Only `strable/` is installed: strable, its fold files in strable/data/folds and the leaderboard's
+# per-fold results in strable/data/leaderboard.
 [tool.setuptools.packages.find]
 include = ["strable", "strable.*"]
 
 [tool.setuptools.package-data]
 "strable.data.folds" = ["*.parquet", "manifest.json"]
+"strable.data.leaderboard" = ["*.parquet", "manifest.json"]
 
 [tool.setuptools.dynamic]
 version = { attr = "strable.__version__" }
