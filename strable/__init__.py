@@ -9,5 +9,5 @@ from .datasets import get_folds, list_tables, load_table
 from .evaluation import evaluate
 from .taxonomy import profile
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 __all__ = ["encoders", "evaluate", "get_folds", "list_tables", "load_table", "profile"]

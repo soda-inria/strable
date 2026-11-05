@@ -39,7 +39,8 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
 ]
-# The package `strable`: tables, folds, evaluation, Tf-Idf encoder and string taxonomy.
+# The package `strable`: tables, folds, evaluation and Tf-Idf encoder. The string taxonomy, `strable.profile`,
+# also needs NLTK: `pip install "strable[taxonomy]"`.
 dependencies = [
     "numpy<2.4",  # numpy 2.5 makes pandas 2.3 crash on dates past 2262 (see requirements.txt)
     "pandas",
@@ -47,7 +48,6 @@ dependencies = [
     "scikit-learn>=1.6",
     "skrub>=0.6",
     "huggingface_hub",
-    "nltk>=3.8",
 ]
 
 [project.urls]
@@ -57,6 +57,9 @@ Dataset = "https://huggingface.co/datasets/inria-soda/STRABLE-benchmark"
 Paper = "https://arxiv.org/abs/2605.12292"
 
 [project.optional-dependencies]
+taxonomy = [
+    "nltk>=3.8",
+]
 test = [
     "pytest",
     "coverage",
@@ -90,6 +93,7 @@ paper = [
     "openml>=0.14",
     "xmltodict>=0.13",
     "gdown>=5.0",
+    "nltk>=3.8",
 ]
 extra = [
     "openml",

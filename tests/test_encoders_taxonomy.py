@@ -85,6 +85,13 @@ def test_profile_offline_without_corpora_says_how_to_get_them(monkeypatch, fresh
         strable.profile(_table())
 
 
+def test_profile_without_nltk_says_which_extra_installs_it(monkeypatch, fresh_word_lists):
+    """NLTK is optional: without it, profile() names the extra to install."""
+    monkeypatch.setitem(sys.modules, "nltk", None)  # import nltk now raises ImportError
+    with pytest.raises(ImportError, match=r'pip install "strable\[taxonomy\]"'):
+        strable.profile(_table())
+
+
 @pytest.mark.network
 def test_profile_downloads_the_nltk_corpora(tmp_path):
     """A fresh process whose NLTK folder and home are empty downloads the two corpora there."""
