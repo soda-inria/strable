@@ -11,5 +11,5 @@ from .evaluation import evaluate
 from .results import load_published_results
 from .taxonomy import profile
 
-__version__ = "0.3.0"
+__version__ = "0.4.0"
 __all__ = ["encoders", "evaluate", "get_folds", "list_tables", "load_published_results", "load_table", "profile"]
