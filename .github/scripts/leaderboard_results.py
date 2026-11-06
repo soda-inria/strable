@@ -11,6 +11,7 @@ import hashlib
 import json
 import os
 import re
+import time
 import urllib.request
 from pathlib import Path
 
@@ -27,8 +28,14 @@ def fetch(url: str) -> bytes:
     headers = {"Accept": "application/vnd.github+json"}
     if url.startswith("https://api.github.com/") and os.environ.get("GH_TOKEN"):
         headers["Authorization"] = f"Bearer {os.environ['GH_TOKEN']}"
-    with urllib.request.urlopen(urllib.request.Request(url, headers=headers), timeout=60) as reply:
-        return reply.read()
+    for attempt in range(3):  # GitHub sometimes fails a request; a daily run should not fail for that
+        try:
+            with urllib.request.urlopen(urllib.request.Request(url, headers=headers), timeout=60) as reply:
+                return reply.read()
+        except OSError:
+            if attempt == 2:
+                raise
+            time.sleep(30 * (attempt + 1))
 
 
 def key(tag: str) -> tuple[int, ...]:

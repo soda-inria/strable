@@ -1,8 +1,10 @@
 # Every day: when the leaderboard (gblayer/strable-leaderboard) has released results newer than the copy the package
-# ships, copies them (.github/scripts/leaderboard_results.py), raises the minor version, runs the tests and opens
-# one pull request, on the branch leaderboard-results. A newer leaderboard release before the merge updates the same
-# pull request. Merging it releases the package (release.yml); the PyPI upload waits for the maintainer's approval.
-# Needs the repository setting "Allow GitHub Actions to create and approve pull requests".
+# ships, copies them (.github/scripts/leaderboard_results.py), raises the minor version and runs the tests, on the
+# branch leaderboard-results. Then one issue, "New leaderboard results vX.Y.Z: ready to release as A.B.C", links to
+# the pull request of that branch, its title and text filled in: the maintainer creates it and merges it, which
+# closes the issue and releases the package (release.yml; the PyPI upload waits for the maintainer's approval).
+# A newer leaderboard release before the merge updates the same branch and issue.
+# An issue, not a pull request: the organisation does not let workflows open pull requests.
 name: Leaderboard results
 
 on:
@@ -12,7 +14,7 @@ on:
 
 permissions:
   contents: write
-  pull-requests: write
+  issues: write
 
 concurrency:
   group: leaderboard-results
@@ -31,42 +33,59 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: python .github/scripts/leaderboard_results.py >> "$GITHUB_OUTPUT"
       - id: open
-        # The pull request of this release is already open: nothing to do until it is merged or a newer one comes.
+        # The issue of this release is already open: nothing to do until it is closed or a newer release comes.
         if: steps.copy.outputs.tag != ''
         env:
           GH_TOKEN: ${{ github.token }}
-          TITLE: "Shipped results: leaderboard ${{ steps.copy.outputs.tag }}; version ${{ steps.copy.outputs.version }}"
+          TITLE: "New leaderboard results ${{ steps.copy.outputs.tag }}: ready to release as ${{ steps.copy.outputs.version }}"
         run: |
-          open=$(gh pr list --head leaderboard-results --state open --json title --jq '.[].title')
-          if [ "$open" = "$TITLE" ]; then echo "already open: $TITLE"; else echo "new=true" >> "$GITHUB_OUTPUT"; fi
+          gh issue list --state open --limit 200 --json number,title > open.json
+          python - >> "$GITHUB_OUTPUT" <<'EOF'
+          import json, os
+          issues = [i for i in json.load(open("open.json")) if i["title"].startswith("New leaderboard results ")]
+          if not any(i["title"] == os.environ["TITLE"] for i in issues):
+              print("new=true")
+              if issues:
+                  print(f"issue={issues[0]['number']}")
+          EOF
       - name: Test
         if: steps.open.outputs.new == 'true'
         run: |
           python -m pip install ".[test]"
           python -m pytest
-      - name: Pull request
+      - name: Branch and issue
         if: steps.open.outputs.new == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ steps.copy.outputs.tag }}
           VERSION: ${{ steps.copy.outputs.version }}
+          ISSUE: ${{ steps.open.outputs.issue }}
         run: |
-          title="Shipped results: leaderboard $TAG; version $VERSION"
-          python - > body.md <<'EOF'
-          import os, pandas as pd
-          df = pd.read_parquet("strable/data/leaderboard/results_per_fold.parquet")
-          print(f"The shipped copy of the leaderboard's results follows its release {os.environ['TAG']}: "
-                f"{len(df):,} rows, {df['id'].nunique()} pipelines. Version {os.environ['VERSION']}; the tests pass.\n\n"
-                "Merging releases the package; the PyPI upload then waits for the maintainer's approval.")
-          EOF
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git switch -c leaderboard-results
           git add strable/__init__.py strable/data/leaderboard/
-          git commit -m "$title"
+          git commit -m "Shipped results: leaderboard $TAG; version $VERSION"
           git push --force origin leaderboard-results
-          if [ -n "$(gh pr list --head leaderboard-results --state open --json number --jq '.[].number')" ]; then
-            gh pr edit leaderboard-results --title "$title" --body-file body.md
-          else
-            gh pr create --base main --head leaderboard-results --title "$title" --body-file body.md
+          title="New leaderboard results $TAG: ready to release as $VERSION"
+          if [ -z "$ISSUE" ]; then
+            ISSUE=$(gh issue create --title "$title" --body "The branch leaderboard-results is ready." | grep -oE '[0-9]+$')
           fi
+          export ISSUE
+          python - > body.md <<'EOF'
+          import os, urllib.parse, pandas as pd
+          tag, version, issue = os.environ["TAG"], os.environ["VERSION"], os.environ["ISSUE"]
+          df = pd.read_parquet("strable/data/leaderboard/results_per_fold.parquet")
+          size = f"{len(df):,} rows, {df['id'].nunique()} pipelines"
+          pr = {"expand": "1", "title": f"Shipped results: leaderboard {tag}; version {version}",
+                "body": f"The shipped copy of the leaderboard's results follows its release {tag}: {size}. "
+                        f"Version {version}; the tests pass.\n\nCloses #{issue}"}
+          link = f"https://github.com/{os.environ['GITHUB_REPOSITORY']}/compare/main...leaderboard-results?"
+          print(f"The leaderboard released its results {tag}: {size}. The branch `leaderboard-results` ships them "
+                f"with the package, as version {version}; the tests pass.\n\n"
+                f"1. [Create the pull request]({link + urllib.parse.urlencode(pr)}) (its title and text are filled in), "
+                "then merge it. Merging closes this issue.\n"
+                f"2. Merging creates the release v{version}: approve its PyPI upload in the Release run "
+                "(Actions, Review deployments).")
+          EOF
+          gh issue edit "$ISSUE" --title "$title" --body-file body.md
