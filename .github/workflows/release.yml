@@ -1,15 +1,44 @@
-# Builds the strable package, tests it and checks it; on a published GitHub release, uploads it to PyPI.
-# The upload uses PyPI's trusted publishing: no password or token is stored in the repository.
-# "Run workflow" (manual) builds and checks only, without uploading.
+# Builds the strable package, tests it and checks it, and uploads it to PyPI for a new version.
+# A merge to main that raises the version in strable/__init__.py creates the GitHub release vX.Y.Z (job tag),
+# then builds and uploads it. A release published by hand does the same, from its tag.
+# The upload waits for the maintainer's approval (environment pypi) and uses PyPI's trusted publishing: no
+# password or token is stored in the repository. "Run workflow" (manual) builds and checks only, without uploading.
 name: Release
 
 on:
+  push:
+    branches: [main]
+    paths: [strable/__init__.py]
   release:
     types: [published]
   workflow_dispatch:
 
 jobs:
+  tag:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      tag: ${{ steps.tag.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          version=$(python3 -c "import re; print(re.search(r'__version__ = \"(.+)\"', open('strable/__init__.py').read()).group(1))")
+          if gh release view "v$version" > /dev/null 2>&1; then
+            echo "v$version is already released"
+          else
+            gh release create "v$version" --target "$GITHUB_SHA" --title "v$version" --generate-notes
+            echo "tag=v$version" >> "$GITHUB_OUTPUT"
+          fi
+
   build:
+    # After the tag job on a merge (only when it released), or on a release or a manual run.
+    needs: tag
+    if: ${{ !cancelled() && needs.tag.result != 'failure' && (github.event_name != 'push' || needs.tag.outputs.tag != '') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -17,10 +46,12 @@ jobs:
         with:
           python-version: "3.12"
       - name: Tag matches the package version
-        if: github.event_name == 'release'
+        if: github.event_name != 'workflow_dispatch'
+        env:
+          TAG: ${{ github.event_name == 'push' && needs.tag.outputs.tag || github.ref_name }}
         run: |
           version=$(python -c "import re; print(re.search(r'__version__ = \"(.+)\"', open('strable/__init__.py').read()).group(1))")
-          test "${GITHUB_REF_NAME#v}" = "$version" || { echo "tag $GITHUB_REF_NAME, package $version"; exit 1; }
+          test "${TAG#v}" = "$version" || { echo "tag $TAG, package $version"; exit 1; }
       - name: Test
         run: |
           python -m pip install ".[test]"
@@ -36,8 +67,8 @@ jobs:
           path: dist/
 
   publish:
-    if: github.event_name == 'release'
     needs: build
+    if: ${{ !cancelled() && needs.build.result == 'success' && github.event_name != 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     environment:
       name: pypi
