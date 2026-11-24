@@ -1,9 +1,9 @@
 {
  "leaderboard": "https://gblayer.github.io/strable-leaderboard/",
- "leaderboard_version": "v0.1.23",
- "built": "2026-11-23",
+ "leaderboard_version": "v0.1.24",
+ "built": "2026-11-24",
  "repository": "https://github.com/gblayer/strable-leaderboard",
- "commit": "347ac35ea6ccb6b455c3cb9dfa2b82718e2628fc",
+ "commit": "0dd56a9c5fb9f4bcf4e06b2f9e46beb9c4173da2",
  "file": "site/results_per_fold.parquet",
- "sha256": "e2cff803098a5b27a3a9aaa9f57e8391cf7cc9c8d5fdfad3cf2df45f67b62be5"
+ "sha256": "bcd048f8b41e3f9ee0fc4d1c93ba2c2ea8be46d35761b96cb56dbfade1bfcd6c"
 }
