@@ -73,14 +73,14 @@ def run_model(
                 model_name_or_path=model_path,
                 trust_remote_code=True,
                 cache_folder=cache_folder,
-                device="cuda",
+                device=device,
                 token=os.environ.get("HF_TOKEN"),
             )
         else:
             lm_model = SentenceTransformer(
                 model_name_or_path=model_path,
                 cache_folder=cache_folder,
-                device="cuda",
+                device=device,
                 token=os.environ.get("HF_TOKEN"),
             )
         # Token control for Llama models
